@@ -1,0 +1,99 @@
+@import url(https://fonts.googleapis.com/css?family=Noto+Serif+TC&amp;display=swap);
+.favorite {
+    padding: 180px 5%;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    text-align: center;
+    text-decoration: none;
+    justify-content: center;
+}
+.favor{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin-bottom: 50px;
+}
+.favor::after {
+    content: '';
+    width: 600px;
+  }
+.favarea{
+    /* 一個collection */
+    width: 570px;
+    border:1px rgb(165, 164, 164) solid;
+    border-radius: 5px;
+    display: flex;
+    flex-wrap: nowrap;
+    margin: 15px;
+}
+.favarea:hover {
+    transform: scale(1.035);
+    box-shadow: 0px 0px 7px rgba(42, 90, 190, 0.5);
+  }
+.favarea:active{
+    transform: scale(1.035);
+  }
+.fav{
+    padding: 10px 2%;
+    display: flex;
+    flex-wrap: nowrap;
+}
+.favlink{
+    display: flex;
+    flex-wrap: nowrap;
+    width: 450px;
+    text-decoration: none;
+}
+.product__main-image{
+    width: 150px;
+    height: 210px;
+}
+.favdetail{
+    width: 350px;
+    display: flex;
+    flex-wrap: wrap;
+    margin-left: 13%;
+    margin-top: 50px;
+}
+.favname{
+    width: 200px;
+    font-weight: bold;
+    font-size: 25px;
+    font-family: "Helvetica", "Arial","LiHei Pro","黑體-繁","微軟正黑體", sans-serif;
+    color: black;
+}
+.favid{
+    width: 200px;
+    color: black;
+}
+.favprice{
+    width: 200px;
+    color: black;
+}
+.favremove{
+    width: 20%;
+    height: 20%;
+    cursor: pointer;
+    margin-top: 15%;
+    margin-left: 10px;
+}
+.favtrash{
+    display: flex;
+    background-image: url(/images/cart-remove.png);
+    width: 44px;
+    height: 44px;
+}
+.collection{
+    color: black;
+    font-size: 35px;
+    font-weight: bolder;
+    font-family: 'Noto Serif TC', serif;
+}
+.collectionhr{
+    color: black;
+    width: 100%;
+    
+}

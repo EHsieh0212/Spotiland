@@ -1,8 +1,8 @@
 {
   "name": "spotiland",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "an app devoted to spotify lovers",
+  "main": "app.js",
   "scripts": {
     "start": "nodemon app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/EHsieh0212/Spotiland.git"
   },
-  "author": "",
+  "author": "chia ying hsieh",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/EHsieh0212/Spotiland/issues"
@@ -22,7 +22,10 @@
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "greenlock-express": "^4.0.3",
+    "lodash": "^4.17.21",
     "nodemon": "^2.0.20",
     "spotify-web-api-node": "^5.0.2"
+  },
+  "devDependencies": {
   }
 }
