@@ -19,6 +19,7 @@ app.use(cors());
 // routers
 app.use('/api/' + API_VERSION, [
     require('./server/routes/spotify.js'),
+    require('./server/routes/login.js'),
 ]);
 
 
