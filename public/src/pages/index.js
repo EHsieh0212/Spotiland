@@ -128,8 +128,8 @@ function App() {
   return (
     <React.Fragment>
       <Header cartItems={cart} />
-      <Carousel />
-      <Products />
+      {/* <Carousel /> */}
+      {/* <Products /> */}
       <Footer />
     </React.Fragment>
   );
