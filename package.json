@@ -1,31 +1,53 @@
 {
   "name": "spotiland",
-  "version": "1.0.0",
-  "description": "an app devoted to spotify lovers",
-  "main": "app.js",
-  "scripts": {
-    "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "version": "0.1.0",
+  "description": "spotiland",
+  "main": "server/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/EHsieh0212/Spotiland.git"
+    "url": "https://github.com/EHsieh0212/Spotiland.git"
   },
-  "author": "chia ying hsieh",
+  "keywords": [],
+  "author": "chia ying hsieh>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/EHsieh0212/Spotiland/issues"
   },
   "homepage": "https://github.com/EHsieh0212/Spotiland#readme",
+  "engines": {
+    "node": "19.2.0"
+  },
+  "scripts": {
+    "client:install": "cd client && yarn",
+    "client": "cd client && yarn start",
+    "server": "node server",
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\"",
+    "start": "node server",
+    "heroku-postbuild": "cd client/ && yarn && yarn install --production && yarn build"
+  },
+  "lint-staged": {
+    "*.{js,css,json,md}": [
+      "prettier --write"
+    ],
+    "*.{js}": [
+      "eslint --fix"
+    ]
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "lint-staged"
+    }
+  },
   "dependencies": {
+    "connect-history-api-fallback": "^2.0.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "lodash": "^4.17.21",
-    "nodemon": "^2.0.20",
     "querystring": "^0.2.1",
-    "request": "^2.88.2",
-    "spotify-web-api-node": "^5.0.2"
+    "request": "^2.88.2"
+  },
+  "devDependencies": {
+    "concurrently": "^5.3.0"
   }
 }
