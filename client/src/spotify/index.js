@@ -14,6 +14,7 @@ const getTokenTimestamp = () => window.localStorage.getItem('spotify_token_times
 const getLocalAccessToken = () => window.localStorage.getItem('spotify_access_token');
 const getLocalRefreshToken = () => window.localStorage.getItem('spotify_refresh_token');
 
+var tmp2 = getLocalRefreshToken()
 // Refresh the token
 const refreshAccessToken = async () => {
   try {
