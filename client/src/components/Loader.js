@@ -46,13 +46,14 @@ const Bar = styled.div`
 
 const Loader = () => (
   <Container>
-    <Bars>
+    {/* <Bars>
       <Bar delay="250ms" />
       <Bar delay="715ms" />
       <Bar delay="475ms" />
       <Bar delay="25ms" />
       <Bar delay="190ms" />
-    </Bars>
+    </Bars> */}
+    <div> loading </div>
   </Container>
 );
 

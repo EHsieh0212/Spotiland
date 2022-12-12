@@ -1,7 +1,7 @@
 import { css } from 'styled-components';
 
 const sizes = {
-  giant: 1440,
+  giant: 1920,
   desktop: 1200,
   netbook: 1000,
   tablet: 768,

@@ -4,10 +4,9 @@ import media from './media';
 const Main = styled.main`
   width: 100%;
   margin: 0 auto;
-  max-width: 1400px;
   min-height: 100vh;
   padding: 80px;
-  ${media.desktop`
+  ${media.giant`
     padding: 60px 50px;
   `};
   ${media.tablet`

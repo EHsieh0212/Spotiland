@@ -5,6 +5,7 @@ const wrapAsync = (fn) => {
     };
 };
 
+
 const generateRandomString = length => {
     let text = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -14,9 +15,8 @@ const generateRandomString = length => {
     return text;
   };
 
+
 const stateKey = 'spotify_auth_state';
-
-
 
 
 

@@ -1,9 +1,10 @@
 import axios from 'axios';
 import { getHashParams } from '../utils';
 
-// TOKENS ******************************************************************************************
+// variables setting
 const EXPIRATION_TIME = 3600 * 1000; // 3600 seconds * 1000 = 1 hour in milliseconds
 
+// set functions
 const setTokenTimestamp = () => window.localStorage.setItem('spotify_token_timestamp', Date.now());
 const setLocalAccessToken = token => {
   setTokenTimestamp();
@@ -14,10 +15,15 @@ const getTokenTimestamp = () => window.localStorage.getItem('spotify_token_times
 const getLocalAccessToken = () => window.localStorage.getItem('spotify_access_token');
 const getLocalRefreshToken = () => window.localStorage.getItem('spotify_refresh_token');
 
-var tmp2 = getLocalRefreshToken()
+
+
+
+//////////////////////////////////////////////
+// About user authentication
 // Refresh the token
 const refreshAccessToken = async () => {
   try {
+    // 這裡剛登入進去之後好像都會拿不到token
     const { data } = await axios.get(`/refresh_token?refresh_token=${getLocalRefreshToken()}`);
     const { access_token } = data;
     setLocalAccessToken(access_token);
@@ -39,7 +45,7 @@ export const getAccessToken = () => {
 
   // If token has expired
   if (Date.now() - getTokenTimestamp() > EXPIRATION_TIME) {
-    console.warn('Access token has expired, refreshing...');
+    console.log('Access token has expired, refreshing...');
     refreshAccessToken();
   }
 
@@ -55,17 +61,21 @@ export const getAccessToken = () => {
   return localAccessToken;
 };
 
+
 export const token = getAccessToken();
 
 export const logout = () => {
+  console.log("logging out.....")
   window.localStorage.removeItem('spotify_token_timestamp');
   window.localStorage.removeItem('spotify_access_token');
   window.localStorage.removeItem('spotify_refresh_token');
   window.location.reload();
 };
 
-// API CALLS ***************************************************************************************
 
+
+//////////////////////////////////////////////
+// 取得spotify web api原生data
 const headers = {
   Authorization: `Bearer ${token}`,
   'Content-Type': 'application/json',
@@ -254,6 +264,16 @@ export const getTrackAudioAnalysis = trackId =>
 export const getTrackAudioFeatures = trackId =>
   axios.get(`https://api.spotify.com/v1/audio-features/${trackId}`, { headers });
 
+  
+export const getEpisode = id => {
+  axios.get(`https://api.spotify.com/v1/episodes/${id}`, { headers })
+}
+
+
+
+/////////////////////////////////////////////
+// combined info get
+// 這寫法太神了，相當於建構自己的wrapper
 export const getUserInfo = () =>
   axios
     .all([getUser(), getFollowing(), getPlaylists(), getTopArtistsLong(), getTopTracksLong()])

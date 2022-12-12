@@ -37,6 +37,7 @@ const login = (req, res) => {
 const callback = async(req, res) => {
     // your application requests refresh and access tokens
     // after checking the state parameter
+
     const code = req.query.code || null;
     const state = req.query.state || null;
     const storedState = req.cookies ? req.cookies[stateKey] : null;

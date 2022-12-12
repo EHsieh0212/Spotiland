@@ -14,16 +14,14 @@ import Loader from './Loader';
 
 
 
-
 /////////////////////////////////
 // main component
-const TopTracks = () => (
+const TopSingers = () => (
     <Main>
         <h1>
-            Top Tracks
+            Top Singers
         </h1>
     </Main>
 );
 
-
-export default TopTracks;
+export default TopSingers;
