@@ -13,7 +13,6 @@ import TopTracks from './TopTracks';
 import TopSingers from './TopSingers';
 
 
-
 /////////////////////////////////////////////
 // styled components
 const Header = styled.header`
@@ -98,6 +97,9 @@ const User = () => {
     // 1.
     const fetchData = async () => {
       const { user, followedArtists, playlists, topArtists, topTracks } = await getUserInfo();
+      console.log('===========')
+
+      console.log(topTracks.items[0])
       setUser(user);
       setFollowedArtists(followedArtists);
       setPlaylists(playlists);
@@ -128,6 +130,7 @@ const User = () => {
               <Name>{user.display_name}</Name>
             </UserName>
             <LogoutButton onClick={logout}>Logout</LogoutButton>
+
             {user && playlists && (
               <Info>
                 User Email: <Infos> {user.email} </Infos>

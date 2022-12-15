@@ -73,7 +73,6 @@ export const logout = () => {
 };
 
 
-
 //////////////////////////////////////////////
 // 取得spotify web api原生data
 const headers = {
@@ -264,7 +263,7 @@ export const getTrackAudioAnalysis = trackId =>
 export const getTrackAudioFeatures = trackId =>
   axios.get(`https://api.spotify.com/v1/audio-features/${trackId}`, { headers });
 
-  
+
 export const getEpisode = id => {
   axios.get(`https://api.spotify.com/v1/episodes/${id}`, { headers })
 }

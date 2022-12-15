@@ -1,6 +1,6 @@
 // env setting
 require('dotenv').config();
-const PORT = process.env.PORT || 8888;
+const PORT = process.env.PORT || 8000;
 
 
 // required packages

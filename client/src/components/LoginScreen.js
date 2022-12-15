@@ -9,7 +9,7 @@ import Footer from './Footer';
 //     ? 'http://localhost:8888/login'
 //     : 'https://spotify-profile.herokuapp.com/login';
 
-const LOGIN_URI = 'http://localhost:8888/login';
+const LOGIN_URI = 'http://localhost:8000/login';
 
 ///////////////////////////////////////////////
 // styled components
