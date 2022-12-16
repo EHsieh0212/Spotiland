@@ -30,13 +30,9 @@ const Infos = styled.div`
 const TopTracks = () => {
     const [topTracks, setTopTracks] = useState(null);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const { topTracks } = await getUserInfo();
-            setTopTracks(topTracks);
-            console.log(topTracks.items)
-        };
-        catchErrors(fetchData());
+    useEffect(async () => {
+        const { topTracks } = await getUserInfo();
+        setTopTracks(topTracks);
     }, []);
 
 
@@ -48,7 +44,6 @@ const TopTracks = () => {
             </h1>
             {/* 用map的方法把圖片顯示出來 */}
             {
-                
                 topTracks && (<Infos> {JSON.stringify(topTracks.items[0])} </Infos>)
             }
         </Main>

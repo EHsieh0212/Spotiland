@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
-import { theme, mixins, media } from '../styles';
+import { theme, mixins } from '../styles';
 const { colors } = theme;
 
 // nav bar總共有五大元件：container, menu, menuitem, navlink, github-link

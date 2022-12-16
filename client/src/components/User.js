@@ -43,12 +43,6 @@ const Name = styled.h1`
   font-size: 60px;
   font-weight: 700;
   margin: 20px 0 0;
-  ${media.tablet`
-    font-size: 40px;
-  `};
-  ${media.phablet`
-    font-size: 8vw;
-  `};
 `;
 const LogoutButton = styled.a`
   background-color: transparent;
@@ -72,7 +66,6 @@ const Info = styled.div`
   margin-top: 40px;
   text-align: center;
   font-weight: 700;
-  
 `;
 const Infos = styled.div`
   margin-bottom: 10px;
@@ -88,18 +81,13 @@ const Infos = styled.div`
 // Main User Components
 const User = () => {
   const [user, setUser] = useState(null);
-  const [followedArtists, setFollowedArtists] = useState(null);
   const [playlists, setPlaylists] = useState(null);
-  const [topArtists, setTopArtists] = useState(null);
-  const [topTracks, setTopTracks] = useState(null);
 
   useEffect(() => {
     // 1.
     const fetchData = async () => {
-      const { user, followedArtists, playlists, topArtists, topTracks } = await getUserInfo();
-      console.log('===========')
+      const { user, playlists} = await getUserInfo();
 
-      console.log(topTracks.items[0])
       setUser(user);
       setFollowedArtists(followedArtists);
       setPlaylists(playlists);

@@ -16,8 +16,6 @@ const getLocalAccessToken = () => window.localStorage.getItem('spotify_access_to
 const getLocalRefreshToken = () => window.localStorage.getItem('spotify_refresh_token');
 
 
-
-
 //////////////////////////////////////////////
 // About user authentication
 // Refresh the token
