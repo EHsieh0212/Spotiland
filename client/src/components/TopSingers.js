@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Link } from '@reach/router';
 // css
 import styled from 'styled-components/macro';
@@ -12,7 +12,7 @@ import { catchErrors } from '../utils';
 /////////////////////////////////
 // styled component
 // background color是個好用的東西
-
+// 1. basics
 const Body = styled.body`
     background-color: #F6F19C;
     margin: 0px;
@@ -27,6 +27,8 @@ const Title = styled.h1`
     font-weight: 900;
 `;
 
+// 2. artist related
+// grid, 掌控column寬度
 const ArtistsContainer = styled.div`
     /* background-color: yellow; */
     display: grid;
@@ -35,16 +37,17 @@ const ArtistsContainer = styled.div`
     margin-top: 20px;
     margin-left: 80px;
     margin-right: 80px;
-    padding-bottom: 50px;
+    margin-bottom: 0px;
+    padding-bottom: 190px;
 `;
 
-
+//主要區域，存放：1.mask 2.image 3.name
 const ArtistSection = styled.div`
   display: flex;
   background-color: #C4540C;
   flex-direction: column;
   align-items: center;
-  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  box-shadow: rgba(50, 50, 93, 0.9) 0px 2px 9px -1px, rgba(0, 0, 0, 0.9) 0px 1px 3px -1px;
   /* background-color: pink; */
   &:hover,
   &:focus {
@@ -142,11 +145,11 @@ const TopSingers = () => {
 
     // use effect
     useEffect(() => {
-        const fetchData = async () => {
+        const fetchArtists = async () => {
             const { topArtists } = await getUserInfo();
             setTopSingers(topArtists.items.slice(0, 20));
         };
-        catchErrors(fetchData());
+        catchErrors(fetchArtists());
     }, []);
 
 
