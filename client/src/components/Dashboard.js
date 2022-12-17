@@ -1,16 +1,16 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from '@reach/router';
 // css
 import styled from 'styled-components/macro';
-import { theme, mixins, media, Main } from '../styles';
+import { theme, mixins, Main } from '../styles';
 const { colors, fontSizes, spacing } = theme;
 // utils
 import { getUserInfo, logout } from '../spotify';
-import { catchErrors } from '../utils';
 // other components
 import Loader from './Loader';
 import TopTracks from './TopTracks';
 import TopSingers from './TopSingers';
+// higher order error handler
+import {catchErrors} from '../utils/index'
 
 
 /////////////////////////////////////////////
@@ -79,27 +79,24 @@ const Infos = styled.div`
 
 /////////////////////////////////////////////
 // Main User Components
-const User = () => {
+const Dashboard = () => {
+
+  // useState()
   const [user, setUser] = useState(null);
   const [playlists, setPlaylists] = useState(null);
 
-  useEffect(() => {
-    // 1.
-    const fetchData = async () => {
-      const { user, playlists} = await getUserInfo();
 
+  // useEffect()
+  useEffect(() => {
+    const fetchDashboardData = async() => {
+      const { user, playlists } = await getUserInfo();
       setUser(user);
-      setFollowedArtists(followedArtists);
       setPlaylists(playlists);
-      setTopArtists(topArtists);
-      setTopTracks(topTracks);
-    };
-    // 2.
-    catchErrors(fetchData());
+    }
+    catchErrors(fetchDashboardData());
   }, []);
 
 
-  //////////////////////////////////////////////
   // JSX
   return (
     <React.Fragment>
@@ -128,8 +125,8 @@ const User = () => {
               </Info>
             )}
           </Header>
-              <TopTracks />
-              <TopSingers />
+          <TopTracks />
+          <TopSingers />
         </Main>
       ) : (
         <Loader />
@@ -138,4 +135,4 @@ const User = () => {
   );
 };
 
-export default User;
+export default Dashboard;

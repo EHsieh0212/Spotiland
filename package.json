@@ -21,7 +21,7 @@
     "install": "cd client && yarn",
     "client": "cd client && yarn start",
     "server": "node server",
-    "dev": "concurrently \"yarn server\" \"yarn client\""
+    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "dependencies": {
     "connect-history-api-fallback": "^2.0.0",

@@ -1,14 +1,12 @@
 import React, { useState, useEffect } from 'react';
 // css
 import styled from 'styled-components/macro';
-import { theme, mixins, media, Main } from '../styles';
-const { colors, fontSizes, spacing } = theme;
-// utils
-import { getUserInfo, logout } from '../spotify';
+import { theme, Main } from '../styles';
+const { colors } = theme;
+// fetch function
+import { getUserInfo } from '../spotify';
+// higher order error handler
 import { catchErrors } from '../utils';
-// other components
-import Loader from './Loader';
-
 
 
 /////////////////////////////////
@@ -30,9 +28,12 @@ const Infos = styled.div`
 const TopTracks = () => {
     const [topTracks, setTopTracks] = useState(null);
 
-    useEffect(async () => {
-        const { topTracks } = await getUserInfo();
-        setTopTracks(topTracks);
+    useEffect(() => {
+        const fetchData = async () => {
+            const { topTracks } = await getUserInfo();
+            setTopTracks(topTracks);
+        };
+        catchErrors(fetchData());
     }, []);
 
 

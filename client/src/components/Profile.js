@@ -1,15 +1,27 @@
-import React from 'react';
+// router
+import { Router } from '@reach/router';
+
+// components
 import Nav from './Nav';
-import User from './User';
+import Dashboard from './Dashboard';
+import LyricGenerator from './LyricGenerator';
+import Kareoke from './Kareoke';
 
-// setting up routes
+// control behavior
+import ScrollToTheTop from './ScrollToTheTop';
 
 
-
+/////////////////////////////////////////////////////
 const Profile = () => (
   <div>
     <Nav />
-    <User path="/" />
+    <Router primary={false}>
+      <ScrollToTheTop path='/'>
+        <Dashboard path='/' />
+        <LyricGenerator path='/lyricGenerator' />
+        <Kareoke path='/kareoke' />
+      </ScrollToTheTop>
+    </Router>
   </div>
 );
 

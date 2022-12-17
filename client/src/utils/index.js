@@ -4,6 +4,7 @@ export const getHashParams = () => {
   let e;
   const r = /([^&;=]+)=?([^&;]*)/g;
   const q = window.location.hash.substring(1);
+
   while ((e = r.exec(q))) {
     hashParams[e[1]] = decodeURIComponent(e[2]);
   }
@@ -11,6 +12,7 @@ export const getHashParams = () => {
 };
 
 // Higher-order function for async/await error handling
+// 目的：remove try-catch block
 export const catchErrors = fn =>
   function(...args) {
     return fn(...args).catch(err => {

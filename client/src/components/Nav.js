@@ -4,6 +4,13 @@ import styled from 'styled-components/macro';
 import { theme, mixins } from '../styles';
 const { colors } = theme;
 
+// import routing packages
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+} from 'react-router-dom';
+
 // nav bar總共有五大元件：container, menu, menuitem, navlink, github-link
 
 ///////////////////////////////////////////////
@@ -52,8 +59,11 @@ const MenuItem = styled.li`
   }
 `;
 
-const NavLink = props => <Link getProps={isActive} {...props} />;
+// ref: https://reach.tech/router/api/Link
 const isActive = ({ isCurrent }) => (isCurrent ? { className: 'active' } : null);
+const NavLink = props => <Link getProps={isActive} {...props} />;
+
+
 
 const Github = styled.div`
   color: ${colors.lightGrey};
@@ -74,14 +84,13 @@ const Github = styled.div`
 
 
 
-
 ///////////////////////////////////////////////
 // Login JSX
 const Nav = () => (
   <Container>
     <Menu>
       <MenuItem>
-        <NavLink to="/dashboard">
+        <NavLink to="/">
           <div>Dashboard</div>
         </NavLink>
       </MenuItem>

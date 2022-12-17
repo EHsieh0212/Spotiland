@@ -1,8 +1,7 @@
 import React from 'react';
-import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
 import { theme, mixins, Main } from '../styles';
-const { colors, fontSizes } = theme;
+const { colors } = theme;
 
 const FooterBack = styled(Main)`
   ${mixins.flexCenter};
@@ -14,7 +13,6 @@ const FooterBack = styled(Main)`
 
 
 const FooterDiv = styled.div`
-  /* display: inline-block; */
   position: absolute;
   bottom: 0;
   width: 100%;
