@@ -9,6 +9,8 @@ import { getUserInfo } from '../spotify';
 import { catchErrors } from '../utils';
 
 
+/////////////////////////////////
+// styled component
 const Infos = styled.div`
   margin-bottom: 10px;
   color: ${colors.black};
@@ -21,8 +23,12 @@ const Infos = styled.div`
 /////////////////////////////////
 // main component
 const TopSingers = () => {
+    // use state
     const [topSingers, setTopSingers] = useState(null);
 
+
+    
+    // use effect
     useEffect(() => {
         const fetchData = async () => {
             const { topArtists } = await getUserInfo();
@@ -31,6 +37,9 @@ const TopSingers = () => {
         catchErrors(fetchData());
     }, []);
 
+
+
+    // jsx
     return (
         <Main>
             <h1>

@@ -8,7 +8,7 @@ import Footer from './Footer';
 // styled components
 const Login = styled(Main)`
   ${mixins.flexCenter};
-  
+  color: ${colors.white};
   background-color: ${colors.lightGrey};
   flex-direction: column;
   min-height: 100vh;

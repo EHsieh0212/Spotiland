@@ -1,13 +1,11 @@
+// goal: 其他檔案可以直接import styles並解構檔案取出different styling settings
+
 import GlobalStyle from './GlobalStyle';
 import theme from './theme';
 import mixins from './mixins';
 import media from './media';
-// import Button from './Button';
-// import Header from './Header';
-// import Nav from './Nav';
 import Main from './Main';
-// import Section from './Section';
-// import Footer from './Footer';
+import fontFace from './fontFace';
 
-// export { GlobalStyle, theme, mixins, media, Button, Header, Nav, Main, Section, Footer };
-export { GlobalStyle, theme, mixins, media, Main};
+
+export { GlobalStyle, theme, mixins, media, Main, fontFace};

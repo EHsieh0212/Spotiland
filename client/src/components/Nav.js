@@ -4,16 +4,17 @@ import styled from 'styled-components/macro';
 import { theme, mixins } from '../styles';
 const { colors } = theme;
 
-// import routing packages
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-} from 'react-router-dom';
 
-// nav bar總共有五大元件：container, menu, menuitem, navlink, github-link
+/////////////////////////////////////////////////
+// routing設定
+// ref: https://reach.tech/router/api/Link
+const isActive = ({ isCurrent }) => (isCurrent ? { className: 'active' } : null);
+const NavLink = props => <Link getProps={isActive} {...props} />;
+
+
 
 ///////////////////////////////////////////////
+// nav bar總共有五大元件：container, menu, menuitem, navlink, github-link
 // styled components
 const Container = styled.nav`
   ${mixins.coverShadow};
@@ -24,21 +25,25 @@ const Container = styled.nav`
   top: 0;
   left: 0;
   width: ${theme.navWidth};
-  background-color: #57575E;
+  background-color: ${colors.black};
   text-align: center;
   z-index: 99;
 `;
 
 const Menu = styled.ul`
+  padding: 0;
+  margin: 0;
+  list-style: none;
   margin-top: 200px;
   display: flex;
   flex-direction: column;
 `;
+
 const MenuItem = styled.li`
   margin-top: 30px;
-  color: ${colors.lightGrey};
   font-size: 16px;
   a {
+    color: ${colors.white};
     display: block;
     padding: 15px 0;
     border-left: 5px solid transparent;
@@ -58,10 +63,6 @@ const MenuItem = styled.li`
     margin-bottom: 7px;
   }
 `;
-
-// ref: https://reach.tech/router/api/Link
-const isActive = ({ isCurrent }) => (isCurrent ? { className: 'active' } : null);
-const NavLink = props => <Link getProps={isActive} {...props} />;
 
 
 
@@ -89,5 +90,6 @@ const Nav = () => (
     </Menu>
   </Container>
 );
+
 
 export default Nav;

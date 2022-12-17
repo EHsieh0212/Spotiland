@@ -1,12 +1,11 @@
-// import the package
 import { createGlobalStyle } from 'styled-components/macro';
-// our personal settings
 import theme from './theme';
 const { colors, fontSizes, fonts } = theme;
+import fontFace from './fontFace';
 
-
-/////////////////////////////////////////////////////////////////
 const GlobalStyle = createGlobalStyle`
+  ${fontFace};
+
   html {
     box-sizing: border-box;
   }
@@ -14,7 +13,7 @@ const GlobalStyle = createGlobalStyle`
   *,
   *:before,
   *:after {
-    box-sizing: inherit; 
+    box-sizing: inherit;
   }
 
   html,
@@ -27,41 +26,24 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     min-height: 100%;
+    overflow-x: hidden;
     font-family: ${fonts.primary};
-    font-size: ${fontSizes.base};
-    background-color: ${colors.lightGrey};
-    color: ${colors.white};
+    background-color: ${colors.white};
+    color: ${colors.black};
   }
 
   #root {
     min-height: 100%;
   }
 
-  h1, h2, h3, h4, h5, h6 {
-    letter-spacing: -.025em;
-    margin: 0 0 10px;
-    font-weight: 700;
-  }
-
   h1, h2, h3 {
     font-weight: 900;
-  }
-
-  p {
-    margin: 0 0 10px;
-  }
-
-  ol, ul {
-    padding: 0;
-    margin: 0;
-    list-style: none;
   }
 
   a {
     display: inline-block;
     text-decoration: none;
-    color: inherit;                  /*每個屬性都可以使用 inherit 這個繼承屬性值，只要設定了這個值，該屬性就會將元素的 parent 的 computed value 作為 specified value*/
-    transition: ${theme.transition};
+    color: inherit;
     cursor: pointer;
   }
 
@@ -76,19 +58,6 @@ const GlobalStyle = createGlobalStyle`
     vertical-align: middle;
   }
 
-  input {
-    border-radius: 0;
-    outline: 0;
-    &::placeholder {
-      opacity: 0.7;
-    }
-    &:focus,
-    &:active {
-      &::placeholder {
-        opacity: 0.5;
-      }
-    }
-  }
 
   button {
     display: inline-block;
@@ -100,7 +69,6 @@ const GlobalStyle = createGlobalStyle`
     border: 0;
     padding: 10px 20px;
     cursor: pointer;
-    transition: ${theme.transition};
 
     &:hover,
     &:focus {

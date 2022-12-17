@@ -5,7 +5,6 @@ const { colors } = theme;
 
 const FooterBack = styled(Main)`
   ${mixins.flexCenter};
-  background-color: ${colors.lightGrey};
   flex-direction: column;
   min-height: 0;
   margin: 0;
@@ -18,7 +17,6 @@ const FooterDiv = styled.div`
   width: 100%;
   padding-left: 20px;
   padding-right: 20px;
-  color: ${colors.white};
   .words{
     display: flex;
     align-items: center;

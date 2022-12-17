@@ -20,6 +20,7 @@ const Header = styled.header`
   flex-direction: column;
   position: relative;
 `;
+
 const Avatar = styled.div`
   margin: 0;
   width: 200px;
@@ -28,40 +29,49 @@ const Avatar = styled.div`
     border-radius: 100%;
   }
 `;
+
 const NoAvatar = styled.div`
   border: 2px solid currentColor;
   border-radius: 100%;
   padding: ${spacing.md};
 `;
+
 const UserName = styled.a`
   &:hover,
   &:focus {
     color: ${colors.offGreen};
   }
 `;
+
 const Name = styled.h1`
   font-size: 60px;
   font-weight: 700;
   margin: 20px 0 0;
 `;
+
+
 const LogoutButton = styled.a`
-  background-color: transparent;
+  background-color: black;
   color: ${colors.white};
+
   border: 1px solid ${colors.white};
   border-radius: 30px;
   margin-top: 30px;
   padding: 12px 30px;
+
   font-size: ${fontSizes.xs};
   font-weight: 700;
   letter-spacing: 1px;
   text-transform: uppercase;
   text-align: center;
+
   &:hover,
   &:focus {
-    background-color: ${colors.white};
+    background-color: ${colors.green};
     color: ${colors.black};
   }
 `;
+
 const Info = styled.div`
   margin-top: 40px;
   text-align: center;
