@@ -1,10 +1,11 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { theme, mixins, Main } from '../styles';
-const { colors } = theme;
+import { Main } from '../styles';
 
 const FooterBack = styled(Main)`
-  ${mixins.flexCenter};
+  display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   min-height: 0;
   margin: 0;

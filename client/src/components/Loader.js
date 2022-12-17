@@ -1,9 +1,10 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { mixins } from '../styles';
 
 const Container = styled.div`
-  ${mixins.flexCenter};
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 90vh;
 `;

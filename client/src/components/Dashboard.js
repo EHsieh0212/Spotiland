@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // css
 import styled from 'styled-components/macro';
-import { theme, mixins, Main } from '../styles';
+import { theme, Main } from '../styles';
 const { colors, fontSizes, spacing } = theme;
 // utils
 import { getUserInfo, logout } from '../spotify';
@@ -12,11 +12,24 @@ import TopSingers from './TopSingers';
 // higher order error handler
 import {catchErrors} from '../utils/index'
 
+import { keyframes } from "styled-components";
+
 
 /////////////////////////////////////////////
 // styled components
+const hue = keyframes`
+ from {
+   -webkit-filter: hue-rotate(0deg);
+ }
+ to {
+   -webkit-filter: hue-rotate(-360deg);
+ }
+`;
+
 const Header = styled.header`
-  ${mixins.flexCenter};
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   flex-direction: column;
   position: relative;
 `;
@@ -40,6 +53,7 @@ const UserName = styled.a`
   &:hover,
   &:focus {
     color: ${colors.offGreen};
+
   }
 `;
 
@@ -93,15 +107,13 @@ const Dashboard = () => {
 
   // useState()
   const [user, setUser] = useState(null);
-  const [playlists, setPlaylists] = useState(null);
 
 
   // useEffect()
   useEffect(() => {
     const fetchDashboardData = async() => {
-      const { user, playlists } = await getUserInfo();
+      const { user } = await getUserInfo();
       setUser(user);
-      setPlaylists(playlists);
     }
     catchErrors(fetchDashboardData());
   }, []);
@@ -126,17 +138,16 @@ const Dashboard = () => {
             </UserName>
             <LogoutButton onClick={logout}>Logout</LogoutButton>
 
-            {user && playlists && (
+            {user && (
               <Info>
                 User Email: <Infos> {user.email} </Infos>
                 User Status: <Infos> {user.product} </Infos>
                 How Many Followers: <Infos> {user.followers.total} people</Infos>
-                How Many Tracks: <Infos> {playlists.total} tracks</Infos>
               </Info>
             )}
           </Header>
-          <TopTracks />
           <TopSingers />
+          <TopTracks />
         </Main>
       ) : (
         <Loader />

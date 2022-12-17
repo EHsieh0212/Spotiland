@@ -1,15 +1,16 @@
 import React from 'react';
 import styled from 'styled-components/macro';
-import { theme, mixins, Main } from '../styles';
+import { theme, Main } from '../styles';
 const { colors } = theme;
 import Footer from './Footer';
 
 ///////////////////////////////////////////////
 // styled components
 const Login = styled(Main)`
-  ${mixins.flexCenter};
-  color: ${colors.white};
-  background-color: ${colors.lightGrey};
+      display: flex;
+    justify-content: center;
+    align-items: center;
+  color: ${colors.black};
   flex-direction: column;
   min-height: 100vh;
   h1 {

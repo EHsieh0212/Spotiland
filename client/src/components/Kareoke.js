@@ -3,15 +3,17 @@ import styled from 'styled-components/macro';
 // higher order error handler
 import { catchErrors } from '../utils/index'
 // css
-import { mixins, Main } from '../styles';
+import { Main } from '../styles';
 // utils
-import { getUserInfo, logout } from '../spotify';
+import { getUserInfo } from '../spotify';
 
 
 /////////////////////////////////////////////
 // styled components
 const Title = styled.div`
-    ${mixins.flexCenter};
+        display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 100px;
     font-family: 'Courier New', Courier, monospace;
 `;

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
+import { Link } from '@reach/router';
 // css
 import styled from 'styled-components/macro';
-import { theme, Main } from '../styles';
-const { colors } = theme;
+import { Main } from '../styles';
 // fetch functions
 import { getUserInfo } from '../spotify';
 // higher order error handler
@@ -11,12 +11,126 @@ import { catchErrors } from '../utils';
 
 /////////////////////////////////
 // styled component
-const Infos = styled.div`
-  margin-bottom: 10px;
-  color: ${colors.black};
-  font-size: 15px;
-  letter-spacing: 1px;
+// background color是個好用的東西
+
+const Body = styled.body`
+    background-color: #F6F19C;
+    margin: 0px;
+    padding: 0px;
 `;
+
+const Title = styled.h1`
+    padding-top: 20px;
+    margin-bottom: 40px;
+    margin-left: 20px;
+    font-size: 60px;
+    font-weight: 900;
+`;
+
+const ArtistsContainer = styled.div`
+    /* background-color: yellow; */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    grid-gap: 25px;
+    margin-top: 20px;
+    margin-left: 80px;
+    margin-right: 80px;
+    padding-bottom: 50px;
+`;
+
+
+const ArtistSection = styled.div`
+  display: flex;
+  background-color: #C4540C;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: rgba(50, 50, 93, 0.25) 0px 2px 5px -1px, rgba(0, 0, 0, 0.3) 0px 1px 3px -1px;
+  /* background-color: pink; */
+  &:hover,
+  &:focus {
+    position:relative;
+    bottom: 10px;
+    left: auto;
+}
+    cursor: pointer;
+`;
+
+// 要先放Mask, 再放ArtistInfo
+const Mask = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+  opacity: 0;
+  color: white;
+  background-color: rgba(0, 0, 0, 0.5);
+`;
+
+const ArtistInfo = styled(Link)`
+    /* background-color: green; */
+    display: inline-block;
+    position: relative;
+    width: 200px;
+    height: 200px; 
+    margin-top: 20px;
+    margin-bottom: 120px;
+    &:hover,
+    &:focus {
+     ${Mask} {
+      opacity: 1;
+    }}
+    img {
+        border-radius: 100%;
+        width: 200px;
+        height: 200px;
+        object-fit: cover;  /* 切出固定大小範圍圈圈，再予以填滿 */
+    }
+    .name{
+        /* background-color: pink; */
+        font-size: 20px;
+        font-weight: 900;
+        color: white;
+        margin-top: 30px;
+        text-align: center;
+        border-bottom: 1px solid transparent;
+        &:hover,
+        &:focus {
+            color: green;
+            cursor: pointer;
+        }
+    }
+
+`;
+
+const Rank = styled.div`
+    /* for: 左邊對齊*/
+    /* display: inline-block; */
+    /* background-color: red; */
+    position: relative; 
+    width: 200px;
+    height: 80px; 
+    .rank{
+        /* for: 限縮背景寬度*/
+        display: inline-block;   
+        margin: 20 auto;
+        padding: 20px 5px;
+        width: 60px;
+        height: 60px;
+        border-radius: 100%;
+        border:1px solid white;
+        color: white;
+        /* background-color: pink; */
+        text-align: center;
+        text-shadow: 50px;
+        font-weight: 90px;
+        font-size: 19px;
+    }
+`;
+
+
 
 
 
@@ -26,28 +140,42 @@ const TopSingers = () => {
     // use state
     const [topSingers, setTopSingers] = useState(null);
 
-
-    
     // use effect
     useEffect(() => {
         const fetchData = async () => {
             const { topArtists } = await getUserInfo();
-            setTopSingers(topArtists);
+            setTopSingers(topArtists.items.slice(0, 20));
         };
         catchErrors(fetchData());
     }, []);
 
 
-
     // jsx
     return (
         <Main>
-            <h1>
-                Top Singers
-            </h1>
-            {
-                topSingers && (<Infos> {JSON.stringify(topSingers.items[0])} </Infos>)
-            }
+            <Body>
+                <Title> Top Singers </Title>
+                <ArtistsContainer>
+                    {topSingers && (
+                        topSingers.map((singer, i) => (
+                            <ArtistSection key={i} >
+                                <Rank>
+                                    <p className='rank'> {i + 1} </p>
+                                </Rank>
+                                <ArtistInfo to='/'>
+                                    <Mask> Info </Mask>
+                                    <img src={singer.images[0].url} alt={singer.name} />
+
+                                    <p className='name'> {singer.name} </p>
+                                </ArtistInfo>
+                            </ArtistSection>
+                        ))
+                    )
+                    }
+                </ArtistsContainer>
+
+            </Body>
+
         </Main>
     )
 };

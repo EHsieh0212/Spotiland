@@ -26,7 +26,7 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     min-height: 100%;
-    overflow-x: hidden;
+    ${'' /* overflow-x: hidden; */}
     font-family: ${fonts.primary};
     background-color: ${colors.white};
     color: ${colors.black};
@@ -53,12 +53,6 @@ const GlobalStyle = createGlobalStyle`
     vertical-align: middle;
   }
 
-  svg {
-    fill: currentColor;
-    vertical-align: middle;
-  }
-
-
   button {
     display: inline-block;
     color: ${colors.lightestGrey};
@@ -69,7 +63,6 @@ const GlobalStyle = createGlobalStyle`
     border: 0;
     padding: 10px 20px;
     cursor: pointer;
-
     &:hover,
     &:focus {
       color: ${colors.white};

@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
-import { theme, mixins } from '../styles';
+import { theme } from '../styles';
 const { colors } = theme;
 
 
@@ -14,11 +14,13 @@ const NavLink = props => <Link getProps={isActive} {...props} />;
 
 
 ///////////////////////////////////////////////
-// nav bar總共有五大元件：container, menu, menuitem, navlink, github-link
+// nav bar總共有 3 大元件：container, menu, menuitem
 // styled components
 const Container = styled.nav`
-  ${mixins.coverShadow};
-  ${mixins.flexBetween};
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);  
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
   flex-direction: column;
   min-height: 100vh;
   position: fixed;
@@ -56,11 +58,6 @@ const MenuItem = styled.li`
       background-color: ${colors.black};
       border-left: 8px solid ${colors.offGreen};
     }
-  }
-  svg {
-    width: 20px;
-    height: 20px;
-    margin-bottom: 7px;
   }
 `;
 

@@ -217,17 +217,16 @@ export const getTrackAudioFeatures = trackId =>
 // axios: all, then, spread
 export const getUserInfo = () =>
   axios
-    .all([getUser(), getFollowing(), getPlaylists(), getTopArtistsLong(), getTopTracksLong()])
+    .all([getUser(), getTopArtistsLong(), getTopTracksLong()])
     .then(
-      axios.spread((user, followedArtists, playlists, topArtists, topTracks) => ({
+      axios.spread((user, topArtists, topTracks) => ({
         user: user.data,
-        followedArtists: followedArtists.data,
-        playlists: playlists.data,
         topArtists: topArtists.data,
         topTracks: topTracks.data,
       })),
     );
 
+    
 export const getTrackInfo = trackId =>
   axios
     .all([getTrack(trackId), getTrackAudioAnalysis(trackId), getTrackAudioFeatures(trackId)])
