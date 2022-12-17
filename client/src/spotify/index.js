@@ -63,11 +63,8 @@ export const getAccessToken = () => {
 };
 
 
+
 // B. 
-export const token = getAccessToken();
-
-
-// C. 
 export const logout = () => {
   console.log("logging out.....")
   window.localStorage.removeItem('spotify_token_timestamp');
@@ -77,9 +74,12 @@ export const logout = () => {
 };
 
 
+
+
 //////////////////////////////////////////////
 // 取得spotify web api原生data
 axios.defaults.baseURL = 'https://api.spotify.com/v1';
+const token = getAccessToken();
 const headers = {
   Authorization: `Bearer ${token}`,
   'Content-Type': 'application/json',

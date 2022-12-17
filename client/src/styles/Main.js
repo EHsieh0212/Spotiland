@@ -6,20 +6,6 @@ const Main = styled.main`
   margin: 0 auto;
   min-height: 100vh;
   padding: 80px;
-  ${media.giant`
-    padding: 60px 50px;
-  `};
-  ${media.tablet`
-    padding: 50px 40px;
-  `};
-  ${media.phablet`
-    padding: 30px 25px;
-  `};
-  h2 {
-    ${media.tablet`
-      text-align: center;
-    `};
-  }
 `;
 
 export default Main;

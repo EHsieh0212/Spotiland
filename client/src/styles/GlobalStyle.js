@@ -1,80 +1,12 @@
+// import the package
 import { createGlobalStyle } from 'styled-components/macro';
+// our personal settings
 import theme from './theme';
 const { colors, fontSizes, fonts } = theme;
 
+
+/////////////////////////////////////////////////////////////////
 const GlobalStyle = createGlobalStyle`
-  @font-face {
-    font-family: 'Circular Std';
-    src: local('Circular Std Medium'), local('CircularStd-Medium'),
-    url('../fonts/CircularStd-Medium.woff2') format('woff2'),
-    url('../fonts/CircularStd-Medium.woff') format('woff');
-    font-weight: 500;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Circular Std';
-    src: local('Circular Std Book'), local('CircularStd-Book'),
-    url('../fonts/CircularStd-Book.woff2') format('woff2'),
-    url('../fonts/CircularStd-Book.woff') format('woff');
-    font-weight: 400;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Circular Std';
-    src: local('Circular Std Medium Italic'), local('CircularStd-MediumItalic'),
-    url('../fonts/CircularStd-MediumItalic.woff2') format('woff2'),
-    url('../fonts/CircularStd-MediumItalic.woff') format('woff');
-    font-weight: 500;
-    font-style: italic;
-  }
-
-  @font-face {
-    font-family: 'Circular Std';
-    src: local('Circular Std Black'), local('CircularStd-Black'),
-    url('../fonts/CircularStd-Black.woff2') format('woff2'),
-    url('../fonts/CircularStd-Black.woff') format('woff');
-    font-weight: 900;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Circular Std';
-    src: local('Circular Std Bold'), local('CircularStd-Bold'),
-    url('../fonts/CircularStd-Bold.woff2') format('woff2'),
-    url('../fonts/CircularStd-Bold.woff') format('woff');
-    font-weight: 700;
-    font-style: normal;
-  }
-
-  @font-face {
-    font-family: 'Circular Std';
-    src: local('Circular Std Bold Italic'), local('CircularStd-BoldItalic'),
-    url('../fonts/CircularStd-BoldItalic.woff2') format('woff2'),
-    url('../fonts/CircularStd-BoldItalic.woff') format('woff');
-    font-weight: 700;
-    font-style: italic;
-  }
-
-  @font-face {
-    font-family: 'Circular Std';
-    src: local('Circular Std Book Italic'), local('CircularStd-BookItalic'),
-    url('../fonts/CircularStd-BookItalic.woff2') format('woff2'),
-    url('../fonts/CircularStd-BookItalic.woff') format('woff');
-    font-weight: 400;
-    font-style: italic;
-  }
-
-  @font-face {
-    font-family: 'Circular Std';
-    src: local('Circular Std Black Italic'), local('CircularStd-BlackItalic'),
-    url('../fonts/CircularStd-BlackItalic.woff2') format('woff2'),
-    url('../fonts/CircularStd-BlackItalic.woff') format('woff');
-    font-weight: 900;
-    font-style: italic;
-  }
-
   html {
     box-sizing: border-box;
   }
@@ -95,9 +27,6 @@ const GlobalStyle = createGlobalStyle`
 
   body {
     min-height: 100%;
-    overflow-x: hidden;
-    -moz-osx-font-smoothing: grayscale;
-    -webkit-font-smoothing: antialiased;
     font-family: ${fonts.primary};
     font-size: ${fontSizes.base};
     background-color: ${colors.lightGrey};
@@ -131,7 +60,7 @@ const GlobalStyle = createGlobalStyle`
   a {
     display: inline-block;
     text-decoration: none;
-    color: inherit;
+    color: inherit;                  /*每個屬性都可以使用 inherit 這個繼承屬性值，只要設定了這個值，該屬性就會將元素的 parent 的 computed value 作為 specified value*/
     transition: ${theme.transition};
     cursor: pointer;
   }
@@ -164,14 +93,14 @@ const GlobalStyle = createGlobalStyle`
   button {
     display: inline-block;
     color: ${colors.lightestGrey};
-    ${'' /* font-family: ${fonts.primary}; */}
+    font-family: ${fonts.primary};
     font-size: ${fontSizes.base};
     font-weight: 700;
     border-radius: 50px;
     border: 0;
     padding: 10px 20px;
     cursor: pointer;
-    ${'' /* transition: ${theme.transition}; */}
+    transition: ${theme.transition};
 
     &:hover,
     &:focus {

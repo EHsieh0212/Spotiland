@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { token } from '../spotify';
+import { getAccessToken } from '../spotify';
 import LoginScreen from './LoginScreen';
-import Profile from './Profile';
+import MainPage from './MainPage';
 import styled from 'styled-components/macro';
 import { GlobalStyle } from '../styles';
 
@@ -20,13 +20,14 @@ const App = () => {
   const [accessToken, setAccessToken] = useState('');
 
   useEffect(() => {
+    const token = getAccessToken();
     setAccessToken(token);
   }, []);
 
   return (
     <AppContainer>
       <GlobalStyle />
-      {accessToken ? <Profile /> : <LoginScreen />}
+      {accessToken ? <MainPage /> : <LoginScreen />}
     </AppContainer>
   );
 };

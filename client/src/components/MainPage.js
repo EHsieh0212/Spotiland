@@ -12,7 +12,7 @@ import ScrollToTheTop from './ScrollToTheTop';
 
 
 /////////////////////////////////////////////////////
-const Profile = () => (
+const MainPage = () => (
   <div>
     <Nav />
     <Router primary={false}>
@@ -25,4 +25,4 @@ const Profile = () => (
   </div>
 );
 
-export default Profile;
+export default MainPage;

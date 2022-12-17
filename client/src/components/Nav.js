@@ -65,24 +65,6 @@ const NavLink = props => <Link getProps={isActive} {...props} />;
 
 
 
-const Github = styled.div`
-  color: ${colors.lightGrey};
-  width: 45px;
-  height: 45px;
-  margin-bottom: 30px;
-  a {
-    &:hover,
-    &:focus,
-    &.active {
-      color: ${colors.green};
-    }
-    svg {
-      width: 30px;
-    }
-  }
-`;
-
-
 
 ///////////////////////////////////////////////
 // Login JSX
@@ -105,14 +87,6 @@ const Nav = () => (
         </NavLink>
       </MenuItem>
     </Menu>
-    <Github>
-      <a
-        href="https://github.com/EHsieh0212"
-        target="_blank"
-        rel="noopener noreferrer">
-        Github
-      </a>
-    </Github>
   </Container>
 );
 
