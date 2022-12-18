@@ -7,9 +7,9 @@ import Footer from './Footer';
 ///////////////////////////////////////////////
 // styled components
 const Login = styled(Main)`
-      display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   color: ${colors.black};
   flex-direction: column;
   min-height: 100vh;

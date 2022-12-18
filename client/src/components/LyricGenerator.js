@@ -6,6 +6,7 @@ import { catchErrors } from '../utils/index'
 import { Main } from '../styles';
 // utils
 import { getUserInfo } from '../spotify';
+import { getCrawl } from '../spotify/crawl';
 
 
 /////////////////////////////////////////////
@@ -24,12 +25,17 @@ const Title = styled.div`
 const LyricGenerator = () => {
     // use state
     const [lyric, setLyric] = useState(null);
+    const [crawl, setCrawl] = useState(null);
 
     // use effect
     useEffect(() => {
         const tmp = async() => {
-            const { user, playlists } = await getUserInfo();
+            const { user } = await getUserInfo();
+            const a = await getCrawl();
+            console.log("a")
+            console.log(a)
             setLyric(user)
+            setCrawl(a);
         }
         catchErrors(tmp());
     }, []);
@@ -48,7 +54,7 @@ const LyricGenerator = () => {
                     Lyric Generator
                 </Title>
                 <Title>
-                    Lyric Generator
+                    {crawl}
                 </Title>
                 <Title>
                     Lyric Generator

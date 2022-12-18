@@ -22,7 +22,7 @@ app.use(express.json())
 
 
 // serve any static files in priority
-app.use(express.static(path.resolve(__dirname, '../client/build')));
+app.use(express.static(path.resolve(__dirname, '../client/public')));
 app.get('/', function (req, res) {
   res.render(path.resolve(__dirname, '../client/build/index.html'));
 });

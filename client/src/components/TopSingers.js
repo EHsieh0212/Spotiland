@@ -134,6 +134,26 @@ const Rank = styled.div`
 `;
 
 
+const Ranges = styled.div`
+  display: flex;
+
+`;
+
+const RangeButton = styled.button`
+
+  background-color: transparent;
+  color: ${props => (props.isActive ? "white" : "black")};
+  font-size: 10px;
+  font-weight: 500;
+  padding: 10px;
+  span {
+    
+    padding-bottom: 2px;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+`;
+
 
 
 
@@ -158,6 +178,10 @@ const TopSingers = () => {
         <Main>
             <Body>
                 <Title> Top Singers </Title>
+                <Ranges>
+                    <RangeButton> <span>All Time</span> </RangeButton>
+                    <RangeButton> <span>Last Month</span> </RangeButton>
+                </Ranges>
                 <ArtistsContainer>
                     {topSingers && (
                         topSingers.map((singer, i) => (
