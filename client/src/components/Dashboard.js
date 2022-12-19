@@ -138,13 +138,13 @@ const Dashboard = () => {
             </UserName>
             <LogoutButton onClick={logout}>Logout</LogoutButton>
 
-            {user && (
+            {/* {user && (
               <Info>
                 User Email: <Infos> {user.email} </Infos>
                 User Status: <Infos> {user.product} </Infos>
                 How Many Followers: <Infos> {user.followers.total} people</Infos>
               </Info>
-            )}
+            )} */}
           </Header>
           <TopSingers />
           <TopTracks />

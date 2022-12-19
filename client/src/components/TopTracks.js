@@ -4,7 +4,7 @@ import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
 import { Main } from '../styles';
 // fetch functions
-import { getUserInfo } from '../spotify';
+import { getUserInfo, getTopTracksLong, getTopTracksShort } from '../spotify';
 // higher order error handler
 import { catchErrors } from '../utils';
 
@@ -12,7 +12,7 @@ import { catchErrors } from '../utils';
 /////////////////////////////////
 // styled components
 // 1. basics
-const Body = styled.body`
+const Body = styled.div`
     background-color: #F67197;
     margin: 0px;
     padding: 0px;
@@ -126,11 +126,36 @@ const TrackMiddle = styled.div`
     }
 `;
 
+const Ranges = styled.div`
+  display: flex;
+  margin-left: 1100px;
+`;
+
+const RangeButton = styled.button`
+  font-family: 'Courier New', Courier, monospace;
+  background-color: transparent;
+  color: ${props => (props.isActive ? "white " : "black")};
+  font-size: 20px;
+  font-weight: 800;
+  padding: 10px;
+  span {
+    padding-bottom: 2px;
+    line-height: 1.5;
+    white-space: nowrap;
+  }
+`;
+
 
 /////////////////////////////////
 // main component
 const TopTracks = () => {
     const [topTracks, setTopTracks] = useState(null);
+    const [range, setRange] = useState(null);
+
+    const rangeApis = {
+        long: getTopTracksLong(),
+        short: getTopTracksShort(),
+    };
 
     useEffect(() => {
         const fetchTracks = async () => {
@@ -140,12 +165,26 @@ const TopTracks = () => {
         catchErrors(fetchTracks());
     }, []);
 
+    const changeRange = async (range) => {
+        const { data } = await rangeApis[range];
+        setTopTracks(data.items);
+        setRange(range);
+    }
+    const setRangeData = range => catchErrors(changeRange(range));
 
 
     return (
         <Main>
             <Body>
                 <Title> Top Tracks </Title>
+                <Ranges>
+                    <RangeButton isActive={range === 'long'} onClick={() => setRangeData('long')}>
+                        <span>All Time</span>
+                    </RangeButton>
+                    <RangeButton isActive={range === 'short'} onClick={() => setRangeData('short')}>
+                        <span>Last Month</span>
+                    </RangeButton>
+                </Ranges>
                 <TrackContainer>
                     {
                         topTracks && (
@@ -157,12 +196,11 @@ const TopTracks = () => {
                                     </TrackLeft>
 
                                     <TrackMiddle>
-                                        <p className='trackName'> {track.album.name} </p>
+                                        <p className='trackName'> {track.name} </p>
                                         <p className='artistName'> {track.artists[0].name} </p>
                                         <p className='rank'> {i + 1} </p>
                                     </TrackMiddle>
                                 </TrackInfo>
-
                             ))
                         )
                     }

@@ -79,11 +79,11 @@ const Nav = () => (
           <div>Lyric Generator</div>
         </NavLink>
       </MenuItem>
-      <MenuItem>
+      {/* <MenuItem>
         <NavLink to="/kareoke">
           <div>Personal Kareoke Room</div>
         </NavLink>
-      </MenuItem>
+      </MenuItem> */}
     </Menu>
   </Container>
 );

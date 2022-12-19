@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-export const getCrawl = async () => {
-    const a = await axios.get("http://localhost:4004/")
-    console.log("a", a)
-    return a.data.name
+export const predict = async (name, length, seeding) => {
+    const url = "http://localhost:4004/predict";
+    const data = { name:name, length:length, seeding:seeding};
+    return axios({ method: 'post', url, data });
 }

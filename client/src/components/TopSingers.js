@@ -4,7 +4,7 @@ import { Link } from '@reach/router';
 import styled from 'styled-components/macro';
 import { Main } from '../styles';
 // fetch functions
-import { getUserInfo } from '../spotify';
+import { getUserInfo, getTopArtistsLong, getTopArtistsShort } from '../spotify';
 // higher order error handler
 import { catchErrors } from '../utils';
 
@@ -13,7 +13,7 @@ import { catchErrors } from '../utils';
 // styled component
 // background color是個好用的東西
 // 1. basics
-const Body = styled.body`
+const Body = styled.div`
     background-color: #F6F19C;
     margin: 0px;
     padding: 0px;
@@ -136,18 +136,17 @@ const Rank = styled.div`
 
 const Ranges = styled.div`
   display: flex;
-
+  margin-left: 1100px;
 `;
 
 const RangeButton = styled.button`
-
+  font-family: 'Courier New', Courier, monospace;
   background-color: transparent;
-  color: ${props => (props.isActive ? "white" : "black")};
-  font-size: 10px;
-  font-weight: 500;
+  color: ${props => (props.isActive ? "white " : "black")};
+  font-size: 20px;
+  font-weight: 800;
   padding: 10px;
   span {
-    
     padding-bottom: 2px;
     line-height: 1.5;
     white-space: nowrap;
@@ -162,16 +161,32 @@ const RangeButton = styled.button`
 const TopSingers = () => {
     // use state
     const [topSingers, setTopSingers] = useState(null);
+    const [range, setRange] = useState(null);
+
+    const rangeApis = {
+        long: getTopArtistsLong(),
+        short: getTopArtistsShort(),
+    };
 
     // use effect
     useEffect(() => {
         const fetchArtists = async () => {
             const { topArtists } = await getUserInfo();
-            setTopSingers(topArtists.items.slice(0, 20));
+            if (topArtists.items.length > 20) {
+                setTopSingers(topArtists.items.slice(0, 20));
+            } else {
+                setTopSingers(topArtists.items);
+            }
         };
         catchErrors(fetchArtists());
     }, []);
 
+    const changeRange = async (range) => {
+        const { data } = await rangeApis[range];
+        setTopSingers(data.items);
+        setRange(range);
+    }
+    const setRangeData = range => catchErrors(changeRange(range));
 
     // jsx
     return (
@@ -179,8 +194,12 @@ const TopSingers = () => {
             <Body>
                 <Title> Top Singers </Title>
                 <Ranges>
-                    <RangeButton> <span>All Time</span> </RangeButton>
-                    <RangeButton> <span>Last Month</span> </RangeButton>
+                    <RangeButton isActive={range === 'long'} onClick={() => setRangeData('long')}>
+                        <span>All Time</span>
+                    </RangeButton>
+                    <RangeButton isActive={range === 'short'} onClick={() => setRangeData('short')}>
+                        <span>Last Month</span>
+                    </RangeButton>
                 </Ranges>
                 <ArtistsContainer>
                     {topSingers && (
@@ -192,12 +211,11 @@ const TopSingers = () => {
                                 <ArtistInfo to='/'>
                                     <Mask> Info </Mask>
                                     <img src={singer.images[0].url} alt={singer.name} />
-
                                     <p className='name'> {singer.name} </p>
                                 </ArtistInfo>
                             </ArtistSection>
                         ))
-                    )
+                      )
                     }
                 </ArtistsContainer>
 
