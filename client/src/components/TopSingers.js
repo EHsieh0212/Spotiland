@@ -7,6 +7,8 @@ import { Main } from '../styles';
 import { getUserInfo, getTopArtistsLong, getTopArtistsShort } from '../spotify';
 // higher order error handler
 import { catchErrors } from '../utils';
+// artist info
+import PopArtist from './PopArtist';
 
 
 /////////////////////////////////
@@ -15,8 +17,7 @@ import { catchErrors } from '../utils';
 // 1. basics
 const Body = styled.div`
     background-color: #F6F19C;
-    margin: 0px;
-    padding: 0px;
+    justify-content: center;
 `;
 
 const Title = styled.h1`
@@ -32,11 +33,13 @@ const Title = styled.h1`
 const ArtistsContainer = styled.div`
     /* background-color: yellow; */
     display: grid;
+    /* width: 80%; */
+    /* align-items: center; */
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     grid-gap: 25px;
     margin-top: 20px;
-    margin-left: 80px;
-    margin-right: 80px;
+    margin-left: 150px;
+    margin-right: 150px;
     margin-bottom: 0px;
     padding-bottom: 190px;
 `;
@@ -110,8 +113,6 @@ const ArtistInfo = styled(Link)`
 
 const Rank = styled.div`
     /* for: 左邊對齊*/
-    /* display: inline-block; */
-    /* background-color: red; */
     position: relative; 
     width: 200px;
     height: 80px; 
@@ -125,18 +126,19 @@ const Rank = styled.div`
         border-radius: 100%;
         border:1px solid white;
         color: white;
-        /* background-color: pink; */
         text-align: center;
         text-shadow: 50px;
         font-weight: 90px;
         font-size: 19px;
+        /* background-color: pink; */
     }
 `;
 
 
 const Ranges = styled.div`
   display: flex;
-  margin-left: 1100px;
+  justify-content: right;
+  margin-right: 20px;
 `;
 
 const RangeButton = styled.button`
@@ -150,6 +152,22 @@ const RangeButton = styled.button`
     padding-bottom: 2px;
     line-height: 1.5;
     white-space: nowrap;
+  }
+`;
+
+const MoreBtn = styled.a`
+  display: flex;
+  width: fit-content;
+  background-color: black;
+  color: white;
+  border-radius: 30px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  text-align: center;
+  &:hover,
+  &:focus {
+    background-color: green;
   }
 `;
 
@@ -183,7 +201,11 @@ const TopSingers = () => {
 
     const changeRange = async (range) => {
         const { data } = await rangeApis[range];
-        setTopSingers(data.items);
+        if (data.items.length > 20) {
+            setTopSingers(data.items.slice(0, 20));
+        } else {
+            setTopSingers(data.items);
+        }
         setRange(range);
     }
     const setRangeData = range => catchErrors(changeRange(range));
@@ -212,13 +234,15 @@ const TopSingers = () => {
                                     <Mask> Info </Mask>
                                     <img src={singer.images[0].url} alt={singer.name} />
                                     <p className='name'> {singer.name} </p>
+                                    <PopArtist/>
                                 </ArtistInfo>
                             </ArtistSection>
                         ))
                       )
                     }
+                    
                 </ArtistsContainer>
-
+                <MoreBtn> More </MoreBtn>
             </Body>
 
         </Main>

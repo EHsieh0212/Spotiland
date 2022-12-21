@@ -14,12 +14,11 @@ import { catchErrors } from '../utils';
 // 1. basics
 const Body = styled.div`
     background-color: #F67197;
-    margin: 0px;
-    padding: 0px;
 `;
 
 const Title = styled.h1`
     padding-top: 20px;
+    margin-top: 0px;
     margin-bottom: 40px;
     margin-left: 20px;
     font-size: 60px;
@@ -35,8 +34,8 @@ const TrackContainer = styled.div`
     grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
     grid-gap: 25px;
     margin-top: 20px;
-    margin-left: 200px;
-    margin-right: 200px;
+    margin-left: 250px;
+    margin-right: 250px;
     margin-bottom: 0px;
     padding-bottom: 190px;
 `;
@@ -48,10 +47,11 @@ const Mask = styled.div`
   justify-content: center;
   align-items: center;
   position: absolute;
-  width: 100%;
-  height: 100%;
+  width: 100px;
+  height: 100px;
   border-radius: 4%;
-  background-color: rgba(0, 0, 0, 0.6);
+  /* background-color: rgba(0, 0, 0, 0.6); */
+  background-color: yellow;
   opacity: 0;
   color: white;
   font-weight: 800;
@@ -60,13 +60,18 @@ const Mask = styled.div`
 
 const TrackInfo = styled.div`   
     display: grid;
-    grid-template-columns: auto 180px;
-    grid-gap: 3px;
+    grid-template-columns: auto 100px;
+    min-width: fit-content;
+    max-height: 250px;
+    /* grid-gap: 10px; */
     background-color: #470765;
     border-radius: 4%;
     box-shadow: rgba(50, 50, 93, 0.9) 0px 2px 9px -1px, rgba(0, 0, 0, 0.9) 0px 1px 3px -1px;
+    .try{
+        display: inline-block;
+    }
     &:hover,
-  &:focus {
+    &:focus {
     position:relative;
     /* bottom: 10px; */
     right: 10px;
@@ -75,60 +80,65 @@ const TrackInfo = styled.div`
     }
     }
     cursor: pointer;
+    
 `;
 
 
 const TrackLeft = styled.div`
-    width: 130px;
-    height: 140px;
-    border-radius: 30%;
     /* background-color: yellow; */
-    display: flex;
+    /* width: 170px; */
+    height: 40px; 
+    display: inline-block;
     justify-content: center;
     align-items: center;
     margin: 10px;
-    
     img {
-        width: 140px;
-        height: 140px;
+        width: 160px;
+        height: 160px;
         border-radius: 10%;
     }
 `;
 
 const TrackMiddle = styled.div`
-    /* background-color: blue; */
-    display: inline-block;
-    color: white;   
+    display: grid;
+    height: 250px;
+    grid-template-rows: repeat(auto-fit, minmax(250px));
+    color: white;  
+    /* background-color : yellow; */
     .trackName{
-        height: 60px;
-        margin-top: 10px;
-        margin-bottom: 30px;  
-        margin-right: 15px;
+        display: flex;
+        flex-direction: column;
         font-weight: 900;
         font-size: 16px;
-        /* background-color: red; */
-        padding: 0%;
-        /* overflow-y: hidden; */
-    }
-    .artistName{
-        font-weight: 400;
         margin-top: 10px;
-        margin-bottom: 39px;    
-        height: 20px;   
+        margin-right: 5px;
+        /* background-color: red; */
+    }
+    span{
+        padding-top: 30px;
+        /* background-color: green; */
+        font-size: 12px;
+        font-weight: 500;
     }
     .rank{
-        height: 2px;
+        display: flex;
+        /* height: 100%; */
+        /* flex-direction: r; */
+        margin-top: auto;
+        flex-wrap: wrap;
         font-size: 25px;
-        text-align: right; 
-        margin-right: 30px;
-        padding-bottom: 10px;
+        align-self: bottom;
+        justify-content: right;
+        margin-right: 5px;
+        margin-bottom: 5px;
         /* background-color: pink; */
     }
 `;
 
 const Ranges = styled.div`
   display: flex;
-  margin-left: 1100px;
+  justify-content: right;
+  margin-right: 20px;
 `;
 
 const RangeButton = styled.button`
@@ -177,6 +187,7 @@ const TopTracks = () => {
         <Main>
             <Body>
                 <Title> Top Tracks </Title>
+                <div>
                 <Ranges>
                     <RangeButton isActive={range === 'long'} onClick={() => setRangeData('long')}>
                         <span>All Time</span>
@@ -185,20 +196,19 @@ const TopTracks = () => {
                         <span>Last Month</span>
                     </RangeButton>
                 </Ranges>
+                </div>
+
                 <TrackContainer>
                     {
                         topTracks && (
                             topTracks.map((track, i) => (
                                 <TrackInfo key={i}>
-                                    <Mask> Info </Mask>
                                     <TrackLeft>
                                         <img src={track.album.images[0].url} alt={track.album.name}></img>
                                     </TrackLeft>
-
                                     <TrackMiddle>
-                                        <p className='trackName'> {track.name} </p>
-                                        <p className='artistName'> {track.artists[0].name} </p>
-                                        <p className='rank'> {i + 1} </p>
+                                        <div className='trackName'> {track.name} <span>{track.artists[0].name} </span> </div>
+                                        <div className='rank'> {i + 1} </div>
                                     </TrackMiddle>
                                 </TrackInfo>
                             ))

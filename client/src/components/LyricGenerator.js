@@ -209,6 +209,7 @@ const LyricGenerator = () => {
                         <p>歌手名稱:  {artist} </p>
                         <p>歌詞長度:  {length} 個字</p>
                         <p>使用模型:  {model} </p>
+                        <p>模型資訊:   </p>
                         {crawl ? (<ResultText>{crawl}</ResultText>) : (<Loader />)}
                         <div className='refresh'>
                             <SelectButton onClick={(e) => {refresh()}}> Refresh</SelectButton>
@@ -217,7 +218,6 @@ const LyricGenerator = () => {
                     )
                     :
                     null}
-
             </Main>
 
         </React.Fragment>

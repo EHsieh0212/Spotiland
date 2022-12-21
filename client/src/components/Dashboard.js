@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 // css
 import styled from 'styled-components/macro';
-import { theme, Main } from '../styles';
+import { theme } from '../styles';
 const { colors, fontSizes, spacing } = theme;
 // utils
 import { getUserInfo, logout } from '../spotify';
@@ -10,28 +10,35 @@ import Loader from './Loader';
 import TopTracks from './TopTracks';
 import TopSingers from './TopSingers';
 // higher order error handler
-import {catchErrors} from '../utils/index'
-
-import { keyframes } from "styled-components";
+import { catchErrors } from '../utils/index'
 
 
 /////////////////////////////////////////////
 // styled components
-const hue = keyframes`
- from {
-   -webkit-filter: hue-rotate(0deg);
- }
- to {
-   -webkit-filter: hue-rotate(-360deg);
- }
+
+const Main = styled.main`
+  width: 100%;
+  max-width: 1950px;
+  margin-top: 20px;
+  padding: 0 0 0 50px;
 `;
+
 
 const Header = styled.header`
   display: flex;
+  flex-wrap: nowrap;
   justify-content: space-between;
   align-items: center;
+  margin-left: 500px;
+  margin-right: 500px;
+  padding-bottom: 0px;
+`;
+
+const PersonalInfo = styled.div`
+  display: flex;
   flex-direction: column;
-  position: relative;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 const Avatar = styled.div`
@@ -53,16 +60,13 @@ const UserName = styled.a`
   &:hover,
   &:focus {
     color: ${colors.offGreen};
-
+  }
+  h1{
+    font-size: 60px;
+    font-weight: 700;
+    margin: 20px 0 0;
   }
 `;
-
-const Name = styled.h1`
-  font-size: 60px;
-  font-weight: 700;
-  margin: 20px 0 0;
-`;
-
 
 const LogoutButton = styled.a`
   background-color: black;
@@ -86,17 +90,17 @@ const LogoutButton = styled.a`
   }
 `;
 
-const Info = styled.div`
-  margin-top: 40px;
-  text-align: center;
-  font-weight: 700;
-`;
-const Infos = styled.div`
-  margin-bottom: 10px;
-  color: ${colors.black};
-  font-size: 15px;
-  text-transform: uppercase;
-  letter-spacing: 1px;
+
+const RoadSigns = styled.div`
+  display: flex;
+  flex-direction: column;
+  .infos-top, .infos-middle, .infos-bottom{
+    font-size: 50px;
+    font-weight: 800;
+    margin-bottom: 19px;
+    text-transform: uppercase;
+    text-decoration: underline;
+  };
 `;
 
 
@@ -111,7 +115,7 @@ const Dashboard = () => {
 
   // useEffect()
   useEffect(() => {
-    const fetchDashboardData = async() => {
+    const fetchDashboardData = async () => {
       const { user } = await getUserInfo();
       setUser(user);
     }
@@ -125,27 +129,26 @@ const Dashboard = () => {
       {user ? (
         <Main>
           <Header>
-            <Avatar>
-              {user.images.length > 0 ? (
-                <img src={user.images[0].url} alt="avatar" />
-              ) : (
-                <NoAvatar>
-                </NoAvatar>
-              )}
-            </Avatar>
-            <UserName href={user.external_urls.spotify} target="_blank" rel="noopener noreferrer">
-              <Name>{user.display_name}</Name>
-            </UserName>
-            <LogoutButton onClick={logout}>Logout</LogoutButton>
-
-            {/* {user && (
-              <Info>
-                User Email: <Infos> {user.email} </Infos>
-                User Status: <Infos> {user.product} </Infos>
-                How Many Followers: <Infos> {user.followers.total} people</Infos>
-              </Info>
-            )} */}
+            <PersonalInfo>
+              <Avatar>
+                {user.images.length > 0 ? (
+                  <img src={user.images[0].url} alt="avatar" />
+                ) : (
+                  <NoAvatar>
+                  </NoAvatar>
+                )}
+              </Avatar>
+              <UserName href={user.external_urls.spotify} target="_blank" rel="noopener noreferrer">
+                <h1>{user.display_name}</h1>
+              </UserName>
+              <LogoutButton onClick={logout}>Logout</LogoutButton>
+            </PersonalInfo>
+            <RoadSigns>
+              <a className='infos-top' href='/'> Top Singers </a>
+              <a className='infos-middle' href='/'> Top Tracks </a>
+            </RoadSigns>
           </Header>
+
           <TopSingers />
           <TopTracks />
         </Main>
