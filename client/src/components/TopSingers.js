@@ -7,7 +7,8 @@ import { Main } from '../styles';
 import { getUserInfo, getTopArtistsLong, getTopArtistsShort } from '../spotify';
 // higher order error handler
 import { catchErrors } from '../utils';
-
+// artist popup info
+import { Popup } from './Popup';
 
 /////////////////////////////////
 // styled component
@@ -174,6 +175,8 @@ const MoreBtn = styled.div`
   }
 `;
 
+const ModelControl = styled.div`
+`;
 
 
 
@@ -191,7 +194,7 @@ const TopSingers = () => {
     };
 
     const togglePopup = () => {
-        setIsOpen(!isOpen);
+        setPopupOpen(!popupOpen);
     }
 
     // use effect
@@ -236,22 +239,18 @@ const TopSingers = () => {
                         topSingers.map((singer, i) => (
                             <ArtistSection key={i} >
                                 <Rank>
-                                <p className='rank'> {i + 1} </p>
-                                    {/* <Popup
-                                        trigger={open => (
-                                            <button className="button">Trigger - {open ? 'Opened' : 'Closed'}</button>
-                                        )}
-                                        position="center"
-                                        closeOnDocumentClick
-                                    >
-                                        <span> dfasdfasdfasdf </span>
-                                    </Popup>; */}
+                                    <p className='rank'> {i + 1} </p>
                                 </Rank>
                                 <ArtistInfo to='/'>
-                                    <Mask> Info </Mask>
+                                    <Mask onClick={togglePopup}> Info </Mask>
                                     <img src={singer.images[0].url} alt={singer.name} />
                                     <p className='name'> {singer.name} </p>
-                                    {/* <PopArtist /> */}
+                                    <ModelControl>
+                                        {popupOpen && <Popup
+                                            handleClose={togglePopup}
+                                            content={"dfasdfdsf"}
+                                        />}
+                                    </ModelControl>
                                 </ArtistInfo>
                             </ArtistSection>
                         ))

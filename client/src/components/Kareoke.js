@@ -6,7 +6,6 @@ import { catchErrors } from '../utils/index'
 import { Main } from '../styles';
 // utils
 import { getUserInfo } from '../spotify';
-import Stepper from './Stepper';
 
 
 /////////////////////////////////////////////
@@ -44,7 +43,6 @@ const Kareoke = () => {
                 <Title>
                     Kareoke
                 </Title>
-                <Stepper />
                 <Title>
                     Lyric
                 </Title>
