@@ -1,12 +1,12 @@
-import {useState, useEffect} from 'react';
-import styled from 'styled-components/macro';
-import Popup from 'reactjs-popup';
-import 'reactjs-popup/dist/index.css';
-
-const PopArtist = () => {
-    <Popup trigger={<button> Trigger</button>} position="right center">
-        <div>Popup content here !!</div>
-    </Popup>
-}
-
-export default PopArtist;
+const Popup = props => {
+    return (
+      <div className="popup-box">
+        <div className="box">
+          <span className="close-icon" onClick={props.handleClose}>x</span>
+          {props.content}
+        </div>
+      </div>
+    );
+  };
+   
+export default Popup;

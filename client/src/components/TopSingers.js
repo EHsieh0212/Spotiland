@@ -7,8 +7,6 @@ import { Main } from '../styles';
 import { getUserInfo, getTopArtistsLong, getTopArtistsShort } from '../spotify';
 // higher order error handler
 import { catchErrors } from '../utils';
-// artist info
-import PopArtist from './PopArtist';
 
 
 /////////////////////////////////
@@ -155,12 +153,14 @@ const RangeButton = styled.button`
   }
 `;
 
-const MoreBtn = styled.a`
+const MoreBtn = styled.div`
   display: flex;
   width: fit-content;
   background-color: black;
   color: white;
   border-radius: 30px;
+  
+  margin-left: 20px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
@@ -168,6 +168,9 @@ const MoreBtn = styled.a`
   &:hover,
   &:focus {
     background-color: green;
+  }
+  a{
+    padding: 10px;
   }
 `;
 
@@ -180,11 +183,16 @@ const TopSingers = () => {
     // use state
     const [topSingers, setTopSingers] = useState(null);
     const [range, setRange] = useState(null);
+    const [popupOpen, setPopupOpen] = useState(false);
 
     const rangeApis = {
         long: getTopArtistsLong(),
         short: getTopArtistsShort(),
     };
+
+    const togglePopup = () => {
+        setIsOpen(!isOpen);
+    }
 
     // use effect
     useEffect(() => {
@@ -228,21 +236,30 @@ const TopSingers = () => {
                         topSingers.map((singer, i) => (
                             <ArtistSection key={i} >
                                 <Rank>
-                                    <p className='rank'> {i + 1} </p>
+                                <p className='rank'> {i + 1} </p>
+                                    {/* <Popup
+                                        trigger={open => (
+                                            <button className="button">Trigger - {open ? 'Opened' : 'Closed'}</button>
+                                        )}
+                                        position="center"
+                                        closeOnDocumentClick
+                                    >
+                                        <span> dfasdfasdfasdf </span>
+                                    </Popup>; */}
                                 </Rank>
                                 <ArtistInfo to='/'>
                                     <Mask> Info </Mask>
                                     <img src={singer.images[0].url} alt={singer.name} />
                                     <p className='name'> {singer.name} </p>
-                                    <PopArtist/>
+                                    {/* <PopArtist /> */}
                                 </ArtistInfo>
                             </ArtistSection>
                         ))
-                      )
+                    )
                     }
-                    
+
                 </ArtistsContainer>
-                <MoreBtn> More </MoreBtn>
+                {/* <MoreBtn> <a>More</a> </MoreBtn> */}
             </Body>
 
         </Main>

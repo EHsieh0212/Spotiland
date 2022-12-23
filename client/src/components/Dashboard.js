@@ -94,8 +94,9 @@ const LogoutButton = styled.a`
 const RoadSigns = styled.div`
   display: flex;
   flex-direction: column;
+  margin-left: 70px;
   .infos-top, .infos-middle, .infos-bottom{
-    font-size: 50px;
+    font-size: 35px;
     font-weight: 800;
     margin-bottom: 19px;
     text-transform: uppercase;
