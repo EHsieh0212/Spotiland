@@ -8,7 +8,8 @@ import { getUserInfo, getTopArtistsLong, getTopArtistsShort } from '../spotify';
 // higher order error handler
 import { catchErrors } from '../utils';
 // artist popup info
-import { Popup } from './Popup';
+import { PopupArtist } from './PopupArtist';
+
 
 /////////////////////////////////
 // styled component
@@ -242,15 +243,15 @@ const TopSingers = () => {
                                     <p className='rank'> {i + 1} </p>
                                 </Rank>
                                 <ArtistInfo to='/'>
-                                    <Mask onClick={togglePopup}> Info </Mask>
+                                    {/* <Mask onClick={togglePopup}> Info </Mask> */}
+                                    <Mask> Info </Mask>
                                     <img src={singer.images[0].url} alt={singer.name} />
                                     <p className='name'> {singer.name} </p>
-                                    <ModelControl>
-                                        {popupOpen && <Popup
+                                    {/* <ModelControl>
+                                        {popupOpen && <PopupArtist
                                             handleClose={togglePopup}
-                                            content={"dfasdfdsf"}
                                         />}
-                                    </ModelControl>
+                                    </ModelControl> */}
                                 </ArtistInfo>
                             </ArtistSection>
                         ))

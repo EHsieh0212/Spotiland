@@ -18,4 +18,4 @@ export const catchErrors = fn =>
     return fn(...args).catch(err => {
       console.error(err);
     });
-  };
+};

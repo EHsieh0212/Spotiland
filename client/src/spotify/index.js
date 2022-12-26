@@ -135,7 +135,7 @@ export const getTopTracksLong = () =>
  * https://developer.spotify.com/documentation/web-api/reference/artists/get-artist/
  */
 export const getArtist = artistId =>
-  axios.get(`/v1/artists/${artistId}`, { headers });
+  axios.get(`/artists/${artistId}`, { headers });
 
 
 
@@ -213,7 +213,7 @@ export const getTrackAudioFeatures = trackId =>
 
 /////////////////////////////////////////////
 // combined info get
-// 這寫法太神了，相當於建構自己的wrapper
+// 相當於建構自己的wrapper
 // axios: all, then, spread
 export const getUserInfo = () =>
   axios
