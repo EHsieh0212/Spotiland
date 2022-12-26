@@ -17,10 +17,16 @@
   "engines": {
     "node": "19.2.0"
   },
+  "cacheDirectories":[
+    "node_modules",
+    "client/node_modules"
+  ],
   "scripts": {
     "install": "cd client && yarn",
+    "build":"NODE_ENV=production cd client/ && npm install",
     "client": "cd client && yarn start",
     "server": "node server",
+    "start-server": "node index.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },
   "dependencies": {

@@ -4,6 +4,13 @@ import { theme, Main } from '../styles';
 const { colors } = theme;
 import Footer from './Footer';
 
+
+const LOGIN_URI =
+  process.env.NODE_ENV !== 'production'
+    ? 'http://localhost:8000/login'
+    : 'https://spotiland.herokuapp.com/login';
+
+
 ///////////////////////////////////////////////
 // styled components
 const Login = styled(Main)`
@@ -41,7 +48,7 @@ const LoginButton = styled.a`
 const LoginScreen = () => (
   <Login>
     <h1>Spotiland</h1>
-    <LoginButton href={'http://localhost:8000/login'}> Log in to Spotify </LoginButton>
+    <LoginButton href={LOGIN_URI}> Log in to Spotify </LoginButton>
     <Footer />
   </Login>
 
