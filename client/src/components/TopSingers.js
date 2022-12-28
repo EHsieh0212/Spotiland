@@ -243,7 +243,7 @@ const TopSingers = () => {
                                     <p className='rank'> {i + 1} </p>
                                 </Rank>
                                 <ArtistInfo to='/'>
-                                    {/* <Mask onClick={togglePopup}> Info </Mask> */}
+                                    {/* <Mask ox    nClick={togglePopup}> Info </Mask> */}
                                     <Mask> Info </Mask>
                                     <img src={singer.images[0].url} alt={singer.name} />
                                     <p className='name'> {singer.name} </p>
