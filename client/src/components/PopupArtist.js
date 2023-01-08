@@ -1,9 +1,6 @@
 import styled from 'styled-components/macro';
 import { useState, useEffect } from "react";
 import { getArtist } from "../spotify";
-// higher order error handler
-import { catchErrors } from '../utils';
-
 
 
 /////////////////////////////////////////////
@@ -41,7 +38,7 @@ const Box = styled.div`
       /* flex-basis: 0px; */
       /* flex-grow: 1; */
       /* background-color: green; */
-      font-size: 10px;
+      font-size: 100px;
 
     };
     .close-icon{
@@ -68,18 +65,22 @@ const Box = styled.div`
 
 /////////////////////////////////////////////
 // component
-export const PopupArtist = props => {
+const PopupArtist = ({handleClose, showArtist}) => {
   // use state
   const [artist, setArtist] = useState(null);
 
+  const artistInfo = async (artistId) => {
+    const data = await getArtist(artistId);
+    setArtist(data.data)
+};
+
   // use effect
   useEffect(() => {
-    const fetchArtist = async () => {
-      const data = await getArtist('0TnOYISbd1XYRBk9myaseg');
-      setArtist(data.data)
-      console.log(artist);
-    }
-    catchErrors(fetchArtist());
+    // const fetchArtist = async (id) => {
+    //   const data = await getArtist(id);
+    //   setArtist(data.data)
+    // }
+    // catchErrors(artistInfo());
   }, [])
 
 
@@ -87,10 +88,13 @@ export const PopupArtist = props => {
     <PopupBox>
       <Box>
         <div className='content'>
-          {artist ? (JSON.stringify(artist)) : ("loading")}
+          {/* {artist ? (props.id) : ("loading")} */}
+          {showArtist}
         </div>
+
+
         <div>
-          <span className="close-icon" onClick={props.handleClose}>close</span>
+          <span className="close-icon" onClick={handleClose}>close</span>
         </div>
       </Box>
     </PopupBox>
@@ -98,3 +102,4 @@ export const PopupArtist = props => {
 };
 
 
+export default PopupArtist;

@@ -15,12 +15,15 @@ import { catchErrors } from '../utils/index'
 
 /////////////////////////////////////////////
 // styled components
-
 const Main = styled.main`
   width: 100%;
   max-width: 1950px;
   margin-top: 20px;
+  /* height: 3000000px; */
   padding: 0 0 0 50px;
+  opacity: null;
+  /* opacity: ${props => (props.opacity? 1 : null)}; */
+  /* background-color: null; */
 `;
 
 
@@ -32,6 +35,7 @@ const Header = styled.header`
   margin-left: 500px;
   margin-right: 500px;
   padding-bottom: 0px;
+  max-width: 100%;
 `;
 
 const PersonalInfo = styled.div`
@@ -112,13 +116,16 @@ const Dashboard = () => {
 
   // useState()
   const [user, setUser] = useState(null);
-
+  const [opacity, setOpacity] = useState(false);
 
   // useEffect()
   useEffect(() => {
     const fetchDashboardData = async () => {
       const { user } = await getUserInfo();
       setUser(user);
+      // const aopacity = window.localStorage.getItem('bgopacity');
+      // setOpacity(aopacity);
+      // console.log(opacity, "======")
     }
     catchErrors(fetchDashboardData());
   }, []);
@@ -149,7 +156,6 @@ const Dashboard = () => {
               <a className='infos-middle' href='/'> Top Tracks </a>
             </RoadSigns>
           </Header>
-
           <TopSingers />
           <TopTracks />
         </Main>

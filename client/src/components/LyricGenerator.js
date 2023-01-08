@@ -7,6 +7,7 @@ import { Main } from '../styles';
 import { predict } from '../spotify/crawl';
 // other components
 import Loader from './Loader';
+import { useSpeechSynthesis } from 'react-speech-kit';
 
 
 /////////////////////////////////////////////
@@ -133,9 +134,12 @@ const LyricGenerator = () => {
     const [model, setModel] = useState(null);
     const [artist, setArtist] = useState(null);
     const [length, setLength] = useState(null);
+    const [gram, setGram] = useState(null);
+    const [textSeed, setTextSeed] = useState(null);
     const [seeding, setSeeding] = useState(null);
     const [crawl, setCrawl] = useState(null);
     const [getAResult, setGetAResult] = useState(false);
+    const { speak } = useSpeechSynthesis();
 
     // use effect
     useEffect(() => {
@@ -145,18 +149,22 @@ const LyricGenerator = () => {
     const getResult = async () => {
         try {
             setGetAResult(true);
-            if (getAResult == true){
-                if (artist | length| seeding === null){
-                alert("Please select before getting result.")
+            if (getAResult == true) {
+                if (artist | length | gram | textSeed | seeding === null) {
+                    alert("Please select before getting result.")
                 }
             }
-            const result = await predict(artist, length, seeding);
+            const result = await predict(artist, length, gram, textSeed, seeding);
             setCrawl(JSON.stringify(result.data.return));
             alert("See Results below!")
         } catch (error) {
             setCrawl("error")
             console.log(error)
         }
+    }
+
+    const speakOnClick = () => {
+        speak({ text: crawl })
     }
 
     const refresh = () => {
@@ -175,8 +183,10 @@ const LyricGenerator = () => {
                 <Select>
                     <span className='one'>1. Select A <span className='two'>Language Model</span>:</span>
                     <div>
-                        <SelectButton id="model" value='n-gram' onClick={(e) => { setModel(e.target.value) }} stay={model === 'n-gram'? true:false}> n-gram </SelectButton>
-                        <SelectButton value='gpt-2' onClick={(e) => { setModel(e.target.value) }} stay={model === 'gpt-2'? true:false}> gpt-2 </SelectButton>
+                        <SelectButton id="model" value='n-gram' onClick={(e) => { setModel(e.target.value) }} stay={model === 'n-gram' ? true : false}> n-gram </SelectButton>
+                        <SelectButton id="model" value='lstm' onClick={(e) => { setModel(e.target.value) }} stay={model === 'lstm' ? true : false}> lstm </SelectButton>
+                        <SelectButton id="model" value='gru' onClick={(e) => { setModel(e.target.value) }} stay={model === 'gru' ? true : false}> gru </SelectButton>
+                        <SelectButton value='gpt-2' onClick={(e) => { setModel(e.target.value) }} stay={model === 'gpt-2' ? true : false}> gpt-2 </SelectButton>
                     </div>
 
                 </Select>
@@ -184,42 +194,60 @@ const LyricGenerator = () => {
                     <span className='one'>2. Select A <span className='two'>Singer</span>:</span>
                     <div className='selections'>
                         <div className='displayArtist'>
-                        <img src='https://bccnews.com.tw/wp-content/uploads/2022/09/202209011229ANG.jpg'></img>
-                        <SelectButton id="artist" value='piggyLo' stay={artist === 'piggyLo'? true:false} onClick={(e) => { setArtist(e.target.value) }}> piggyLo </SelectButton>
+                            <img src='https://bccnews.com.tw/wp-content/uploads/2022/09/202209011229ANG.jpg'></img>
+                            <SelectButton id="artist" value='piggyLo' stay={artist === 'piggyLo' ? true : false} onClick={(e) => { setArtist(e.target.value) }}> piggyLo </SelectButton>
                         </div>
                         <div className='displayArtist'>
-                        <img src="https://images.chinatimes.com/newsphoto/2022-05-01/1024/20220501002968.jpg"></img>
-                        <SelectButton id="artist" value='jolin2' onClick={(e) => { setArtist(e.target.value) }} stay={artist === 'jolin2'? true:false}> jolin </SelectButton>
+                            <img src="https://images.chinatimes.com/newsphoto/2022-05-01/1024/20220501002968.jpg"></img>
+                            <SelectButton id="artist" value='jolin2' onClick={(e) => { setArtist(e.target.value) }} stay={artist === 'jolin2' ? true : false}> jolin </SelectButton>
+                        </div>
+                        <div className='displayArtist'>
+                            <img src="https://doqvf81n9htmm.cloudfront.net/data/crop_article/71359/60-f.jpg_1140x855.jpg"></img>
+                            <SelectButton id="artist" value='jaychou' onClick={(e) => { setArtist(e.target.value) }} stay={artist === 'jaychou' ? true : false}> jaychou </SelectButton>
                         </div>
                     </div>
                 </Select>
+                
                 <Select>
                     <span className='one'>3. Enter <span className='two'>Length of Lyrics</span>:</span>
                     <EnterLength id="length" onChange={(e) => { setLength(e.target.value) }} />
                 </Select>
                 <Select>
+                    <span className='one'>4. Enter <span className='two'>Length of gram (?-gram)</span>:</span>
+                    <EnterLength id="gram" onChange={(e) => { setGram(e.target.value) }} />
+                </Select>
+                <Select>
                     <span className='one'>4. Enter <span className='two'>A Seeding</span>:</span>
-                    <EnterLength id="seed" onChange={(e) => { setSeeding(e.target.value) }} />
+                    <EnterLength id="seeding" onChange={(e) => { setSeeding(e.target.value) }} />
+                </Select>
+                <Select>
+                    <span className='one'>5. Enter <span className='two'>A Text Seed</span>:</span>
+                    <EnterLength id="textSeed" onChange={(e) => { setTextSeed(e.target.value) }} />
                 </Select>
                 <GetResult onClick={catchErrors(getResult)}> {'>>>'} Finished? Get Result</GetResult>
 
                 {getAResult ?
-                    (<Result>
-                        Result:
-                        <p>歌手名稱:  {artist} </p>
-                        <p>歌詞長度:  {length} 個字</p>
-                        <p>使用模型:  {model} </p>
-                        <p>模型資訊:   </p>
-                        {crawl ? (<ResultText>{crawl}</ResultText>) : (<Loader />)}
-                        <div className='refresh'>
-                            <SelectButton onClick={(e) => {refresh()}}> Refresh</SelectButton>
-                        </div>
-                    </Result>
-                    )
-                    :
+                (<Result>
+                    Result:
+                    <p>歌手名稱:  {artist} </p>
+                    <p>歌詞長度:  {length} 個字</p>
+                    <p>使用模型:  {model} </p>
+                    <p>使用的text seed:  {textSeed} </p>
+                    {crawl ? (<ResultText>{crawl}</ResultText>) : (<Loader />)}
+                    <div>
+                        <SelectButton onClick={() => { speakOnClick() }}> read </SelectButton>
+                    </div>
+                    <br />
+                    <div className='refresh'>
+                        <SelectButton onClick={() => { refresh() }}> Refresh</SelectButton>
+                    </div>
+
+
+                </Result>
+                )
+                :
                     null}
             </Main>
-
         </React.Fragment>
     )
 }

@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Link } from '@reach/router';
 // css
 import styled from 'styled-components/macro';
 import { Main } from '../styles';
@@ -8,7 +7,7 @@ import { getUserInfo, getTopArtistsLong, getTopArtistsShort } from '../spotify';
 // higher order error handler
 import { catchErrors } from '../utils';
 // artist popup info
-import { PopupArtist } from './PopupArtist';
+import PopupArtist2 from './PopupArtist2';
 
 
 /////////////////////////////////
@@ -16,8 +15,11 @@ import { PopupArtist } from './PopupArtist';
 // background color是個好用的東西
 // 1. basics
 const Body = styled.div`
-    background-color: #F6F19C;
+    /* background-color: #F6F19C; */
+    /* background-color: (0, 0, 0, 1); */
+    background-color: ${props => props.opacityChange? 'rgba(0, 0, 0, 0.9)' : 'rgba(246, 241, 156, 1)'};
     justify-content: center;
+    opacity: ${props => props.opacityChange? 0.2 : null};
 `;
 
 const Title = styled.h1`
@@ -47,7 +49,9 @@ const ArtistsContainer = styled.div`
 //主要區域，存放：1.mask 2.image 3.name
 const ArtistSection = styled.div`
   display: flex;
-  background-color: #C4540C;
+  /* background-color: black; */
+  background-color: ${props => props.opacityChange? 'rgba(0, 0, 0, 0.8)' : 'rgba(196, 84, 12, 1)'};
+  opacity: ${props => props.opacityChange? 0.5 : null}; 
   flex-direction: column;
   align-items: center;
   box-shadow: rgba(50, 50, 93, 0.9) 0px 2px 9px -1px, rgba(0, 0, 0, 0.9) 0px 1px 3px -1px;
@@ -75,7 +79,7 @@ const Mask = styled.div`
   background-color: rgba(0, 0, 0, 0.5);
 `;
 
-const ArtistInfo = styled(Link)`
+const ArtistInfo = styled.div`
     /* background-color: green; */
     display: inline-block;
     position: relative;
@@ -86,6 +90,7 @@ const ArtistInfo = styled(Link)`
     &:hover,
     &:focus {
      ${Mask} {
+        /* background-color: green; */
       opacity: 1;
     }}
     img {
@@ -176,41 +181,20 @@ const MoreBtn = styled.div`
   }
 `;
 
-const ModelControl = styled.div`
-`;
-
-
-
+/////////////////////////////////
 /////////////////////////////////
 // main component
 const TopSingers = () => {
     // use state
     const [topSingers, setTopSingers] = useState(null);
     const [range, setRange] = useState(null);
-    const [popupOpen, setPopupOpen] = useState(false);
+    const [openPopup, setOpenPopup] = useState(false);
 
+    //////////////////////////////////////////////////////////
     const rangeApis = {
         long: getTopArtistsLong(),
         short: getTopArtistsShort(),
     };
-
-    const togglePopup = () => {
-        setPopupOpen(!popupOpen);
-    }
-
-    // use effect
-    useEffect(() => {
-        const fetchArtists = async () => {
-            const { topArtists } = await getUserInfo();
-            if (topArtists.items.length > 20) {
-                setTopSingers(topArtists.items.slice(0, 20));
-            } else {
-                setTopSingers(topArtists.items);
-            }
-        };
-        catchErrors(fetchArtists());
-    }, []);
-
     const changeRange = async (range) => {
         const { data } = await rangeApis[range];
         if (data.items.length > 20) {
@@ -222,10 +206,27 @@ const TopSingers = () => {
     }
     const setRangeData = range => catchErrors(changeRange(range));
 
+    //////////////////////////////////////////////////////////
+    // use effect
+    useEffect(() => {
+        const fetchArtists = async () => {
+            const { topArtists } = await getUserInfo();
+            if (topArtists.items.length > 20) {
+                setTopSingers(topArtists.items.slice(0, 20));
+            } else {
+                setTopSingers(topArtists.items);
+            }
+        };
+        console.log(openPopup)
+        catchErrors(fetchArtists());
+    }, [openPopup]);
+
+
+    //////////////////////////////////////////////////////////
     // jsx
     return (
         <Main>
-            <Body>
+            <Body opacityChange={openPopup}>
                 <Title> Top Singers </Title>
                 <Ranges>
                     <RangeButton isActive={range === 'long'} onClick={() => setRangeData('long')}>
@@ -238,30 +239,26 @@ const TopSingers = () => {
                 <ArtistsContainer>
                     {topSingers && (
                         topSingers.map((singer, i) => (
-                            <ArtistSection key={i} >
+                            <ArtistSection key={i} opacityChange={openPopup}>
                                 <Rank>
                                     <p className='rank'> {i + 1} </p>
                                 </Rank>
-                                <ArtistInfo to='/'>
-                                    {/* <Mask ox    nClick={togglePopup}> Info </Mask> */}
-                                    <Mask> Info </Mask>
+                                <ArtistInfo>
+                                    <PopupArtist2
+                                        singerId={singer.id}
+                                        trigger={<Mask> Info </Mask>}
+                                        onDim={setOpenPopup}
+                                        onNorm={() => setOpenPopup(false)}
+                                    />
                                     <img src={singer.images[0].url} alt={singer.name} />
                                     <p className='name'> {singer.name} </p>
-                                    {/* <ModelControl>
-                                        {popupOpen && <PopupArtist
-                                            handleClose={togglePopup}
-                                        />}
-                                    </ModelControl> */}
                                 </ArtistInfo>
                             </ArtistSection>
                         ))
                     )
                     }
-
                 </ArtistsContainer>
-                {/* <MoreBtn> <a>More</a> </MoreBtn> */}
             </Body>
-
         </Main>
     )
 };
