@@ -7,6 +7,8 @@ import { Main } from '../styles';
 import { getUserInfo, getTopTracksLong, getTopTracksShort } from '../spotify';
 // higher order error handler
 import { catchErrors } from '../utils';
+// track popup info
+import PopupTrack from './PopupTrack';
 
 
 /////////////////////////////////
@@ -40,18 +42,21 @@ const TrackContainer = styled.div`
     padding-bottom: 190px;
 `;
 
-// 要先放Mask, 再放TracktInfo
 const Mask = styled.div`
   /* 固定而可以成效的設定*/
   display: flex;
   justify-content: center;
   align-items: center;
+
   position: absolute;
-  width: 100px;
-  height: 100px;
-  border-radius: 4%;
-  /* background-color: rgba(0, 0, 0, 0.6); */
-  background-color: yellow;
+  width: 160px;
+  height: 160px;
+  border-radius: 10%;
+
+  margin: 10px;
+  background-color: rgba(0, 0, 0, 0.6);
+
+  /* background-color: yellow; */
   opacity: 0;
   color: white;
   font-weight: 800;
@@ -78,16 +83,15 @@ const TrackInfo = styled.div`
     ${Mask} {
       opacity: 1;
     }
-    }
     cursor: pointer;
-    
+    }
 `;
 
-
+//會被TrackInfo覆蓋
 const TrackLeft = styled.div`
     /* background-color: yellow; */
     /* width: 170px; */
-    height: 40px; 
+    /* height: 40px;  */
     display: inline-block;
     justify-content: center;
     align-items: center;
@@ -161,6 +165,7 @@ const RangeButton = styled.button`
 const TopTracks = () => {
     const [topTracks, setTopTracks] = useState(null);
     const [range, setRange] = useState(null);
+    const [openPopup, setOpenPopup] = useState(false);
 
     const rangeApis = {
         long: getTopTracksLong(),
@@ -202,7 +207,13 @@ const TopTracks = () => {
                     {
                         topTracks && (
                             topTracks.map((track, i) => (
-                                <TrackInfo key={i}>
+                                <TrackInfo key={i}>   
+                                    <PopupTrack 
+                                        trackId={track.id}
+                                        trigger={<Mask> Info </Mask>}
+                                        onDim={setOpenPopup}
+                                        onNorm={() => setOpenPopup(false)}
+                                    />
                                     <TrackLeft>
                                         <img src={track.album.images[0].url} alt={track.album.name}></img>
                                     </TrackLeft>

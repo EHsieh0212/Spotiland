@@ -45,12 +45,6 @@ const Modal = styled.div`
         width: 100%;
         padding: 10px 5px;
     }
-    .actions {
-        width: 100%;
-        padding: 10px 5px;
-        margin: auto;
-        text-align: center;
-    }
     .close {
         cursor: pointer;
         color:white;
@@ -131,6 +125,7 @@ const PopupArtist2 = ({ singerId, trigger, onDim, onNorm }) => {
     //////////////////////////////////////////
     const getArtistInfo = async (id, afn) => {
         const data = await getArtist(id);
+        console.log(JSON.stringify(data.data))
         setASingerInfo(data.data);
         afn(true);
     }

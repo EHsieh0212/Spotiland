@@ -217,9 +217,9 @@ const TopSingers = () => {
                 setTopSingers(topArtists.items);
             }
         };
-        console.log(openPopup)
+        // console.log(openPopup)
         catchErrors(fetchArtists());
-    }, [openPopup]);
+    }, []);
 
 
     //////////////////////////////////////////////////////////

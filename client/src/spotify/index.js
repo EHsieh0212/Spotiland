@@ -137,9 +137,35 @@ export const getTopTracksLong = () =>
 /**
  * Get a Track
  * https://developer.spotify.com/documentation/web-api/reference/tracks/get-track/
+ * result:
+ * "name": "Cut To The Feeling" (album name),
+    "release_date": "2017-05-26",
+    "id": "0tGPJ0bkWOUmH7MEOR77qc"
+    "external_urls": {
+            "spotify": "https://open.spotify.com/album/0tGPJ0bkWOUmH7MEOR77qc"
+        },
  */
  export const getTrack = trackId =>
  axios.get(`/tracks/${trackId}`, { headers });
+
+/**
+* Get Audio Features for a Track
+* https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/
+* result:
+  "danceability": 0.696,
+    "energy": 0.905,
+    "key": 2,
+    "loudness": -2.743,
+    "mode": 1,
+    "speechiness": 0.103,
+    "acousticness": 0.0110,
+    "instrumentalness": 0.000905,
+    "liveness": 0.302,
+    "valence": 0.625,
+    "tempo": 114.944
+*/
+export const getTrackAudioFeatures = trackId =>
+ axios.get(`/audio-features/${trackId}`, { headers });
 
 /**
 * Get Audio Analysis for a Track
@@ -148,12 +174,7 @@ export const getTopTracksLong = () =>
 export const getTrackAudioAnalysis = trackId =>
  axios.get(`/audio-analysis/${trackId}`, { headers });
 
-/**
-* Get Audio Features for a Track
-* https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/
-*/
-export const getTrackAudioFeatures = trackId =>
- axios.get(`/audio-features/${trackId}`, { headers });
+
 
 
 
