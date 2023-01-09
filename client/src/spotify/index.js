@@ -85,7 +85,8 @@ const headers = {
   'Content-Type': 'application/json',
 };
 
-
+///////////////////////////////////////////
+// personal info
 /**
  * Get Current User's Profile
  * https://developer.spotify.com/documentation/web-api/reference/users-profile/get-current-users-profile/
@@ -100,6 +101,8 @@ export const getRecentlyPlayed = () =>
 
 export const getPlaylists = () => axios.get('/me/playlists', { headers });
 
+///////////////////////////////////////////
+// time range
 /**
  * Get a User's Top Artists
  * https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/
@@ -115,7 +118,6 @@ export const getTopArtistsMedium = () =>
 export const getTopArtistsLong = () =>
   axios.get('/me/top/artists?limit=50&time_range=long_term', { headers });
 
-
 /**
  * Get a User's Top Tracks
  * https://developer.spotify.com/documentation/web-api/reference/personalization/get-users-top-artists-and-tracks/
@@ -130,15 +132,33 @@ export const getTopTracksLong = () =>
   axios.get('/me/top/tracks?limit=50&time_range=long_term', { headers });
 
 
+///////////////////////////////////////////
+// track info
 /**
- * Get an Artist
- * https://developer.spotify.com/documentation/web-api/reference/artists/get-artist/
+ * Get a Track
+ * https://developer.spotify.com/documentation/web-api/reference/tracks/get-track/
  */
-export const getArtist = artistId =>
-  axios.get(`/artists/${artistId}`, { headers });
+ export const getTrack = trackId =>
+ axios.get(`/tracks/${trackId}`, { headers });
+
+/**
+* Get Audio Analysis for a Track
+* https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-analysis/
+*/
+export const getTrackAudioAnalysis = trackId =>
+ axios.get(`/audio-analysis/${trackId}`, { headers });
+
+/**
+* Get Audio Features for a Track
+* https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/
+*/
+export const getTrackAudioFeatures = trackId =>
+ axios.get(`/audio-features/${trackId}`, { headers });
 
 
 
+///////////////////////////////////////////
+// personal playlist info
 /**
  * Get a Playlist
  * https://developer.spotify.com/documentation/web-api/reference/playlists/get-playlist/
@@ -157,7 +177,6 @@ export const getPlaylistTracks = playlistId =>
  * Return a comma separated string of track IDs from the given array of tracks
  */
 const getTrackIds = tracks => tracks.map(({ track }) => track.id).join(',');
-
 
 /**
  * Get Audio Features for Several Tracks
@@ -187,34 +206,14 @@ export const getRecommendationsForTracks = tracks => {
 };
 
 
-/**
- * Get a Track
- * https://developer.spotify.com/documentation/web-api/reference/tracks/get-track/
- */
-export const getTrack = trackId =>
-  axios.get(`/tracks/${trackId}`, { headers });
-
-/**
- * Get Audio Analysis for a Track
- * https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-analysis/
- */
-export const getTrackAudioAnalysis = trackId =>
-  axios.get(`/audio-analysis/${trackId}`, { headers });
-
-/**
- * Get Audio Features for a Track
- * https://developer.spotify.com/documentation/web-api/reference/tracks/get-audio-features/
- */
-export const getTrackAudioFeatures = trackId =>
-  axios.get(`/audio-features/${trackId}`, { headers });
-
 
 
 
 /////////////////////////////////////////////
-// combined info get
-// 相當於建構自己的wrapper
-// axios: all, then, spread
+// 3 main functions we will use: user, artist, track
+// for user & track: combined info got
+  // 相當於建構自己的wrapper
+  // axios: all, then, spread
 export const getUserInfo = () =>
   axios
     .all([getUser(), getTopArtistsLong(), getTopTracksLong()])
@@ -225,7 +224,6 @@ export const getUserInfo = () =>
         topTracks: topTracks.data,
       })),
     );
-
     
 export const getTrackInfo = trackId =>
   axios
@@ -237,3 +235,10 @@ export const getTrackInfo = trackId =>
         audioFeatures: audioFeatures.data,
       })),
     );
+
+/**
+ * Get an Artist
+ * https://developer.spotify.com/documentation/web-api/reference/artists/get-artist/
+ */
+export const getArtist = artistId =>
+axios.get(`/artists/${artistId}`, { headers });
