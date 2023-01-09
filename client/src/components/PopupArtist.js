@@ -88,11 +88,8 @@ const PopupArtist = ({handleClose, showArtist}) => {
     <PopupBox>
       <Box>
         <div className='content'>
-          {/* {artist ? (props.id) : ("loading")} */}
           {showArtist}
         </div>
-
-
         <div>
           <span className="close-icon" onClick={handleClose}>close</span>
         </div>

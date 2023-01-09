@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 // css
 import styled from 'styled-components/macro';
 import { theme } from '../styles';
@@ -11,6 +11,7 @@ import TopTracks from './TopTracks';
 import TopSingers from './TopSingers';
 // higher order error handler
 import { catchErrors } from '../utils/index'
+import ScrollToTopDashboard from "./ScrollToTopDashboard";
 
 
 /////////////////////////////////////////////
@@ -116,16 +117,21 @@ const Dashboard = () => {
 
   // useState()
   const [user, setUser] = useState(null);
-  const [opacity, setOpacity] = useState(false);
+  const topSingers = useRef(null);
+  const topTracks = useRef(null);
+
+  const scrollToSection = (elementRef) => {
+    window.scrollTo({
+      top: elementRef.current.offsetTop,
+      behavior: "smooth",
+    });
+  };
 
   // useEffect()
   useEffect(() => {
     const fetchDashboardData = async () => {
       const { user } = await getUserInfo();
       setUser(user);
-      // const aopacity = window.localStorage.getItem('bgopacity');
-      // setOpacity(aopacity);
-      // console.log(opacity, "======")
     }
     catchErrors(fetchDashboardData());
   }, []);
@@ -136,8 +142,9 @@ const Dashboard = () => {
     <React.Fragment>
       {user ? (
         <Main>
+        <ScrollToTopDashboard targetPlace={'#top'}/>
           <Header>
-            <PersonalInfo>
+            <PersonalInfo id='top'>
               <Avatar>
                 {user.images.length > 0 ? (
                   <img src={user.images[0].url} alt="avatar" />
@@ -152,12 +159,14 @@ const Dashboard = () => {
               <LogoutButton onClick={logout}>Logout</LogoutButton>
             </PersonalInfo>
             <RoadSigns>
-              <a className='infos-top' href='/'> Top Singers </a>
-              <a className='infos-middle' href='/'> Top Tracks </a>
+              <a className='infos-top' onClick={() => scrollToSection(topSingers)}> Top Singers </a>
+              <a className='infos-middle' onClick={() => scrollToSection(topTracks)}> Top Tracks </a>
             </RoadSigns>
           </Header>
-          <TopSingers />
-          <TopTracks />
+          
+          <TopSingers refPlace={topSingers}/>
+          <TopTracks refPlace={topTracks}/>
+          
         </Main>
       ) : (
         <Loader />

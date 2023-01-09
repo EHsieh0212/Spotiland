@@ -184,7 +184,7 @@ const MoreBtn = styled.div`
 /////////////////////////////////
 /////////////////////////////////
 // main component
-const TopSingers = () => {
+const TopSingers = ({refPlace}) => {
     // use state
     const [topSingers, setTopSingers] = useState(null);
     const [range, setRange] = useState(null);
@@ -227,7 +227,7 @@ const TopSingers = () => {
     return (
         <Main>
             <Body opacityChange={openPopup}>
-                <Title> Top Singers </Title>
+                <Title id='topsingers' ref={refPlace}> Top Singers </Title>
                 <Ranges>
                     <RangeButton isActive={range === 'long'} onClick={() => setRangeData('long')}>
                         <span>All Time</span>

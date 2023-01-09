@@ -13,10 +13,9 @@ import PopupTrackChart from './PopupTrackChart';
 const Modal = styled.div`
     font-size: 12px;
     color: white;
-    background-color: rgba(27, 30, 30  , 0.95);
+    background-color: rgba(27, 30, 30  , 0.91);
     width: 800px;
-    min-height: 580px;
-    max-height: fit-content;
+    min-height: fit-content;
     border: 2px solid black;
     @keyframes anvil {
         0% {
@@ -45,6 +44,7 @@ const Modal = styled.div`
     }
     .content {
         width: 100%;
+        
         padding: 10px 5px;
     }
     .close {
@@ -112,6 +112,13 @@ const AlbumInfo = styled.h3`
   color: grey;
   font-weight: 400;
   font-size: 16px;
+  a{
+    &:hover,
+    &:focus{
+        color: green;
+        font-weight: 900;
+    }
+  }
 `;
 
 const Breaker = styled.div`
@@ -142,23 +149,24 @@ const AudioFeatures = styled.div`
   width: 100%;
   text-align: center;
   border: 1px solid grey;
+  margin-bottom: 90px;
 `;
 
 const Feature = styled.div`
     border: 1px solid grey;
-    padding: 15px;
+    padding: 10px;
 `;
 
 const FeatureText = styled.h4`
   color: white;
-  font-size: 30px;
+  font-size: 23px;
   font-weight: 700;
   margin-top: 0px;
   margin-bottom: 0;
 `;
 const FeatureLabel = styled.p`
   color: grey;
-  font-size: 12px;
+  font-size: 10px;
   margin-bottom: 0;
 `;
 
@@ -173,7 +181,7 @@ const FeatureLabel = styled.p`
 
 ///////////////////////////////////////////////////////////
 // main component
-const PopupTrack = ({ trackId, trigger, onNorm, onDim }) => {
+const PopupTrack = ({ trackId, trigger, onNorm, onDim}) => {
     const [thetrackId, setTheTrackId] = useState(null);
     const [trackInfo, setTrackInfo] = useState(null);
     const [theaudioFeatures, setTheAudioFeatures] = useState(null);
@@ -208,6 +216,7 @@ const PopupTrack = ({ trackId, trigger, onNorm, onDim }) => {
             closeOnDocumentClick={false}
             onOpen={() => { settleOpen(trackId, setTheTrackId, onDim) }}
             onClose={onNorm}
+            contentStyle={{ overflowY: 'scroll', margin: '10px auto' }}
         >
             {close => (
                 <Modal>
@@ -245,7 +254,8 @@ const PopupTrack = ({ trackId, trigger, onNorm, onDim }) => {
                                     </Info>
                                 </TrackIntro>
                                 <Breaker />
-                                {theaudioFeatures && theaudioAnalysis && (
+                                
+                                {theaudioFeatures && theaudioAnalysis && (      
                                     <AudioAnalysisSection>
                                         <AudioFeatures>
                                             <Feature>
@@ -289,21 +299,11 @@ const PopupTrack = ({ trackId, trigger, onNorm, onDim }) => {
                                                 <FeatureLabel>Segments</FeatureLabel>
                                             </Feature>
                                         </AudioFeatures>
+                                        <canvas id="chart" />
+                                        <PopupTrackChart features={theaudioFeatures} type="" />
                                     </AudioAnalysisSection>
-                                )
-                                }
-
+                                )}
                             </Main>
-
-
-
-
-
-
-
-
-
-
                         ) :
                             (<Loader />)
                         }

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { Link } from '@reach/router';
+import { useState, useEffect } from 'react';
 // css
 import styled from 'styled-components/macro';
 import { Main } from '../styles';
@@ -16,6 +15,7 @@ import PopupTrack from './PopupTrack';
 // 1. basics
 const Body = styled.div`
     background-color: #F67197;
+    opacity: ${props => props.opacityChange? 0.2 : null};
 `;
 
 const Title = styled.h1`
@@ -69,7 +69,9 @@ const TrackInfo = styled.div`
     min-width: fit-content;
     max-height: 250px;
     /* grid-gap: 10px; */
-    background-color: #470765;
+    /* background-color: #470765; */
+    background-color: ${props => props.opacityChange? 'rgba(0, 0, 0, 0.1)' : 'rgba(71, 7, 101, 1)'};
+    opacity: ${props => props.opacityChange? 0.5 : null}; 
     border-radius: 4%;
     box-shadow: rgba(50, 50, 93, 0.9) 0px 2px 9px -1px, rgba(0, 0, 0, 0.9) 0px 1px 3px -1px;
     .try{
@@ -162,10 +164,11 @@ const RangeButton = styled.button`
 
 /////////////////////////////////
 // main component
-const TopTracks = () => {
+const TopTracks = ({refPlace}) => {
     const [topTracks, setTopTracks] = useState(null);
     const [range, setRange] = useState(null);
     const [openPopup, setOpenPopup] = useState(false);
+    
 
     const rangeApis = {
         long: getTopTracksLong(),
@@ -190,8 +193,8 @@ const TopTracks = () => {
 
     return (
         <Main>
-            <Body>
-                <Title> Top Tracks </Title>
+            <Body opacityChange={openPopup}>
+                <Title id="toptracks" ref={refPlace}> Top Tracks </Title>
                 <div>
                 <Ranges>
                     <RangeButton isActive={range === 'long'} onClick={() => setRangeData('long')}>
@@ -207,7 +210,7 @@ const TopTracks = () => {
                     {
                         topTracks && (
                             topTracks.map((track, i) => (
-                                <TrackInfo key={i}>   
+                                <TrackInfo key={i} opacityChange={openPopup}>   
                                     <PopupTrack 
                                         trackId={track.id}
                                         trigger={<Mask> Info </Mask>}
@@ -227,7 +230,6 @@ const TopTracks = () => {
                     }
                 </TrackContainer>
             </Body>
-
         </Main>
 
     )

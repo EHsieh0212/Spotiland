@@ -8,7 +8,7 @@ import LyricGenerator from './LyricGenerator';
 import Kareoke from './Kareoke';
 
 // control behavior
-import ScrollToTheTop from './ScrollToTheTop';
+import ScrollToTopGlobal from './ScrollToTopGlobal';
 
 
 /////////////////////////////////////////////////////
@@ -16,11 +16,11 @@ const MainPage = () => (
   <div>
     <Nav />
     <Router primary={false}>
-      <ScrollToTheTop path='/'>
+      <ScrollToTopGlobal path='/'>
         <Dashboard path='/' />
         <LyricGenerator path='/lyricGenerator' />
         <Kareoke path='/kareoke' />
-      </ScrollToTheTop>
+      </ScrollToTopGlobal>
     </Router>
   </div>
 );

@@ -2,13 +2,13 @@
 
 import { useEffect } from 'react';
 
-const ScrollToTheTop = ({ children, location }) => {
-  
+const ScrollToTopGlobal = ({ children, location }) => {
+
   useEffect(() =>
     window.scrollTo(0, 0)
-    ,[location.pathname]);
+    , [location.pathname]);
 
   return children;
 };
 
-export default ScrollToTheTop;
+export default ScrollToTopGlobal;
