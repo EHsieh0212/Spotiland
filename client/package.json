@@ -40,10 +40,12 @@
     "react-dom": "^18.2.0",
     "react-icons": "^4.7.1",
     "react-loader-spinner": "^5.3.4",
+    "react-particles": "^2.7.1",
     "react-responsive-modal": "^6.4.1",
     "react-router-dom": "^6.5.0",
     "react-scripts": "^5.0.1",
     "react-speech-kit": "^3.0.1",
+    "react-window": "^1.8.8",
     "reactjs-popup": "^2.0.5",
     "styled-components": "^5.3.6"
   }

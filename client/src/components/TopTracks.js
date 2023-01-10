@@ -110,6 +110,8 @@ const TrackMiddle = styled.div`
     height: 250px;
     grid-template-rows: repeat(auto-fit, minmax(250px));
     color: white;  
+    /* width: fit-content; */
+
     /* background-color : yellow; */
     .trackName{
         display: flex;

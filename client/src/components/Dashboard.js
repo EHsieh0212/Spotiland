@@ -9,6 +9,7 @@ import { getUserInfo, logout } from '../spotify';
 import Loader from './Loader';
 import TopTracks from './TopTracks';
 import TopSingers from './TopSingers';
+import HappinessAnalysis from './HappinessAnalysis';
 // higher order error handler
 import { catchErrors } from '../utils/index'
 import ScrollToTopDashboard from "./ScrollToTopDashboard";
@@ -101,7 +102,7 @@ const RoadSigns = styled.div`
   flex-direction: column;
   margin-left: 70px;
   .infos-top, .infos-middle, .infos-bottom{
-    font-size: 35px;
+    font-size: 25px;
     font-weight: 800;
     margin-bottom: 19px;
     text-transform: uppercase;
@@ -119,6 +120,7 @@ const Dashboard = () => {
   const [user, setUser] = useState(null);
   const topSingers = useRef(null);
   const topTracks = useRef(null);
+  const happiness = useRef(null);
 
   const scrollToSection = (elementRef) => {
     window.scrollTo({
@@ -161,11 +163,14 @@ const Dashboard = () => {
             <RoadSigns>
               <a className='infos-top' onClick={() => scrollToSection(topSingers)}> Top Singers </a>
               <a className='infos-middle' onClick={() => scrollToSection(topTracks)}> Top Tracks </a>
+              <a className='infos-bottom' onClick={() => scrollToSection(happiness)}> How Happy Are Your Favorite Songs? </a>
+              {/* <a className='infos-bottom' onClick={() => scrollToSection(genres)}> Genres </a> */}
             </RoadSigns>
           </Header>
           
           <TopSingers refPlace={topSingers}/>
           <TopTracks refPlace={topTracks}/>
+          <HappinessAnalysis refPlace={happiness}/>
           
         </Main>
       ) : (

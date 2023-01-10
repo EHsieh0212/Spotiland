@@ -263,3 +263,8 @@ export const getTrackInfo = trackId =>
  */
 export const getArtist = artistId =>
 axios.get(`/artists/${artistId}`, { headers });
+
+
+export const getTopTracks100 = () =>
+  axios.get('/me/top/tracks?limit=100&time_range=long_term', { headers });
+

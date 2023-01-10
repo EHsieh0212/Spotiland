@@ -10,12 +10,12 @@ const StyledFaAngleDoubleUp = styled(FaAngleDoubleUp)`
     right: 20px;
     height: 40px;
     width: 40px;
-    border-radius: 50%;
-    border: 2px solid #333;
     background-color: null;
     cursor: pointer;
     &:hover,
     &:focus{
+        height: 60px;
+        width: 60px;
         border: 0px solid;
     }
 `;
