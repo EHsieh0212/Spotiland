@@ -33,7 +33,6 @@ const ScrollToTopDashboard = () => {
         setShowScrollTopButton(false);
       }
     });
-    console.log(showScrollTopButton)
   }, []);
 
 

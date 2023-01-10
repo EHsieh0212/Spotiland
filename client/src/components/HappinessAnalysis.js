@@ -3,6 +3,10 @@ import styled from 'styled-components/macro';
 import { Main } from '../styles';
 import { getTopTracks100, getTrackInfo } from "../spotify";
 import HappinessTrackList from './HappinessTrackList'
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Box from '@mui/material/Box';
+import { CiCircleQuestion } from "react-icons/ci";
 
 
 ////////////////////////////
@@ -87,7 +91,27 @@ const CreatePlaylist = styled.button`
     text-transform: uppercase;
     font-size: 13px;
 `;
-
+/////////////////////////////
+const ColorTabs = () => {
+    const [value, setValue] = useState('Your Analysis');
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
+    return (
+        <Box sx={{ width: '100%', opacity: '0.8' }}>
+            <Tabs
+                value={value}
+                onChange={handleChange}
+                textColor="secondary"
+                indicatorColor="secondary"
+                aria-label="secondary tabs example"
+            >
+                <Tab value="Your Analysis" label="Your Analysis" />
+                <Tab value="Recommendation" label="Recommendation" />
+            </Tabs>
+        </Box>
+    );
+}
 
 
 ////////////////////////////
@@ -101,28 +125,37 @@ const HappinessAnalysis = ({ refPlace }) => {
                         How Happy Are Your Favorite Songs?
                     </Title>
                     <Description>
-                        Accoring to Spotify API calculation, the average happiness level of songs that Taiwanese people are hearing is 49%.
-                        <br />
+                        Accoring to Spotify API calculation {<CiCircleQuestion />}, the average happiness level of songs that Taiwanese people are hearing is 49%.
+                    </Description>
+                    <Description>
                         Therefore, based on this number, we've calculated and gathered your happiness songs.
                     </Description>
-                    
+
                 </FrontIntro>
 
                 <BigSection>
                     <Section>
                         <ExtremeHappy>
-                            <Intro> Extremely Happy Section! </Intro>
+                            <Intro> Extremely Happy Section! &#128512; </Intro>
+
+                            <List>
+                                <ColorTabs />
+                            </List>
                             <List>
                                 <HappinessTrackList />
                             </List>
-                            {/* <CreatePlaylist>Create Playlist</CreatePlaylist> */}
+                            <CreatePlaylist>Create Playlist</CreatePlaylist>
                         </ExtremeHappy>
 
                         <Saddness>
-                            <Intro> These Are Your Favorite Songs That Are Really Sad </Intro>
+                            <Intro> These Are Your Favorite Songs That Are Really Sad &#127783; </Intro>
+                            <List>
+                                <ColorTabs />
+                            </List>
                             <List>
                                 <HappinessTrackList />
                             </List>
+                            <CreatePlaylist>Create Playlist</CreatePlaylist>
                         </Saddness>
 
                     </Section>
