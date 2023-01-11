@@ -21,7 +21,7 @@ const getLocalRefreshToken = () => window.localStorage.getItem('spotify_refresh_
 const refreshAccessToken = async () => {
   try {
     // 這裡剛登入進去之後好像都會拿不到token
-    const { data } = await axios.get(`/api/refresh_token?refresh_token=${getLocalRefreshToken()}`);
+    const { data } = await axios.get(`/refresh_token?refresh_token=${getLocalRefreshToken()}`);
     const { access_token } = data;
     setLocalAccessToken(access_token);
     window.location.reload();

@@ -29,7 +29,7 @@ app.get('/', function (req, res) {
 
 
 // routers
-app.use("/api", [
+app.use([
   require('./routes/login.js')
 ]);
 
