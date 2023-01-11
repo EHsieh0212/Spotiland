@@ -23,6 +23,25 @@ app.use(express.json())
 
 // serve any static files in priority
 app.use(express.static(path.resolve(__dirname, '../client/public')));
+
+app.use(express.static(path.resolve(__dirname, '../client/build')));
+
+app
+  .use(express.static(path.resolve(__dirname, '../client/build')))
+  .use(cors())
+  .use(cookieParser())
+  .use(
+    history({
+      verbose: true,
+      rewrites: [
+        { from: /\/login/, to: '/login' },
+        { from: /\/callback/, to: '/callback' },
+        { from: /\/refresh_token/, to: '/refresh_token' },
+      ],
+    }),
+  )
+  .use(express.static(path.resolve(__dirname, '../client/build')));
+
 app.get('/', function (req, res) {
   res.render(path.resolve(__dirname, '../client/build/index.html'));
 });
