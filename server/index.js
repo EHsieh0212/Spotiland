@@ -35,7 +35,6 @@ const generateRandomString = length => {
   return text;
 };
 
-const stateKey = 'spotify_auth_state';
 
 const app = express();
 
@@ -58,13 +57,14 @@ app
   )
   .use(express.static(path.resolve(__dirname, '../client/build')));
 
+  
 app.get('/', function (req, res) {
   res.render(path.resolve(__dirname, '../client/build/index.html'));
 });
 
 app.get('/login', function (req, res) {
   const state = generateRandomString(16);
-  res.cookie(stateKey, state);
+  res.cookie('spotify_auth_state', state);
 
   // your application requests authorization
   const scope =
@@ -86,12 +86,12 @@ app.get('/callback', function (req, res) {
   // after checking the state parameter
   const code = req.query.code || null;
   const state = req.query.state || null;
-  const storedState = req.cookies ? req.cookies[stateKey] : null;
+  const storedState = req.cookies ? req.cookies['spotify_auth_state'] : null;
 
   if (state === null || state !== storedState) {
     res.redirect(`/#${querystring.stringify({ error: 'state_mismatch' })}`);
   } else {
-    res.clearCookie(stateKey);
+    res.clearCookie('spotify_auth_state');
     const authOptions = {
       url: 'https://accounts.spotify.com/api/token',
       form: {
@@ -157,5 +157,5 @@ app.get('*', function (request, response) {
 });
 
 app.listen(PORT, function () {
-  console.warn(`Node cluster worker ${process.pid}: listening on port ${PORT}`);
+  console.warn(`Spotiland listening on port ${PORT}`);
 });
