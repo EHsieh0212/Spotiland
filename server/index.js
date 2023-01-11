@@ -15,6 +15,7 @@ const express = require('express');
 const request = require('request');
 const cors = require('cors');
 const querystring = require('querystring');
+const cookieParser = require('cookie-parser');
 const path = require('path');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
@@ -59,6 +60,7 @@ if (cluster.isMaster) {
   app
     .use(express.static(path.resolve(__dirname, '../client/build')))
     .use(cors())
+    .use(cookieParser())
     .use(
       history({
         verbose: true,
@@ -102,9 +104,10 @@ if (cluster.isMaster) {
     const code = req.query.code || null;
     const state = req.query.state || null;
     const storedState = req.cookies ? req.cookies[stateKey] : null;
-    console.log("--------------------")
+    console.log("--------------------state----------------------")
     console.log(code)
     console.log(state)
+    console.log(storedState)
 
     if (state === null || state !== storedState) {
       res.redirect(`/#${querystring.stringify({ error: 'state_mismatch' })}`);
