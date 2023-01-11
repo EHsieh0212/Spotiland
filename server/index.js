@@ -15,7 +15,6 @@ const express = require('express');
 const request = require('request');
 const cors = require('cors');
 const querystring = require('querystring');
-const cookieParser = require('cookie-parser');
 const path = require('path');
 const cluster = require('cluster');
 const numCPUs = require('os').cpus().length;
@@ -60,7 +59,6 @@ if (cluster.isMaster) {
   app
     .use(express.static(path.resolve(__dirname, '../client/build')))
     .use(cors())
-    .use(cookieParser())
     .use(
       history({
         verbose: true,
