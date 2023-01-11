@@ -97,10 +97,14 @@ if (cluster.isMaster) {
   app.get('/callback', function (req, res) {
     // your application requests refresh and access tokens
     // after checking the state parameter
-
+    console.log('==========================')
+    console.log(JSON.stringify(req.query));
     const code = req.query.code || null;
     const state = req.query.state || null;
     const storedState = req.cookies ? req.cookies[stateKey] : null;
+    console.log("--------------------")
+    console.log(code)
+    console.log(state)
 
     if (state === null || state !== storedState) {
       res.redirect(`/#${querystring.stringify({ error: 'state_mismatch' })}`);
