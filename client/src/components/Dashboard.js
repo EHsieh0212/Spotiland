@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 // css
 import styled from 'styled-components/macro';
 import { theme } from '../styles';
-const { colors, fontSizes, spacing } = theme;
+const { colors, fontSizes } = theme;
 // utils
 import { getUserInfo, logout } from '../spotify';
 // other components
@@ -59,7 +59,6 @@ const Avatar = styled.div`
 const NoAvatar = styled.div`
   border: 2px solid currentColor;
   border-radius: 100%;
-  padding: ${spacing.md};
 `;
 
 const UserName = styled.a`

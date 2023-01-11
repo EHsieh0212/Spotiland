@@ -15,7 +15,7 @@ const properties = [
 ];
 
 const Container = styled.div`
-  `;
+`;
 
 
 ////////////////////////////////////

@@ -16,12 +16,7 @@ const generateRandomString = length => {
   };
 
 
-const stateKey = 'spotify_auth_state';
-
-
-
 module.exports = {
     wrapAsync, 
-    generateRandomString,
-    stateKey
+    generateRandomString
 }

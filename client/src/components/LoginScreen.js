@@ -3,8 +3,6 @@ import styled from 'styled-components/macro';
 import { theme, Main } from '../styles';
 const { colors } = theme;
 import Footer from './Footer';
-
-
 const LOGIN_URI = 'https://spotiland.herokuapp.com/login';
 
 

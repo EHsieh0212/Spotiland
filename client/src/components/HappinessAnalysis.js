@@ -13,9 +13,6 @@ import { catchErrors } from '../utils';
 
 
 
-
-
-
 ////////////////////////////
 // styled components
 const Body = styled.div`
@@ -102,14 +99,15 @@ const CreatePlaylist = styled.button`
 `;
 /////////////////////////////
 const ColorTabs = () => {
-    const [value, setValue] = useState('Your Analysis');
+    const [tabvalue, setTabValue] = useState('Your Analysis');
+
     const handleChange = (event, newValue) => {
-        setValue(newValue);
+        setTabValue(newValue);
     };
     return (
         <Box sx={{ width: '100%', opacity: '0.8' }}>
             <Tabs
-                value={value}
+                value={tabvalue}
                 onChange={handleChange}
                 textColor="secondary"
                 indicatorColor="secondary"
@@ -129,6 +127,8 @@ const ColorTabs = () => {
 const HappinessAnalysis = ({ refPlace }) => {
     const [happySongs, setHappySongs] = useState(null);
     const [sadSongs, setSadSongs] = useState(null);
+    const [happyaudioFeatures, setHappyAudioFeatures] = useState(null);
+    const [sadaudioFeatures, setSadAudioFeatures] = useState(null);
 
     const fetchData = async() => {
         

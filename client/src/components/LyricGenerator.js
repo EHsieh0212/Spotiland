@@ -207,7 +207,7 @@ const LyricGenerator = () => {
                         </div>
                     </div>
                 </Select>
-                
+
                 <Select>
                     <span className='one'>3. Enter <span className='two'>Length of Lyrics</span>:</span>
                     <EnterLength id="length" onChange={(e) => { setLength(e.target.value) }} />
@@ -227,25 +227,25 @@ const LyricGenerator = () => {
                 <GetResult onClick={catchErrors(getResult)}> {'>>>'} Finished? Get Result</GetResult>
 
                 {getAResult ?
-                (<Result>
-                    Result:
-                    <p>歌手名稱:  {artist} </p>
-                    <p>歌詞長度:  {length} 個字</p>
-                    <p>使用模型:  {model} </p>
-                    <p>使用的text seed:  {textSeed} </p>
-                    {crawl ? (<ResultText>{crawl}</ResultText>) : (<Loader />)}
-                    <div>
-                        <SelectButton onClick={() => { speakOnClick() }}> read </SelectButton>
-                    </div>
-                    <br />
-                    <div className='refresh'>
-                        <SelectButton onClick={() => { refresh() }}> Refresh</SelectButton>
-                    </div>
+                    (<Result>
+                        Result:
+                        <p>歌手名稱:  {artist} </p>
+                        <p>歌詞長度:  {length} 個字</p>
+                        <p>使用模型:  {model} </p>
+                        <p>使用的text seed:  {textSeed} </p>
+                        {crawl ? (<ResultText>{crawl}</ResultText>) : (<Loader />)}
+                        <div>
+                            <SelectButton onClick={() => { speakOnClick() }}> read </SelectButton>
+                        </div>
+                        <br />
+                        <div className='refresh'>
+                            <SelectButton onClick={() => { refresh() }}> Refresh</SelectButton>
+                        </div>
 
 
-                </Result>
-                )
-                :
+                    </Result>
+                    )
+                    :
                     null}
             </Main>
         </React.Fragment>
