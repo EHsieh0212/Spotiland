@@ -22,7 +22,7 @@
     "client/node_modules"
   ],
   "scripts": {
-    "install": "cd client && npm",
+    "install": "cd client && npm install --force",
     "build": "NODE_ENV=production cd client/ && npm install --force",
     "server": "node server",
     "client": "cd client && yarn start",
