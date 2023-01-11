@@ -9,7 +9,7 @@
     "not op_mini all"
   ],
   "engines": {
-    "node": "19.2.0"
+    "node": "16.15.1"
   },
   "babelMacros": {
     "styledComponents": {
