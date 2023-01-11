@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "install": "cd client && yarn",
-    "build":"NODE_ENV=production cd client/ && npm install",
+    "build":"NODE_ENV=production cd client/ && npm install --force",
     "server": "node server",
     "client": "cd client && yarn start",
     "start-server": "node index.js",
