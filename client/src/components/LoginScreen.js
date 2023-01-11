@@ -5,7 +5,7 @@ const { colors } = theme;
 import Footer from './Footer';
 
 
-const LOGIN_URI = 'http://localhost:8000/login';
+const LOGIN_URI = 'https://spotiland.herokuapp.com/login';
 
 
 ///////////////////////////////////////////////
