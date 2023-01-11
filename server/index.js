@@ -34,17 +34,21 @@ app.use([
 ]);
 
 
-// All remaining requests return the React app, so it can handle routing
-// 神來之筆
-app.get('*', function (req, res) {
-  res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
-});
+
 
 
 // error handling
 app.use(function (err, req, res, next) {
   console.log(err);
   res.status(500).send('Internal Server Error');
+});
+
+
+
+// All remaining requests return the React app, so it can handle routing
+// 神來之筆
+app.get('*', function (req, res) {
+  res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
 });
 
 
