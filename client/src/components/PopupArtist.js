@@ -1,3 +1,6 @@
+/////////////////////////////////////////////
+// 作廢
+
 import styled from 'styled-components/macro';
 import { useState, useEffect } from "react";
 import { getArtist } from "../spotify";

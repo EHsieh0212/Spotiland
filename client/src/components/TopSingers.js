@@ -23,6 +23,7 @@ const Body = styled.div`
 `;
 
 const Title = styled.h1`
+    color: ${props => props.opacityChange? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 1)'};
     padding-top: 20px;
     margin-bottom: 40px;
     margin-left: 20px;
@@ -227,7 +228,7 @@ const TopSingers = ({refPlace}) => {
     return (
         <Main>
             <Body opacityChange={openPopup}>
-                <Title id='topsingers' ref={refPlace}> Top Singers </Title>
+                <Title id='topsingers' ref={refPlace} opacityChange={openPopup}> Top Singers </Title>
                 <Ranges>
                     <RangeButton isActive={range === 'long'} onClick={() => setRangeData('long')}>
                         <span>All Time</span>

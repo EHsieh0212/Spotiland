@@ -29,8 +29,9 @@ app.get('/', function (req, res) {
 
 
 // routers
-app.use([
+app.use("/api", [
   require('./routes/login.js'),
+  require('./routes/callback.js'),
 ]);
 
 

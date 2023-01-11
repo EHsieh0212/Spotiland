@@ -24,8 +24,8 @@
   "scripts": {
     "install": "cd client && yarn",
     "build":"NODE_ENV=production cd client/ && npm install",
-    "client": "cd client && yarn start",
     "server": "node server",
+    "client": "cd client && yarn start",
     "start-server": "node index.js",
     "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
   },

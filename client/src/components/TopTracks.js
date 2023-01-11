@@ -14,7 +14,8 @@ import PopupTrack from './PopupTrack';
 // styled components
 // 1. basics
 const Body = styled.div`
-    background-color: #F67197;
+    background-color: ${props => props.opacityChange? 'rgba(0, 0, 0, 0.9)' : 'rgba(246, 113, 151, 1)'};
+    /* background-color: #F67197; */
     opacity: ${props => props.opacityChange? 0.2 : null};
 `;
 

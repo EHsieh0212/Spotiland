@@ -1,12 +1,19 @@
 import { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import { Main } from '../styles';
-import { getTopTracks100, getTrackInfo } from "../spotify";
 import HappinessTrackList from './HappinessTrackList'
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { CiCircleQuestion } from "react-icons/ci";
+import { getTopTracks100, getTrackInfo, createPlaylist} from "../spotify";
+import Loader from './Loader';
+import { catchErrors } from '../utils';
+
+
+
+
+
 
 
 ////////////////////////////
@@ -40,6 +47,7 @@ const BigSection = styled.div`
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    margin-top: 100px;
     margin-left: 80px;
     margin-right: 180px;
     padding-bottom: 260px;
@@ -55,7 +63,7 @@ const Section = styled.div`
 const ExtremeHappy = styled.div`
     display: flex;
     flex-direction: column;
-    margin-right: 35px;
+    margin-right: 85px;
     padding-bottom: 150px;
     /* background-color: pink; */
     justify-content: center;
@@ -66,11 +74,12 @@ const ExtremeHappy = styled.div`
 const Saddness = styled.div`
     display: flex;
     flex-direction: column;
-    margin-left: 35px;
+    margin-left: 85px;
     /* background-color: pink; */
     justify-content: center;
     align-items: center;
     padding-bottom: 150px;
+    
 `;
 
 const Intro = styled.div`
@@ -114,9 +123,33 @@ const ColorTabs = () => {
 }
 
 
+
 ////////////////////////////
 // main component
 const HappinessAnalysis = ({ refPlace }) => {
+    const [happySongs, setHappySongs] = useState(null);
+    const [sadSongs, setSadSongs] = useState(null);
+
+    const fetchData = async() => {
+        
+
+
+    };
+
+    const retrieveData = () => catchErrors(fetchData());
+
+
+    useEffect(() => {
+
+
+    }, [])
+
+
+
+
+
+    //////////////////////////////////////////////
+    // jsx
     return (
         <Main>
             <Body>
@@ -130,14 +163,15 @@ const HappinessAnalysis = ({ refPlace }) => {
                     <Description>
                         Therefore, based on this number, we've calculated and gathered your happiness songs.
                     </Description>
-
+                    <Description>
+                        Based on the historical data, we've also recommend several songs for you. 
+                    </Description>
                 </FrontIntro>
 
                 <BigSection>
                     <Section>
                         <ExtremeHappy>
                             <Intro> Extremely Happy Section! &#128512; </Intro>
-
                             <List>
                                 <ColorTabs />
                             </List>
