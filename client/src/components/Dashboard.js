@@ -162,14 +162,14 @@ const Dashboard = () => {
             <RoadSigns>
               <a className='infos-top' onClick={() => scrollToSection(topSingers)}> Top Singers </a>
               <a className='infos-middle' onClick={() => scrollToSection(topTracks)}> Top Tracks </a>
-              <a className='infos-bottom' onClick={() => scrollToSection(happiness)}> How Happy Are Your Favorite Songs? </a>
+              {/* <a className='infos-bottom' onClick={() => scrollToSection(happiness)}> How Happy Are Your Favorite Songs? </a> */}
               {/* <a className='infos-bottom' onClick={() => scrollToSection(genres)}> Genres </a> */}
             </RoadSigns>
           </Header>
           
           <TopSingers refPlace={topSingers}/>
           <TopTracks refPlace={topTracks}/>
-          <HappinessAnalysis refPlace={happiness}/>
+          {/* <HappinessAnalysis refPlace={happiness}/> */}
           
         </Main>
       ) : (
