@@ -137,7 +137,6 @@ const LyricGenerator = () => {
     const [model, setModel] = useState(null);
     const [artist, setArtist] = useState(null);
     const [length, setLength] = useState(null);
-    const [gram, setGram] = useState(null);
     const [textSeed, setTextSeed] = useState(null);
     const [seeding, setSeeding] = useState(null);
     const [crawl, setCrawl] = useState(null);
@@ -157,7 +156,7 @@ const LyricGenerator = () => {
                     alert("Please select before getting result.")
                 }
             }
-            const result = await predict(model, artist, length, textSeed, seeding);
+            const result = await predict(artist, length, seeding, textSeed);
             setCrawl(JSON.stringify(result.data.return));
             alert("See Results below!")
         } catch (error) {
@@ -202,7 +201,7 @@ const LyricGenerator = () => {
                         </div>
                         <div className='displayArtist'>
                             <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/a/a5/Emblem_of_Golden_Melody_Awards.svg/1200px-Emblem_of_Golden_Melody_Awards.svg.png"></img>
-                            <SelectButton id="artist" value='jolin2' onClick={(e) => { setArtist(e.target.value) }} stay={artist === 'jolin2' ? true : false}> Golden {' '}Award </SelectButton>
+                            <SelectButton id="artist" value='allmale' onClick={(e) => { setArtist(e.target.value) }} stay={artist === 'allmale' ? true : false}> Golden {' '}Award </SelectButton>
                         </div>
                         {/* <div className='displayArtist'>
                             <img src="https://doqvf81n9htmm.cloudfront.net/data/crop_article/71359/60-f.jpg_1140x855.jpg"></img>
