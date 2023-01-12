@@ -189,7 +189,7 @@ const LyricGenerator = () => {
                         <SelectButton id="model" value='n-gram' onClick={(e) => { setModel(e.target.value) }} stay={model === 'n-gram' ? true : false}> n-gram </SelectButton>
                         {/* <SelectButton id="model" value='lstm' onClick={(e) => { setModel(e.target.value) }} stay={model === 'lstm' ? true : false}> lstm </SelectButton> */}
                         {/* <SelectButton id="model" value='gru' onClick={(e) => { setModel(e.target.value) }} stay={model === 'gru' ? true : false}> gru </SelectButton> */}
-                        <SelectButton value='gpt-2' onClick={(e) => { setModel(e.target.value) }} stay={model === 'gpt-2' ? true : false}> gpt-2 </SelectButton>
+                        {/* <SelectButton value='gpt-2' onClick={(e) => { setModel(e.target.value) }} stay={model === 'gpt-2' ? true : false}> gpt-2 </SelectButton> */}
                     </div>
 
                 </Select>
