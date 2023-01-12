@@ -35,10 +35,13 @@ const Select = styled.div`
     img{
         width: 250px;
         height: 230px;
+        justify-content: center;
     }
     .displayArtist{
         display: flex;
         flex-direction: column;
+        justify-content: center;
+        /* background-color: pink; */
     }
     .selections{
         display: flex;
@@ -154,7 +157,7 @@ const LyricGenerator = () => {
                     alert("Please select before getting result.")
                 }
             }
-            const result = await predict(artist, length, gram, textSeed, seeding);
+            const result = await predict(model, artist, length, textSeed, seeding);
             setCrawl(JSON.stringify(result.data.return));
             alert("See Results below!")
         } catch (error) {
@@ -184,8 +187,8 @@ const LyricGenerator = () => {
                     <span className='one'>1. Select A <span className='two'>Language Model</span>:</span>
                     <div>
                         <SelectButton id="model" value='n-gram' onClick={(e) => { setModel(e.target.value) }} stay={model === 'n-gram' ? true : false}> n-gram </SelectButton>
-                        <SelectButton id="model" value='lstm' onClick={(e) => { setModel(e.target.value) }} stay={model === 'lstm' ? true : false}> lstm </SelectButton>
-                        <SelectButton id="model" value='gru' onClick={(e) => { setModel(e.target.value) }} stay={model === 'gru' ? true : false}> gru </SelectButton>
+                        {/* <SelectButton id="model" value='lstm' onClick={(e) => { setModel(e.target.value) }} stay={model === 'lstm' ? true : false}> lstm </SelectButton> */}
+                        {/* <SelectButton id="model" value='gru' onClick={(e) => { setModel(e.target.value) }} stay={model === 'gru' ? true : false}> gru </SelectButton> */}
                         <SelectButton value='gpt-2' onClick={(e) => { setModel(e.target.value) }} stay={model === 'gpt-2' ? true : false}> gpt-2 </SelectButton>
                     </div>
 
@@ -198,13 +201,13 @@ const LyricGenerator = () => {
                             <SelectButton id="artist" value='piggyLo' stay={artist === 'piggyLo' ? true : false} onClick={(e) => { setArtist(e.target.value) }}> piggyLo </SelectButton>
                         </div>
                         <div className='displayArtist'>
-                            <img src="https://images.chinatimes.com/newsphoto/2022-05-01/1024/20220501002968.jpg"></img>
-                            <SelectButton id="artist" value='jolin2' onClick={(e) => { setArtist(e.target.value) }} stay={artist === 'jolin2' ? true : false}> jolin </SelectButton>
+                            <img src="https://upload.wikimedia.org/wikipedia/zh/thumb/a/a5/Emblem_of_Golden_Melody_Awards.svg/1200px-Emblem_of_Golden_Melody_Awards.svg.png"></img>
+                            <SelectButton id="artist" value='jolin2' onClick={(e) => { setArtist(e.target.value) }} stay={artist === 'jolin2' ? true : false}> Golden {' '}Award </SelectButton>
                         </div>
-                        <div className='displayArtist'>
+                        {/* <div className='displayArtist'>
                             <img src="https://doqvf81n9htmm.cloudfront.net/data/crop_article/71359/60-f.jpg_1140x855.jpg"></img>
                             <SelectButton id="artist" value='jaychou' onClick={(e) => { setArtist(e.target.value) }} stay={artist === 'jaychou' ? true : false}> jaychou </SelectButton>
-                        </div>
+                        </div> */}
                     </div>
                 </Select>
 
@@ -212,10 +215,10 @@ const LyricGenerator = () => {
                     <span className='one'>3. Enter <span className='two'>Length of Lyrics</span>:</span>
                     <EnterLength id="length" onChange={(e) => { setLength(e.target.value) }} />
                 </Select>
-                <Select>
+                {/* <Select>
                     <span className='one'>4. Enter <span className='two'>Length of gram (?-gram)</span>:</span>
                     <EnterLength id="gram" onChange={(e) => { setGram(e.target.value) }} />
-                </Select>
+                </Select> */}
                 <Select>
                     <span className='one'>4. Enter <span className='two'>A Seeding</span>:</span>
                     <EnterLength id="seeding" onChange={(e) => { setSeeding(e.target.value) }} />
