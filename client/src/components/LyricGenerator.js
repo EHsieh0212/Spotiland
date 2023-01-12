@@ -231,9 +231,11 @@ const LyricGenerator = () => {
                 {getAResult ?
                     (<Result>
                         Result:
+                        <p>資料來源：魔境歌詞網（Mojim.com） 2002-2021 歌詞內容 </p>
                         <p>歌手名稱:  {artist} </p>
                         <p>歌詞長度:  {length} 個字</p>
                         <p>使用模型:  {model} </p>
+                        <p>斷詞工具:  CKIP(Chinese Knowledge and Information Processing) </p>
                         <p>使用的text seed:  {textSeed} </p>
                         {crawl ? (<ResultText>{crawl}</ResultText>) : (<Loader />)}
                         <div>
