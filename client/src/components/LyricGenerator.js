@@ -152,7 +152,7 @@ const LyricGenerator = () => {
         try {
             setGetAResult(true);
             if (getAResult == true) {
-                if (artist | length | gram | textSeed | seeding === null) {
+                if (artist | length | textSeed | seeding === null) {
                     alert("Please select before getting result.")
                 }
             }
