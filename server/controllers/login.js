@@ -20,7 +20,7 @@ const login = (req, res) => {
     const state = generateRandomString(16);
     res.cookie(stateKey, state);
 
-    // cannot use env variables! (不知道為何但用了會讀不到)
+    // cannot use env variables
     const scope = 'user-read-private user-read-email user-read-recently-played user-top-read user-follow-read user-follow-modify playlist-read-private playlist-read-collaborative playlist-modify-public';
     let qstring = new URLSearchParams({
         response_type: 'code',
@@ -71,7 +71,6 @@ const callback = async(req, res) => {
                     access_token,
                     refresh_token,
                 });
-                // 好像一定要導到這個url才可以導到下面的服務
                 res.redirect(
                     `${FRONTEND_URI}/#${qstring}`,
                 );
