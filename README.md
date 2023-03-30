@@ -1,7 +1,7 @@
 # Spotiland
 
 ## Your Ultimate Spotify Wonderland
-### 3 main features:
+### Main feature:
 - personal spotify data analysis
 
 ## Dev Setup
