@@ -22,7 +22,7 @@ const Main = styled.main`
   max-width: 1950px;
   margin-top: 20px;
   /* height: 3000000px; */
-  padding: 0 0 0 50px;
+  /* padding: 0 0 0 50px; */
   opacity: null;
   /* opacity: ${props => (props.opacity? 1 : null)}; */
   /* background-color: null; */
@@ -162,8 +162,8 @@ const Dashboard = () => {
             <RoadSigns>
               <a className='infos-top' onClick={() => scrollToSection(topSingers)}> Top Singers </a>
               <a className='infos-middle' onClick={() => scrollToSection(topTracks)}> Top Tracks </a>
-              {/* <a className='infos-bottom' onClick={() => scrollToSection(happiness)}> How Happy Are Your Favorite Songs? </a> */}
-              {/* <a className='infos-bottom' onClick={() => scrollToSection(genres)}> Genres </a> */}
+              {/* <a className='infos-bottom' onClick={() => scrollToSection(happiness)}> How Happy Are Your Favorite Songs? </a>  */}
+              {/* {/* <a className='infos-bottom' onClick={() => scrollToSection(genres)}> Genres </a> */}
             </RoadSigns>
           </Header>
           

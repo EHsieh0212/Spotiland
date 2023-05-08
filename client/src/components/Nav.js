@@ -72,11 +72,11 @@ const Nav = () => (
           <div>Dashboard</div>
         </NavLink>
       </MenuItem>
-      <MenuItem>
+      {/* <MenuItem>
         <NavLink to="/lyricGenerator">
           <div>Lyric Generator</div>
         </NavLink>
-      </MenuItem>
+      </MenuItem> */}
       {/* <MenuItem>
         <NavLink to="/kareoke">
           <div>Personal Kareoke Room</div>

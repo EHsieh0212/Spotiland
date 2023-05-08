@@ -13,11 +13,11 @@ import ScrollToTopGlobal from './ScrollToTopGlobal';
 /////////////////////////////////////////////////////
 const MainPage = () => (
   <div>
-    <Nav />
+    {/* <Nav /> */}
     <Router primary={false}>
       <ScrollToTopGlobal path='/'>
         <Dashboard path='/' />
-        <LyricGenerator path='/lyricGenerator' />
+        {/* <LyricGenerator path='/lyricGenerator' /> */}
       </ScrollToTopGlobal>
     </Router>
   </div>
