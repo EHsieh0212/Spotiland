@@ -5,7 +5,6 @@ const wrapAsync = (fn) => {
     };
 };
 
-
 const generateRandomString = length => {
     let text = '';
     const possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
@@ -16,6 +15,7 @@ const generateRandomString = length => {
   };
 
 
+  
 module.exports = {
     wrapAsync, 
     generateRandomString

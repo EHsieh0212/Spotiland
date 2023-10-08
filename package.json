@@ -24,10 +24,11 @@
   "scripts": {
     "install": "cd client && npm install --force",
     "build": "NODE_ENV=production cd client/ && npm install --force",
-    "server": "node server",
-    "client": "cd client && yarn start",
-    "start-server": "cd server/ && node index.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "dev-server": "nodemon server",
+    "dev-client": "cd client && npm start",
+    "dev": "concurrently --kill-others-on-fail \"npm run dev-server\" \"npm run dev-client\"",
+    "start-server": "cd server/ && nodemon index.js"
+    
   },
   "dependencies": {
     "cluster": "^0.7.7",
@@ -40,6 +41,7 @@
     "request": "^2.88.2"
   },
   "devDependencies": {
-    "concurrently": "^5.3.0"
+    "concurrently": "^5.3.0",
+    "nodemon": "^3.0.1"
   }
 }
