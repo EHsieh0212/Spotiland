@@ -1,21 +1,22 @@
 {
   "name": "spotiland",
-  "version": "0.1.0",
-  "description": "spotiland",
+  "version": "0.2.0",
+  "description": "Spotiland - Your ultimate soptify profile and AI helper",
   "main": "server/index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/EHsieh0212/Spotiland.git"
   },
-  "keywords": [],
+  "keywords": ["spotiland"],
   "author": "chia ying hsieh",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/EHsieh0212/Spotiland/issues"
   },
-  "homepage": "/",
+  "homepage": "https://github.com/EHsieh0212/Spotiland#read-me",
   "engines": {
-    "node": "19.2.0"
+    "node": "19.2.0", 
+    "npm": "8.19.3"
   },
   "cacheDirectories": [
     "node_modules",
@@ -23,23 +24,33 @@
   ],
   "scripts": {
     "install": "cd client && npm install --force",
-    "build": "NODE_ENV=production cd client/ && npm install --force",
-    "server": "node server",
-    "client": "cd client && yarn start",
-    "start-server": "cd server/ && node index.js",
-    "dev": "concurrently --kill-others-on-fail \"yarn server\" \"yarn client\""
+    "build": "cd client/ && npm install --force",
+    "debug": "WORK_STAGE=develop nodemon node server",
+    "dev-server": "nodemon server",
+    "server": "WORK_STAGE=production node server",
+    "client": "cd client && npm start",
+    "dev": "WORK_STAGE=develop concurrently --kill-others-on-fail \"npm run dev-server\" \"npm run client\"",
+    "eslint": "eslint --fix . --ext .js"
   },
   "dependencies": {
-    "cluster": "^0.7.7",
     "connect-history-api-fallback": "^2.0.0",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
-    "querystring": "^0.2.1",
+    "express-rate-limit": "^7.1.0",
     "request": "^2.88.2"
   },
   "devDependencies": {
-    "concurrently": "^5.3.0"
+    "concurrently": "^5.3.0",
+    "eslint": "^8.51.0",
+    "eslint-config-prettier": "^9.0.0",
+    "eslint-config-standard": "^17.1.0",
+    "eslint-plugin-import": "^2.28.1",
+    "eslint-plugin-n": "^16.1.0",
+    "eslint-plugin-prettier": "^5.0.0",
+    "eslint-plugin-promise": "^6.1.1",
+    "eslint-plugin-react": "^7.33.2",
+    "nodemon": "^3.0.1"
   }
 }

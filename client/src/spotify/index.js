@@ -1,18 +1,13 @@
 import axios from 'axios';
-import { getHashParams } from '../utils';
 
 // variables setting
 const EXPIRATION_TIME = 3600 * 1000; // 3600 seconds * 1000 = 1 hour in milliseconds
-
-// set functions (已有token)
 const setTokenTimestamp = () => window.localStorage.setItem('spotify_token_timestamp', Date.now());
 const setLocalAccessToken = token => {
   setTokenTimestamp();
   window.localStorage.setItem('spotify_access_token', token);
 };
 const setLocalRefreshToken = token => window.localStorage.setItem('spotify_refresh_token', token);
-
-// get functions (未有token)
 const getTokenTimestamp = () => window.localStorage.getItem('spotify_token_timestamp');
 const getLocalAccessToken = () => window.localStorage.getItem('spotify_access_token');
 const getLocalRefreshToken = () => window.localStorage.getItem('spotify_refresh_token');
@@ -20,7 +15,6 @@ const getLocalRefreshToken = () => window.localStorage.getItem('spotify_refresh_
 // Refresh the token
 const refreshAccessToken = async () => {
   try {
-    // 這裡剛登入進去之後好像都會拿不到token
     const { data } = await axios.get(`/refresh_token?refresh_token=${getLocalRefreshToken()}`);
     const { access_token } = data;
     setLocalAccessToken(access_token);
@@ -37,22 +31,20 @@ const refreshAccessToken = async () => {
 // A. 
 export const getAccessToken = () => {
   // 0. get data
-  const { error, access_token, refresh_token } = getHashParams();
-
-  // 1. condition of token invalid
-  if (error) {
-    console.error(error);
-    refreshAccessToken();
-  }
+  const urlParams = new URLSearchParams(window.location.search);
+  const access_token = urlParams.get('access_token');
+  const refresh_token = urlParams.get('access_token');
 
   // 2. condition of token expiration
+  setTokenTimestamp();
   if (Date.now() - getTokenTimestamp() > EXPIRATION_TIME) {
     console.log('The access token of spotiland user has expired, refreshing...');
     refreshAccessToken();
   }
 
-  // 3. get access token from params, store it in local, return it.
+  // 3. get access token from params, store it in local
   const localAccessToken = getLocalAccessToken();
+
   if ((!localAccessToken || localAccessToken === 'undefined') && access_token) {
     setLocalAccessToken(access_token);
     setLocalRefreshToken(refresh_token);
@@ -70,7 +62,8 @@ export const logout = () => {
   window.localStorage.removeItem('spotify_token_timestamp');
   window.localStorage.removeItem('spotify_access_token');
   window.localStorage.removeItem('spotify_refresh_token');
-  window.location.reload();
+  
+  window.location = window.location.origin;
 };
 
 
@@ -82,6 +75,8 @@ const headers = {
   Authorization: `Bearer ${token}`,
   'Content-Type': 'application/json',
 };
+
+
 
 ///////////////////////////////////////////
 // personal info
@@ -223,9 +218,6 @@ export const getRecommendationsForTracks = tracks => {
     },
   );
 };
-
-
-
 
 
 /////////////////////////////////////////////
