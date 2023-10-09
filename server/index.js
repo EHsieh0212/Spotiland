@@ -8,7 +8,6 @@ const cookieParser = require('cookie-parser');
 const path = require('path');
 const history = require('connect-history-api-fallback');
 const routers = require('./routes');
-const { wrapAsync } = require('./utils');
 
 const app = express();
 
@@ -20,7 +19,6 @@ app
 .use(cors())
 .use(cookieParser())
 .use(routers)
-.use(wrapAsync)
 .use(
   history({
     verbose: true,
@@ -30,7 +28,7 @@ app
       { from: /\/refresh_token/, to: '/refresh_token' },
     ],
   }),
-)
+);
 
 
 app.get('/', function (req, res) {
