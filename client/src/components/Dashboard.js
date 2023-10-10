@@ -9,7 +9,6 @@ import { getUserInfo, logout } from '../spotify';
 import Loader from './Loader';
 import TopTracks from './TopTracks';
 import TopSingers from './TopSingers';
-import HappinessAnalysis from './HappinessAnalysis';
 // higher order error handler
 import { catchErrors } from '../utils/index'
 import ScrollToTopDashboard from "./ScrollToTopDashboard";
@@ -18,9 +17,9 @@ import ScrollToTopDashboard from "./ScrollToTopDashboard";
 /////////////////////////////////////////////
 // styled components
 const Main = styled.main`
-  width: 100%;
-  max-width: 1950px;
-  margin-top: 20px;
+  /* width: 100%; */
+  /* max-width: 1950px; */
+  /* margin-top: 20px; */
   /* height: 3000000px; */
   /* padding: 0 0 0 50px; */
   opacity: null;
@@ -145,8 +144,8 @@ const Dashboard = () => {
         <Main>
         <ScrollToTopDashboard targetPlace={'#top'}/>
           <Header>
-            <PersonalInfo id='top'>
-              <Avatar>
+            {/* <PersonalInfo id='top'> */}
+              {/* <Avatar>
                 {user.images.length > 0 ? (
                   <img src={user.images[0].url} alt="avatar" />
                 ) : (
@@ -157,19 +156,16 @@ const Dashboard = () => {
               <UserName href={user.external_urls.spotify} target="_blank" rel="noopener noreferrer">
                 <h1>{user.display_name}</h1>
               </UserName>
-              <LogoutButton onClick={logout}>Logout</LogoutButton>
-            </PersonalInfo>
-            <RoadSigns>
+              <LogoutButton onClick={logout}>Logout</LogoutButton> */}
+            {/* </PersonalInfo> */}
+            {/* <RoadSigns>
               <a className='infos-top' onClick={() => scrollToSection(topSingers)}> Top Singers </a>
               <a className='infos-middle' onClick={() => scrollToSection(topTracks)}> Top Tracks </a>
-              {/* <a className='infos-bottom' onClick={() => scrollToSection(happiness)}> How Happy Are Your Favorite Songs? </a>  */}
-              {/* {/* <a className='infos-bottom' onClick={() => scrollToSection(genres)}> Genres </a> */}
-            </RoadSigns>
+            </RoadSigns> */}
           </Header>
           
           <TopSingers refPlace={topSingers}/>
           <TopTracks refPlace={topTracks}/>
-          {/* <HappinessAnalysis refPlace={happiness}/> */}
           
         </Main>
       ) : (

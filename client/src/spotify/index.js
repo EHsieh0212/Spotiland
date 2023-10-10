@@ -33,7 +33,7 @@ export const getAccessToken = () => {
   // 0. get data
   const urlParams = new URLSearchParams(window.location.search);
   const access_token = urlParams.get('access_token');
-  const refresh_token = urlParams.get('access_token');
+  const refresh_token = urlParams.get('refresh_token');
 
   // 2. condition of token expiration
   setTokenTimestamp();
