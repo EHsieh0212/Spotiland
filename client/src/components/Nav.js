@@ -19,8 +19,8 @@ const NavLink = props => <Link getProps={isActive} {...props} />;
 const Container = styled.nav`
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);  
   display: flex;
-    justify-content: space-between;
-    align-items: center;
+  justify-content: space-between;
+  align-items: center;
   flex-direction: column;
   min-height: 100vh;
   position: fixed;

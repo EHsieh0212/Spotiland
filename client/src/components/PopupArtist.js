@@ -1,105 +1,184 @@
-/////////////////////////////////////////////
-// 作廢
-
+import { useState, useEffect } from 'react';
+import Popup from 'reactjs-popup';
 import styled from 'styled-components/macro';
-import { useState, useEffect } from "react";
 import { getArtist } from "../spotify";
+// higher order error handler
+import { catchErrors, formatWithCommas } from '../utils';
 
 
-/////////////////////////////////////////////
+///////////////////////////////////////////////////////////
 // styled component
-const PopupBox = styled.div`
-    position: fixed;
-    /* background: transparent; */
-    /* opacity: 0.4; */
-    width: 100%;
-    height: 100vh;
-    top: 0;
-    left: 0;
-`;
-
-const Box = styled.div`
-    display: inline-flex;
-    flex-direction: row;
-    min-width: 80%;
-    flex-wrap: wrap;
-    position: relative;
-    width: 60%;
-    /* margin: 0 auto; */
-    margin-left: 240px;
-    margin-right: 100px;
-    height: auto;
-    margin-top: calc(100vh - 85vh - 20px);
-    /* background: white; */
-    border-radius: 4px;
-    padding: 20px;
-    border: 1px solid #999;
-    justify-content: center;
-    /* background-color: red; */
-    /* overflow: x; */
-    .content{
-      /* flex-basis: 0px; */
-      /* flex-grow: 1; */
-      /* background-color: green; */
-      font-size: 100px;
-
-    };
-    .close-icon{
-        cursor: pointer;
-        position: fixed;
-
-        /* right: calc(35% - 10px);
-        top: calc(100vh - 85vh - 33px); */
-        /* background: #ededed; */
-        width: fit-content;
-        border-radius: 20%;
-        line-height: 20px;
-        text-align: center;
-        border: 1px solid #999;
-        font-size: 20px;
-        &:hover,
-        &:focus{
-          background-color: green;
-          /* opacity: 1; */
+const Modal = styled.div`
+    font-size: 12px;
+    color: white;
+    background-color: rgba(27, 30, 30  , 0.95);
+    width: 800px;
+    min-height: 580px;
+    max-height: fit-content;
+    border: 2px solid black;
+    @keyframes anvil {
+        0% {
+        transform: scale(1) translateY(0px);
+        opacity: 0;
+        box-shadow: 0 0 0 rgba(241, 241, 241, 0);
+        }
+        1% {
+        transform: scale(0.96) translateY(10px);
+        opacity: 0;
+        box-shadow: 0 0 0 rgba(241, 241, 241, 0);
+        }
+        100% {
+        transform: scale(1) translateY(0px);
+        opacity: 1;
+        box-shadow: 0 0 500px rgba(241, 241, 241, 0);
         }
     }
+    -webkit-animation: anvil 0.54s cubic-bezier(0.38, 0.1, 0.36, 0.9) forwards;
+    .header {
+        width: 100%;
+        border-bottom: 1px solid gray;
+        font-size: 18px;
+        text-align: center;
+        padding: 5px;
+    }
+    .content {
+        width: 100%;
+        padding: 10px 5px;
+    }
+    .close {
+        cursor: pointer;
+        color:white;
+        background-color: rgba(0,0,0,0);
+        position: absolute;
+        display: block;
+        padding: 2px 5px;
+        line-height: 20px;
+        right: -1px;
+        top: -1px;
+        font-size: 24px;
+        border-radius: 18px;
+        border: 0px solid #cfcece;
+}
+`
+
+const Container = styled.div`
+    flex-direction: column;
+    height: 100%;
+    text-align: center;
+    margin-top: 50px;
+    margin-left: 10px;
+    margin-right: 20px;
+    margin-bottom: 30px;
+`;
+
+const Artwork = styled.div`
+  border-radius: 100%;
+  justify-content: center;
+  img {
+    object-fit: cover; /*填滿元素的寬度及高度(維持原比例)，通常會剪掉部分的物件 -> prevent from distortion*/
+    border-radius: 100%;
+    width: 280px;
+    height: 280px;
+    
+  }
+`;
+const ArtistName = styled.div`
+    color:white;
+    font-size: 47px;
+    font-weight: 2750px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    font-weight: 210px;
+    text-align: center;
 `;
 
 
-/////////////////////////////////////////////
-// component
-const PopupArtist = ({handleClose, showArtist}) => {
-  // use state
-  const [artist, setArtist] = useState(null);
+const Stats = styled.div`
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-gap: 10px;
+  text-align: center;
+`;
 
-  const artistInfo = async (artistId) => {
-    const data = await getArtist(artistId);
-    setArtist(data.data)
+const Stat = styled.div``;
+
+const Number = styled.div`
+    color: white;
+    font-size: 22px;
+    font-weight: 700;
+    text-transform: capitalize;
+`;
+
+const NumberLabel = styled.div`
+    color: grey;
+    font-size: 15px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+`;
+
+
+///////////////////////////////////////////////////////////
+// main component
+const PopupArtist = ({ singerId, trigger, onDim, onNorm }) => {
+    const [asingerInfo, setASingerInfo] = useState(null);
+
+    //////////////////////////////////////////
+    const getArtistInfo = async (id, afn) => {
+        const data = await getArtist(id);
+        console.log(JSON.stringify(data.data))
+        setASingerInfo(data.data);
+        afn(true);
+    }
+    const retrieveArtistInfo = (id, afn) => catchErrors(getArtistInfo(id, afn));
+
+    return (
+        <Popup
+            trigger={trigger}
+            modal
+            closeOnDocumentClick={false}
+            onOpen={() => { retrieveArtistInfo(singerId, onDim) }}
+            onClose={onNorm}
+        >
+            {close => (
+                <Modal>
+                    <button className="close" onClick={close}> X </button>
+                    <div className="content">
+                        {asingerInfo ?
+                            (<Container>
+                                {/* <div>
+                            {JSON.stringify(asingerInfo)}
+                            </div> */}
+                                <Artwork>
+                                    {<img src={asingerInfo.images[0].url} alt="Artist Artwork" />}
+                                </Artwork>
+                                <ArtistName>{asingerInfo.name}</ArtistName>
+                                <Stats>
+                                    <Stat>
+                                        <Number>
+                                            {asingerInfo.popularity}%
+                                        </Number>
+                                        <NumberLabel>popularity</NumberLabel>
+                                    </Stat>
+                                    <Stat>
+                                        <Number>
+                                            {formatWithCommas(asingerInfo.followers.total)}
+                                        </Number>
+                                        <NumberLabel>followers</NumberLabel>
+                                    </Stat>
+                                    <Stat>
+                                        <Number>
+                                            {asingerInfo.genres && asingerInfo.genres.map((genre, i) => (<div key={i}>{genre}</div>))}
+                                        </Number>
+                                        <NumberLabel>genre</NumberLabel>
+                                    </Stat>
+
+                                </Stats>
+                            </Container>)
+                            : "loading"}
+                    </div>
+                </Modal>
+            )}
+        </Popup>)
 };
-
-  // use effect
-  useEffect(() => {
-    // const fetchArtist = async (id) => {
-    //   const data = await getArtist(id);
-    //   setArtist(data.data)
-    // }
-    // catchErrors(artistInfo());
-  }, [])
-
-
-  return (
-    <PopupBox>
-      <Box>
-        <div className='content'>
-          {showArtist}
-        </div>
-        <div>
-          <span className="close-icon" onClick={handleClose}>close</span>
-        </div>
-      </Box>
-    </PopupBox>
-  );
-};
-
 
 export default PopupArtist;

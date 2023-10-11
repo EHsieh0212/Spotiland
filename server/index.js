@@ -37,9 +37,9 @@ app.get('/', function (req, res) {
 
 
 // All remaining requests return the React app, so it can handle routing.
-// app.get('*', function (request, response) {
-//   response.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
-// });
+app.get('*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));
+});
 
 app.listen(PORT, function () {
   console.warn(`Spotiland listening on port ${PORT}`);

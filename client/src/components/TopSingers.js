@@ -7,7 +7,7 @@ import { getUserInfo, getTopArtistsLong, getTopArtistsShort } from '../spotify';
 // higher order error handler
 import { catchErrors } from '../utils';
 // artist popup info
-import PopupArtist2 from './PopupArtist2';
+import PopupArtist from './PopupArtist';
 
 
 /////////////////////////////////
@@ -245,7 +245,7 @@ const TopSingers = ({refPlace}) => {
                                     <p className='rank'> {i + 1} </p>
                                 </Rank>
                                 <ArtistInfo>
-                                    <PopupArtist2
+                                    <PopupArtist
                                         singerId={singer.id}
                                         trigger={<Mask> Info </Mask>}
                                         onDim={setOpenPopup}
