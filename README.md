@@ -1,7 +1,5 @@
 # Spotiland
 
-> Your ultimate Spotify wonderland — a personal Spotify listening-data analytics web app.
-
 Log in with your Spotify account and explore your own listening profile:
 your top artists and top tracks, with per-artist detail cards.
 
