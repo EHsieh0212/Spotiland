@@ -3,7 +3,7 @@ import styled from 'styled-components/macro';
 import { theme, Main } from '../styles';
 const { colors } = theme;
 import Footer from './Footer';
-const LOGIN_URI = 'http://localhost:8000/login';
+const LOGIN_URI = 'http://127.0.0.1:8000/login';
 
 
 ///////////////////////////////////////////////

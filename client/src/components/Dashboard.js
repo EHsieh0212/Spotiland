@@ -19,25 +19,17 @@ import ScrollToTopDashboard from "./ScrollToTopDashboard";
 // styled components
 const Main = styled.main`
   width: 100%;
-  max-width: 1950px;
-  margin-top: 20px;
-  /* height: 3000000px; */
-  /* padding: 0 0 0 50px; */
-  opacity: null;
-  /* opacity: ${props => (props.opacity? 1 : null)}; */
-  /* background-color: null; */
 `;
 
 
 const Header = styled.header`
+  position: relative;
   display: flex;
-  flex-wrap: nowrap;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  margin-left: 500px;
-  margin-right: 500px;
-  padding-bottom: 0px;
-  max-width: 100%;
+  width: 100%;
+  padding: 40px 20px;
+  background-color: ${colors.white};
 `;
 
 const PersonalInfo = styled.div`
@@ -97,9 +89,12 @@ const LogoutButton = styled.a`
 
 
 const RoadSigns = styled.div`
+  position: absolute;
+  right: 40px;
+  top: 50%;
+  transform: translateY(-50%);
   display: flex;
   flex-direction: column;
-  margin-left: 70px;
   .infos-top, .infos-middle, .infos-bottom{
     font-size: 25px;
     font-weight: 800;

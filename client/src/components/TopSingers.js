@@ -15,15 +15,25 @@ import PopupArtist2 from './PopupArtist2';
 // background color是個好用的東西
 // 1. basics
 const Body = styled.div`
-    /* background-color: #F6F19C; */
-    /* background-color: (0, 0, 0, 1); */
-    background-color: ${props => props.opacityChange? 'rgba(0, 0, 0, 0.9)' : 'rgba(246, 241, 156, 1)'};
+    position: relative;
+    background-color: rgba(246, 241, 156, 1);
     justify-content: center;
-    opacity: ${props => props.opacityChange? 0.2 : null};
+    /* Yellow semi-transparent mask shown while a singer popup is open */
+    &::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-color: rgba(246, 241, 156, 0.8);
+      opacity: ${props => (props.opacityChange ? 1 : 0)};
+      transition: opacity 0.25s ease;
+      pointer-events: none;
+      z-index: 5;
+    }
 `;
 
 const Title = styled.h1`
     color: ${props => props.opacityChange? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 1)'};
+    margin-top: 0;
     padding-top: 20px;
     margin-bottom: 40px;
     margin-left: 20px;
