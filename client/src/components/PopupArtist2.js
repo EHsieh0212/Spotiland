@@ -123,20 +123,18 @@ const PopupArtist2 = ({ singerId, trigger, onDim, onNorm }) => {
     const [asingerInfo, setASingerInfo] = useState(null);
 
     //////////////////////////////////////////
-    const getArtistInfo = async (id, afn) => {
+    const getArtistInfo = async (id) => {
         const data = await getArtist(id);
-        console.log(JSON.stringify(data.data))
         setASingerInfo(data.data);
-        afn(true);
     }
-    const retrieveArtistInfo = (id, afn) => catchErrors(getArtistInfo(id, afn));
+    const retrieveArtistInfo = (id) => catchErrors(getArtistInfo(id));
 
     return (
         <Popup
             trigger={trigger}
             modal
             closeOnDocumentClick={false}
-            onOpen={() => { retrieveArtistInfo(singerId, onDim) }}
+            onOpen={() => { onDim(true); retrieveArtistInfo(singerId); }}
             onClose={onNorm}
         >
             {close => (

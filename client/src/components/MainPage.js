@@ -1,5 +1,6 @@
 // router
 import { Router } from '@reach/router';
+import styled from 'styled-components/macro';
 
 // components
 import Nav from './Nav';
@@ -11,8 +12,14 @@ import ScrollToTopGlobal from './ScrollToTopGlobal';
 
 
 /////////////////////////////////////////////////////
+// Pink base so the page never shows white below the last (pink) section.
+const Page = styled.div`
+  min-height: 100vh;
+  background-color: #F67197;
+`;
+
 const MainPage = () => (
-  <div>
+  <Page>
     {/* <Nav /> */}
     <Router primary={false}>
       <ScrollToTopGlobal path='/'>
@@ -20,7 +27,7 @@ const MainPage = () => (
         {/* <LyricGenerator path='/lyricGenerator' /> */}
       </ScrollToTopGlobal>
     </Router>
-  </div>
+  </Page>
 );
 
 export default MainPage;

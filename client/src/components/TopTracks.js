@@ -7,7 +7,9 @@ import { getUserInfo, getTopTracksLong, getTopTracksShort } from '../spotify';
 // higher order error handler
 import { catchErrors } from '../utils';
 // track popup info
-import PopupTrack from './PopupTrack';
+// Track-detail popup disabled — it relied on deprecated Spotify
+// audio-features / audio-analysis endpoints (now return 403).
+// import PopupTrack from './PopupTrack';
 
 
 /////////////////////////////////
@@ -34,7 +36,7 @@ const Title = styled.h1`
 const TrackContainer = styled.div`
     /* background-color: yellow; */
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
     grid-gap: 25px;
     margin-top: 20px;
     margin-left: 250px;
@@ -80,13 +82,14 @@ const TrackInfo = styled.div`
     }
     &:hover,
     &:focus {
+    /* hover affordance removed — tracks are display-only (not clickable):
     position:relative;
-    /* bottom: 10px; */
     right: 10px;
     ${Mask} {
       opacity: 1;
     }
     cursor: pointer;
+    */
     }
 `;
 
@@ -102,6 +105,8 @@ const TrackLeft = styled.div`
     img {
         width: 160px;
         height: 160px;
+        max-width: none; /* override global img{max-width:100%} that was squishing width to 136px */
+        object-fit: cover;
         border-radius: 10%;
     }
 `;
@@ -170,7 +175,7 @@ const RangeButton = styled.button`
 const TopTracks = ({refPlace}) => {
     const [topTracks, setTopTracks] = useState(null);
     const [range, setRange] = useState(null);
-    const [openPopup, setOpenPopup] = useState(false);
+    // const [openPopup, setOpenPopup] = useState(false); // only drove the removed track-detail popup dim
     
 
     const rangeApis = {
@@ -196,7 +201,7 @@ const TopTracks = ({refPlace}) => {
 
     return (
         <Main>
-            <Body opacityChange={openPopup}>
+            <Body>
                 <Title id="toptracks" ref={refPlace}> Top Tracks </Title>
                 <div>
                 <Ranges>
@@ -213,13 +218,14 @@ const TopTracks = ({refPlace}) => {
                     {
                         topTracks && (
                             topTracks.map((track, i) => (
-                                <TrackInfo key={i} opacityChange={openPopup}>   
-                                    <PopupTrack 
+                                <TrackInfo key={i}>
+                                    {/* Track-detail popup removed (deprecated audio endpoints → 403):
+                                    <PopupTrack
                                         trackId={track.id}
                                         trigger={<Mask> Info </Mask>}
                                         onDim={setOpenPopup}
                                         onNorm={() => setOpenPopup(false)}
-                                    />
+                                    /> */}
                                     <TrackLeft>
                                         <img src={track.album.images[0].url} alt={track.album.name}></img>
                                     </TrackLeft>
