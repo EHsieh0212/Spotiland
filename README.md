@@ -3,6 +3,7 @@
 Log in with your Spotify account and explore your own listening profile:
 your top artists and top tracks, with per-artist detail cards.
 
+![til](demo.gif)
 ## 1. Purpose
 
 Spotiland turns your personal Spotify data into a simple, visual dashboard.
