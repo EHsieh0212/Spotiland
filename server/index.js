@@ -2,17 +2,16 @@ require('dotenv').config();
 
 const CLIENT_ID = process.env.CLIENT_ID;
 const CLIENT_SECRET = process.env.CLIENT_SECRET;
-let REDIRECT_URI = process.env.REDIRECT_URI || 'http://localhost:8000/callback';
-let FRONTEND_URI = process.env.FRONTEND_URI || 'http://localhost:3000';
+let REDIRECT_URI = process.env.REDIRECT_URI || 'http://127.0.0.1:8000/callback';
+let FRONTEND_URI = process.env.FRONTEND_URI || 'http://127.0.0.1:3000';
 const PORT = process.env.PORT || 8000;
 
 if (process.env.NODE_ENV !== 'production') {
-  REDIRECT_URI = 'http://localhost:8000/callback';
-  FRONTEND_URI = 'http://localhost:3000';
+  REDIRECT_URI = 'http://127.0.0.1:8000/callback';
+  FRONTEND_URI = 'http://127.0.0.1:3000';
 }
 
 const express = require('express');
-const request = require('request');
 const cors = require('cors');
 const querystring = require('querystring');
 const cookieParser = require('cookie-parser');
@@ -66,7 +65,11 @@ app.get('/login', function (req, res) {
   );
 });
 
-app.get('/callback', function (req, res) {
+// Basic auth header shared by the token requests below.
+const basicAuthHeader = () =>
+  `Basic ${Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString('base64')}`;
+
+app.get('/callback', async function (req, res) {
   // your application requests refresh and access tokens
   // after checking the state parameter
   const code = req.query.code || null;
@@ -75,65 +78,73 @@ app.get('/callback', function (req, res) {
 
   if (state === null || state !== storedState) {
     res.redirect(`/#${querystring.stringify({ error: 'state_mismatch' })}`);
-  } else {
-    res.clearCookie('spotify_auth_state');
-    const authOptions = {
-      url: 'https://accounts.spotify.com/api/token',
-      form: {
-        code: code,
+    return;
+  }
+
+  res.clearCookie('spotify_auth_state');
+
+  try {
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: basicAuthHeader(),
+      },
+      body: new URLSearchParams({
+        code,
         redirect_uri: REDIRECT_URI,
         grant_type: 'authorization_code',
-      },
-      headers: {
-        Authorization: `Basic ${new Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
-          'base64',
-        )}`,
-      },
-      json: true,
-    };
-
-    request.post(authOptions, function (error, response, body) {
-      if (!error && response.statusCode === 200) {
-        const access_token = body.access_token;
-        const refresh_token = body.refresh_token;
-
-        // we can also pass the token to the browser to make requests from there
-        res.redirect(
-          `${FRONTEND_URI}/#${querystring.stringify({
-            access_token,
-            refresh_token,
-          })}`,
-        );
-      } else {
-        res.redirect(`/#${querystring.stringify({ error: 'invalid_token' })}`);
-      }
+      }),
     });
+
+    if (!response.ok) {
+      res.redirect(`/#${querystring.stringify({ error: 'invalid_token' })}`);
+      return;
+    }
+
+    const body = await response.json();
+
+    // we can also pass the token to the browser to make requests from there
+    res.redirect(
+      `${FRONTEND_URI}/#${querystring.stringify({
+        access_token: body.access_token,
+        refresh_token: body.refresh_token,
+      })}`,
+    );
+  } catch (error) {
+    console.error(error);
+    res.redirect(`/#${querystring.stringify({ error: 'invalid_token' })}`);
   }
 });
 
-app.get('/refresh_token', function (req, res) {
+app.get('/refresh_token', async function (req, res) {
   // requesting access token from refresh token
   const refresh_token = req.query.refresh_token;
-  const authOptions = {
-    url: 'https://accounts.spotify.com/api/token',
-    headers: {
-      Authorization: `Basic ${new Buffer.from(`${CLIENT_ID}:${CLIENT_SECRET}`).toString(
-        'base64',
-      )}`,
-    },
-    form: {
-      grant_type: 'refresh_token',
-      refresh_token,
-    },
-    json: true,
-  };
 
-  request.post(authOptions, function (error, response, body) {
-    if (!error && response.statusCode === 200) {
-      const access_token = body.access_token;
-      res.send({ access_token });
+  try {
+    const response = await fetch('https://accounts.spotify.com/api/token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: basicAuthHeader(),
+      },
+      body: new URLSearchParams({
+        grant_type: 'refresh_token',
+        refresh_token,
+      }),
+    });
+
+    if (!response.ok) {
+      res.status(response.status).send({ error: 'could_not_refresh_token' });
+      return;
     }
-  });
+
+    const body = await response.json();
+    res.send({ access_token: body.access_token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ error: 'could_not_refresh_token' });
+  }
 });
 
 // All remaining requests return the React app, so it can handle routing.
