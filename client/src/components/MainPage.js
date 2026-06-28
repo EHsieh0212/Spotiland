@@ -3,9 +3,9 @@ import { Router } from '@reach/router';
 import styled from 'styled-components/macro';
 
 // components
-import Nav from './Nav';
+import AvatarMenu from './AvatarMenu';
 import Dashboard from './Dashboard';
-import LyricGenerator from './LyricGenerator';
+import CompareMusicTastes from './CompareMusicTastes';
 
 // control behavior
 import ScrollToTopGlobal from './ScrollToTopGlobal';
@@ -20,11 +20,11 @@ const Page = styled.div`
 
 const MainPage = () => (
   <Page>
-    {/* <Nav /> */}
+    <AvatarMenu />
     <Router primary={false}>
       <ScrollToTopGlobal path='/'>
         <Dashboard path='/' />
-        {/* <LyricGenerator path='/lyricGenerator' /> */}
+        <CompareMusicTastes path='compare' />
       </ScrollToTopGlobal>
     </Router>
   </Page>
