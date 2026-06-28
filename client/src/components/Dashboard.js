@@ -1,18 +1,15 @@
 import React, { useState, useEffect, useRef } from 'react';
 // css
 import styled from 'styled-components/macro';
-import { theme } from '../styles';
-const { colors, fontSizes } = theme;
 // utils
-import { getUserInfo, logout } from '../spotify';
+import { getUserInfo } from '../spotify';
 // other components
 import Loader from './Loader';
 import TopTracks from './TopTracks';
 import TopSingers from './TopSingers';
-import HappinessAnalysis from './HappinessAnalysis';
 // higher order error handler
-import { catchErrors } from '../utils/index'
-import ScrollToTopDashboard from "./ScrollToTopDashboard";
+import { catchErrors } from '../utils';
+import ScrollToTopDashboard from './ScrollToTopDashboard';
 
 
 /////////////////////////////////////////////
@@ -22,106 +19,14 @@ const Main = styled.main`
 `;
 
 
-const Header = styled.header`
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  padding: 40px 20px;
-  background-color: ${colors.white};
-`;
-
-const PersonalInfo = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-`;
-
-const Avatar = styled.div`
-  margin: 0;
-  width: 200px;
-  height: 200px;
-  img {
-    border-radius: 100%;
-  }
-`;
-
-const NoAvatar = styled.div`
-  border: 2px solid currentColor;
-  border-radius: 100%;
-`;
-
-const UserName = styled.a`
-  &:hover,
-  &:focus {
-    color: ${colors.offGreen};
-  }
-  h1{
-    font-size: 60px;
-    font-weight: 700;
-    margin: 20px 0 0;
-  }
-`;
-
-const LogoutButton = styled.a`
-  background-color: black;
-  color: ${colors.white};
-
-  border: 1px solid ${colors.white};
-  border-radius: 30px;
-  margin-top: 30px;
-  padding: 12px 30px;
-
-  font-size: ${fontSizes.xs};
-  font-weight: 700;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  text-align: center;
-
-  &:hover,
-  &:focus {
-    background-color: ${colors.green};
-    color: ${colors.black};
-  }
-`;
-
-
-const RoadSigns = styled.div`
-  position: absolute;
-  right: 40px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: column;
-  .infos-top, .infos-middle, .infos-bottom{
-    font-size: 25px;
-    font-weight: 800;
-    margin-bottom: 19px;
-    text-transform: uppercase;
-    text-decoration: underline;
-  };
-`;
-
-
-
 /////////////////////////////////////////////
 // Main User Components
 const Dashboard = () => {
 
-  // useState()
+  // useState() — `user` only gates the initial Loader; each section fetches its own top data.
   const [user, setUser] = useState(null);
   const topSingers = useRef(null);
   const topTracks = useRef(null);
-  const happiness = useRef(null);
-
-  const scrollToSection = (elementRef) => {
-    window.scrollTo({
-      top: elementRef.current.offsetTop,
-      behavior: "smooth",
-    });
-  };
 
   // useEffect()
   useEffect(() => {
@@ -138,34 +43,9 @@ const Dashboard = () => {
     <React.Fragment>
       {user ? (
         <Main>
-        <ScrollToTopDashboard targetPlace={'#top'}/>
-          <Header>
-            <PersonalInfo id='top'>
-              <Avatar>
-                {user.images.length > 0 ? (
-                  <img src={user.images[0].url} alt="avatar" />
-                ) : (
-                  <NoAvatar>
-                  </NoAvatar>
-                )}
-              </Avatar>
-              <UserName href={user.external_urls.spotify} target="_blank" rel="noopener noreferrer">
-                <h1>{user.display_name}</h1>
-              </UserName>
-              <LogoutButton onClick={logout}>Logout</LogoutButton>
-            </PersonalInfo>
-            <RoadSigns>
-              <a className='infos-top' onClick={() => scrollToSection(topSingers)}> Top Singers </a>
-              <a className='infos-middle' onClick={() => scrollToSection(topTracks)}> Top Tracks </a>
-              {/* <a className='infos-bottom' onClick={() => scrollToSection(happiness)}> How Happy Are Your Favorite Songs? </a>  */}
-              {/* {/* <a className='infos-bottom' onClick={() => scrollToSection(genres)}> Genres </a> */}
-            </RoadSigns>
-          </Header>
-          
+          <ScrollToTopDashboard />
           <TopSingers refPlace={topSingers}/>
           <TopTracks refPlace={topTracks}/>
-          {/* <HappinessAnalysis refPlace={happiness}/> */}
-          
         </Main>
       ) : (
         <Loader />
@@ -175,4 +55,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-

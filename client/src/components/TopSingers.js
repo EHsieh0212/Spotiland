@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import { Main } from '../styles';
 // fetch functions
-import { getUserInfo, getTopArtistsLong, getTopArtistsShort } from '../spotify';
+import { getTopArtistsLong, getTopArtistsShort } from '../spotify';
 // higher order error handler
 import { catchErrors } from '../utils';
 // artist popup info
@@ -35,8 +35,6 @@ const Title = styled.h1`
     color: ${props => props.opacityChange? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 1)'};
     margin-top: 0;
     padding-top: 20px;
-    margin-bottom: 40px;
-    margin-left: 20px;
     font-size: 60px;
     font-weight: 900;
 `;
@@ -151,10 +149,22 @@ const Rank = styled.div`
 `;
 
 
-const Ranges = styled.div`
+// Centers the title across the full row; the range toggle sits beside it on the right.
+const HeaderRow = styled.div`
+  position: relative;
   display: flex;
-  justify-content: right;
-  margin-right: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+`;
+
+const Ranges = styled.div`
+  position: absolute;
+  right: 20px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
 `;
 
 const RangeButton = styled.button`
@@ -220,15 +230,16 @@ const TopSingers = ({refPlace}) => {
     //////////////////////////////////////////////////////////
     // use effect
     useEffect(() => {
+        // Default to Last Month (short_term) on first load.
         const fetchArtists = async () => {
-            const { topArtists } = await getUserInfo();
-            if (topArtists.items.length > 20) {
-                setTopSingers(topArtists.items.slice(0, 20));
+            const { data } = await getTopArtistsShort();
+            if (data.items.length > 20) {
+                setTopSingers(data.items.slice(0, 20));
             } else {
-                setTopSingers(topArtists.items);
+                setTopSingers(data.items);
             }
+            setRange('short');
         };
-        // console.log(openPopup)
         catchErrors(fetchArtists());
     }, []);
 
@@ -238,15 +249,17 @@ const TopSingers = ({refPlace}) => {
     return (
         <Main>
             <Body opacityChange={openPopup}>
-                <Title id='topsingers' ref={refPlace} opacityChange={openPopup}> Top Singers </Title>
-                <Ranges>
-                    <RangeButton isActive={range === 'long'} onClick={() => setRangeData('long')}>
-                        <span>All Time</span>
-                    </RangeButton>
-                    <RangeButton isActive={range === 'short'} onClick={() => setRangeData('short')}>
-                        <span>Last Month</span>
-                    </RangeButton>
-                </Ranges>
+                <HeaderRow>
+                    <Title id='topsingers' ref={refPlace} opacityChange={openPopup}> Top Singers </Title>
+                    <Ranges>
+                        <RangeButton isActive={range === 'long'} onClick={() => setRangeData('long')}>
+                            <span>All Time</span>
+                        </RangeButton>
+                        <RangeButton isActive={range === 'short'} onClick={() => setRangeData('short')}>
+                            <span>Last Month</span>
+                        </RangeButton>
+                    </Ranges>
+                </HeaderRow>
                 <ArtistsContainer>
                     {topSingers && (
                         topSingers.map((singer, i) => (

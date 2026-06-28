@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import styled from 'styled-components/macro';
 import { Main } from '../styles';
 // fetch functions
-import { getUserInfo, getTopTracksLong, getTopTracksShort } from '../spotify';
+import { getTopTracksLong, getTopTracksShort } from '../spotify';
 // higher order error handler
 import { catchErrors } from '../utils';
 // track popup info
@@ -24,8 +24,6 @@ const Body = styled.div`
 const Title = styled.h1`
     padding-top: 20px;
     margin-top: 0px;
-    margin-bottom: 40px;
-    margin-left: 20px;
     font-size: 60px;
     font-weight: 900;
     color: white;
@@ -149,10 +147,22 @@ const TrackMiddle = styled.div`
     }
 `;
 
-const Ranges = styled.div`
+// Centers the title across the full row; the range toggle sits beside it on the right.
+const HeaderRow = styled.div`
+  position: relative;
   display: flex;
-  justify-content: right;
-  margin-right: 20px;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 40px;
+`;
+
+const Ranges = styled.div`
+  position: absolute;
+  right: 20px;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
 `;
 
 const RangeButton = styled.button`
@@ -184,9 +194,11 @@ const TopTracks = ({refPlace}) => {
     };
 
     useEffect(() => {
+        // Default to Last Month (short_term) on first load.
         const fetchTracks = async () => {
-            const { topTracks } = await getUserInfo();
-            setTopTracks(topTracks.items.slice(0, 21));
+            const { data } = await getTopTracksShort();
+            setTopTracks(data.items.slice(0, 21));
+            setRange('short');
         };
         catchErrors(fetchTracks());
     }, []);
@@ -202,17 +214,17 @@ const TopTracks = ({refPlace}) => {
     return (
         <Main>
             <Body>
-                <Title id="toptracks" ref={refPlace}> Top Tracks </Title>
-                <div>
-                <Ranges>
-                    <RangeButton isActive={range === 'long'} onClick={() => setRangeData('long')}>
-                        <span>All Time</span>
-                    </RangeButton>
-                    <RangeButton isActive={range === 'short'} onClick={() => setRangeData('short')}>
-                        <span>Last Month</span>
-                    </RangeButton>
-                </Ranges>
-                </div>
+                <HeaderRow>
+                    <Title id="toptracks" ref={refPlace}> Top Tracks </Title>
+                    <Ranges>
+                        <RangeButton isActive={range === 'long'} onClick={() => setRangeData('long')}>
+                            <span>All Time</span>
+                        </RangeButton>
+                        <RangeButton isActive={range === 'short'} onClick={() => setRangeData('short')}>
+                            <span>Last Month</span>
+                        </RangeButton>
+                    </Ranges>
+                </HeaderRow>
 
                 <TrackContainer>
                     {
