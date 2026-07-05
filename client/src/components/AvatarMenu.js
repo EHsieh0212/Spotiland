@@ -19,6 +19,43 @@ const Wrapper = styled.div`
   z-index: 100;
 `;
 
+// Wraps the button so the sound-wave ripples can expand beyond the avatar
+// (the button itself clips its content with overflow: hidden).
+const AvatarBox = styled.div`
+  position: relative;
+  width: 48px;
+  height: 48px;
+
+  &::before,
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    border: 2px solid ${colors.white};
+    opacity: 0;
+    pointer-events: none;
+  }
+  &:hover::before,
+  &:hover::after {
+    animation: avatarRipple 1.8s ease-out infinite;
+  }
+  &:hover::after {
+    animation-delay: 0.9s;
+  }
+
+  @keyframes avatarRipple {
+    0% {
+      transform: scale(1);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+`;
+
 const AvatarButton = styled.button`
   display: flex;
   align-items: center;
@@ -31,11 +68,6 @@ const AvatarButton = styled.button`
   background-color: ${colors.darkGrey};
   cursor: pointer;
   overflow: hidden;
-  transition: border-color 0.2s ease;
-  &:hover,
-  &:focus {
-    border-color: ${colors.offGreen};
-  }
   img {
     width: 100%;
     height: 100%;
@@ -81,17 +113,11 @@ const MenuItem = styled.li`
     width: 100%;
     padding: 12px 20px;
     border: none;
-    border-left: 5px solid transparent;
     background: none;
     color: ${colors.white};
     font-size: ${fontSizes.sm};
     text-align: left;
     cursor: pointer;
-    &:hover,
-    &:focus {
-      background-color: ${colors.darkGrey};
-      border-left: 5px solid ${colors.offGreen};
-    }
   }
 `;
 
@@ -138,9 +164,11 @@ const AvatarMenu = () => {
 
   return (
     <Wrapper ref={ref}>
-      <AvatarButton onClick={() => setOpen((prev) => !prev)} aria-label="Open menu">
-        {avatarUrl ? <img src={avatarUrl} alt="avatar" /> : <NoAvatar />}
-      </AvatarButton>
+      <AvatarBox>
+        <AvatarButton onClick={() => setOpen((prev) => !prev)} aria-label="Open menu">
+          {avatarUrl ? <img src={avatarUrl} alt="avatar" /> : <NoAvatar />}
+        </AvatarButton>
+      </AvatarBox>
       {open && (
         <Menu>
           {user && user.display_name && <UserNameItem>{user.display_name}</UserNameItem>}
@@ -148,7 +176,7 @@ const AvatarMenu = () => {
             <button onClick={() => go('/')}>Personal Analysis</button>
           </MenuItem>
           <MenuItem>
-            <button onClick={() => go('/compare')}>Compare Music Tastes</button>
+            <button onClick={() => go('/import')}>Import Spotify History</button>
           </MenuItem>
           <MenuItem>
             <button onClick={logout}>Logout</button>
