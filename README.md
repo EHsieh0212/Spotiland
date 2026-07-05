@@ -1,73 +1,88 @@
 # Spotiland
 
-Log in with your Spotify account and explore your own listening profile:
-your top artists and top tracks, with per-artist detail cards.
+Turn your **Spotify Extended Streaming History** into a visual dashboard —
+no login required. Import the `.zip` Spotify gives you and explore your top
+singers and tracks per month, your top genres, and when you listen.
 
 ![til](demo.gif)
+
 ## 1. Purpose
 
-Spotiland turns your personal Spotify data into a simple, visual dashboard.
-After authorizing with Spotify, it reads your profile and listening history
-through the Spotify Web API and presents it as a single-page dashboard.
+Spotiland turns your personal Spotify listening history into a simple, visual
+dashboard. Instead of logging in through Spotify, you request your **Extended
+Streaming History** export from Spotify and import the `.zip` — everything is
+parsed and aggregated in your browser. The only server calls are for public
+album/artist artwork, fetched with an app-level token, so **anyone can use a
+deployed instance without signing in**.
 
 ## 2. Features
 
-- **Spotify login** — OAuth 2.0 Authorization Code flow; token auto-refresh.
-- **Profile header** — avatar, display name, and a link to your Spotify profile.
-- **Top Artists** — your most-listened artists, switchable between
-  **All Time** and **Last Month**. Click an artist to open a detail card
-  (popularity, follower count, genres).
-- **Top Tracks** — your most-listened tracks with album art, artist, and rank.
+- **Self-service import** — drop your Spotify export `.zip` on the landing page;
+  it's unzipped and parsed in-browser (jszip) and stored in IndexedDB. No data
+  leaves your machine except public artwork lookups.
+- **Monthly Tops** — your top singers and tracks for any month, or a whole year,
+  ranked by play count, with album art and artist photos.
+- **Top Genres** — genres weighted by the plays of the artists carrying them.
+- **Listening Clock** — when across the day you actually listen.
+- **Artwork enrichment** — album covers and artist photos are resolved through
+  the backend using Spotify's public catalogue (app-level Client Credentials),
+  so they work without any user login.
 
-### Deprecated / disabled features
+### Notes on Spotify API limits
 
-Spotify deprecated several Web API endpoints on **2024-11-27** (audio features,
-audio analysis, recommendations). They now return `403` for apps without
-pre-existing extended access, so the following are intentionally disabled in code:
-
-- Track-detail popup (audio features / analysis)
-- "How happy are your favorite songs?" analysis
-- Recommendations & lyric generator
-
-The core dashboard (profile, top artists, top tracks) is unaffected.
+- Spotify has largely **emptied the artist `genres` field** across its API, so
+  **Top Genres can be sparse** — this is a Spotify-side change, not a bug here.
+- Spotify deprecated **audio-features, audio-analysis, and recommendations** on
+  2024-11-27 (now `403` for new apps). Features that relied on them (track-detail
+  audio popup, recommendations, lyric generator) are disabled and unused.
 
 ## 3. Architecture
 
-A small two-part app: an Express backend that only handles the OAuth handshake,
-and a React (CRA) frontend that talks to the Spotify Web API directly.
+A React (CRA) frontend that does all the aggregation in the browser, plus a thin
+Express backend whose only real jobs are **serving the built app** and
+**proxying public artwork lookups** with an app-level token.
 
 ```
 Spotiland/
-├─ server/                 Express backend — OAuth only
-│  └─ index.js             /login, /callback, /refresh_token (+ serves build in prod)
+├─ server/                 Express backend
+│  └─ index.js             serves client/build + /api/enrich/* (Client Credentials)
+│                          (legacy /login, /callback, /refresh_token remain but unused)
 ├─ client/                 React app (Create React App)
 │  └─ src/
-│     ├─ components/        Dashboard, TopSingers, TopTracks, popups, ...
-│     └─ spotify/           Spotify Web API wrapper + token management
+│     ├─ components/        LoginScreen (import landing), Dashboard,
+│     │                     MonthlyTops, TopGenres, ListeningClock, popups, ...
+│     ├─ data/              import + aggregation layer
+│     │   ├─ importZip.js       unzip an export, extract streaming records
+│     │   ├─ aggregate.js       records → monthly/yearly top lists + totals
+│     │   ├─ historyStore.js    IndexedDB persistence (newest file wins)
+│     │   ├─ HistoryContext.js  provides imported (or bundled demo) history
+│     │   └─ streamingHistory.json  bundled demo dataset
+│     └─ spotify/           artwork enrichment helpers (call the backend)
+├─ render.yaml             Render blueprint (build/start + env vars)
 ├─ .nvmrc                  Node version (22)
-└─ Procfile                web: npm run start-server   (Heroku-style deploy)
+└─ Procfile                web: npm run start-server
 ```
 
 **Tech stack**
 
 - Backend: Node 18+ (22 recommended), Express, cors, cookie-parser, dotenv
-- Frontend: React 18, react-scripts 5, styled-components, MUI, chart.js, axios
+- Frontend: React 18, react-scripts 5, styled-components, jszip, chart.js, axios
 
-**Auth & data flow**
+**Data flow**
 
 ```
-Browser ──(1) click "Log in" ──▶  GET /login              (backend :8000)
-        ◀─(2) 302 redirect ─────  https://accounts.spotify.com/authorize
-  user consents on Spotify
-Spotify ──(3) redirect w/ code ─▶  GET /callback           (backend :8000)
-        backend exchanges code → tokens via fetch()
-        ◀─(4) redirect w/ tokens  http://127.0.0.1:3000/#access_token&refresh_token
-Frontend stores tokens in localStorage
-Frontend ──(5) Bearer token ────▶  https://api.spotify.com/v1/...   (direct)
+1. User requests "Extended Streaming History" from Spotify → gets a .zip by email
+2. Import on "/" → jszip parses it → records saved to IndexedDB (in the browser)
+3. HistoryContext aggregates records → monthly/yearly tops, totals
+4. Dashboard renders the charts; for each singer/track it asks the backend for art:
+      Frontend ──▶  GET /api/enrich/tracks?ids=...        (album covers)
+      Frontend ──▶  GET /api/enrich/artist?name=...       (artist photo / id)
+      Frontend ──▶  GET /api/enrich/artist-detail?id=...  (followers/popularity)
+   Backend fetches an app-level Client Credentials token and proxies Spotify,
+   returning its JSON verbatim. No user login is involved.
 ```
 
-The frontend calls Spotify directly; the backend only mints/refreshes tokens.
-In dev, CRA proxies relative requests (e.g. `/refresh_token`) to the backend.
+With nothing imported, the dashboard falls back to a bundled demo dataset.
 
 ## 4. Local development
 
@@ -75,18 +90,15 @@ In dev, CRA proxies relative requests (e.g. `/refresh_token`) to the backend.
 
 - **Node 22** (`nvm use` reads `.nvmrc`)
 - **Yarn**
-- A **Spotify app** (see below)
+- A **Spotify app** — only for the Client ID/Secret used to fetch public artwork
+  (no redirect URI or user login needed).
 
 ### Spotify app setup
 
 1. Go to the [Spotify Developer Dashboard](https://developer.spotify.com/dashboard) → **Create app**.
 2. Enable **Web API**.
-3. Add Redirect URI **exactly**: `http://127.0.0.1:8000/callback`
-   (Spotify rejects `http://localhost` for newly created apps.)
-4. Copy the **Client ID** and **Client Secret**.
-
-> Note: development-mode apps require the app owner to hold a Spotify **Premium**
-> subscription (Spotify policy, effective 2026-02).
+3. Copy the **Client ID** and **Client Secret**. (No redirect URI required —
+   Spotiland uses the Client Credentials flow only, for public catalogue data.)
 
 ### Environment
 
@@ -97,6 +109,10 @@ CLIENT_ID=your_spotify_client_id
 CLIENT_SECRET=your_spotify_client_secret
 PORT=8000
 ```
+
+`CLIENT_ID` / `CLIENT_SECRET` are used only to mint an app-level token for
+artwork. Without them the dashboard still works — album/artist images just won't
+load.
 
 ### Install & run
 
@@ -110,7 +126,10 @@ yarn dev                # starts backend (:8000) + frontend (:3000) together
 #   yarn client         # frontend → http://127.0.0.1:3000
 ```
 
-Open **http://127.0.0.1:3000** and click **Log in to Spotify**.
+Open **http://127.0.0.1:3000**, import your export `.zip`, and you're on the dashboard.
+
+> Editing anything under `server/` requires restarting the backend (no hot
+> reload); the CRA frontend hot-reloads on its own.
 
 ### Scripts
 
@@ -120,3 +139,18 @@ Open **http://127.0.0.1:3000** and click **Log in to Spotify**.
 | `yarn server`   | Run the Express backend (port 8000) |
 | `yarn client`   | Run the CRA dev server (port 3000)  |
 | `npm run build` | Build the client for production     |
+
+## 5. Deployment
+
+Spotiland is a single Node web service (Express serves the built client and the
+`/api/enrich/*` endpoints), so it deploys to any Node host. A
+[Render](https://render.com) blueprint is included:
+
+1. Push to GitHub and, on Render, **New → Blueprint** → pick this repo
+   (it reads [`render.yaml`](render.yaml)).
+2. Set the two secrets in the dashboard: **`CLIENT_ID`** and **`CLIENT_SECRET`**.
+3. Deploy. The blueprint runs `npm install && npm run build` and starts
+   `npm run start-server`.
+
+That's it — no redirect URIs, no per-user auth, no allowlist. Visitors land on
+the import page and can explore their own history immediately.

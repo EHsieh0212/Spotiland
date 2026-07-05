@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { getAccessToken } from '../spotify';
-import LoginScreen from './LoginScreen';
+import React from 'react';
 import MainPage from './MainPage';
 import styled from 'styled-components/macro';
 import { GlobalStyle } from '../styles';
@@ -15,21 +13,14 @@ const AppContainer = styled.div`
 
 
 ///////////////////////////////////////////////
-// Login JSX
-const App = () => {
-  const [accessToken, setAccessToken] = useState('');
-
-  useEffect(() => {
-    const token = getAccessToken();
-    setAccessToken(token);
-  }, []);
-
-  return (
-    <AppContainer>
-      <GlobalStyle />
-      {accessToken ? <MainPage /> : <LoginScreen />}
-    </AppContainer>
-  );
-};
+// The dashboard is fully self-service: it runs on imported (or demo) streaming
+// history plus app-level artwork enrichment, so there is no login wall — anyone
+// can land straight on it and import their own data.
+const App = () => (
+  <AppContainer>
+    <GlobalStyle />
+    <MainPage />
+  </AppContainer>
+);
 
 export default App;
