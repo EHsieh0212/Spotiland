@@ -5,7 +5,10 @@ import styled from 'styled-components/macro';
 // components
 import AvatarMenu from './AvatarMenu';
 import Dashboard from './Dashboard';
-import CompareMusicTastes from './CompareMusicTastes';
+import ImportSpotifyHistory from './ImportSpotifyHistory';
+
+// data provider — makes imported (or demo) streaming history available app-wide
+import { HistoryProvider } from '../data/HistoryContext';
 
 // control behavior
 import ScrollToTopGlobal from './ScrollToTopGlobal';
@@ -19,15 +22,17 @@ const Page = styled.div`
 `;
 
 const MainPage = () => (
-  <Page>
-    <AvatarMenu />
-    <Router primary={false}>
-      <ScrollToTopGlobal path='/'>
-        <Dashboard path='/' />
-        <CompareMusicTastes path='compare' />
-      </ScrollToTopGlobal>
-    </Router>
-  </Page>
+  <HistoryProvider>
+    <Page>
+      <AvatarMenu />
+      <Router primary={false}>
+        <ScrollToTopGlobal path='/'>
+          <Dashboard path='/' />
+          <ImportSpotifyHistory path='import' />
+        </ScrollToTopGlobal>
+      </Router>
+    </Page>
+  </HistoryProvider>
 );
 
 export default MainPage;

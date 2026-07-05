@@ -267,6 +267,42 @@ export const getTopTracks100 = () =>
   axios.get('https://api.spotify.com/v1/me/top/tracks?limit=100&time_range=long_term', { headers });
 
 
+///////////////////////////////////////////
+// enrichment for the historical monthly Top lists (data comes from the local
+// streaming-history export, which only has names/ids — we fetch artwork here).
+//
+// These go through our own backend, which uses an app-level Client Credentials
+// token rather than the logged-in user's token. Album art / artist photos are
+// public catalogue data, so anyone who imports their own history gets full
+// artwork with no Spotify login required. The backend forwards Spotify's JSON
+// verbatim, so the response shape is identical to a direct call.
+/**
+ * Get Several Tracks (batch, max 50 ids) — resolves album cover art.
+ * Proxied via /api/enrich/tracks (Spotify's Get Several Tracks).
+ */
+export const getTracksByIds = ids =>
+  axios.get(`/api/enrich/tracks?ids=${ids.join(',')}`);
+
+/**
+ * Search for an artist by name, returning a few candidates so callers can pick
+ * the exact-name match (not just whatever Spotify ranks first).
+ * Proxied via /api/enrich/artist (Spotify's Search).
+ */
+export const searchArtist = name =>
+  axios.get(`/api/enrich/artist?name=${encodeURIComponent(name)}`);
+
+/**
+ * Pick the artist whose name exactly matches the query (case-insensitive),
+ * falling back to the top-ranked result. Guards against e.g. "LANY" resolving
+ * to "Lauv" just because Spotify ranked it first.
+ */
+export const bestArtistMatch = (items, name) => {
+  const list = items || [];
+  const lc = name.trim().toLowerCase();
+  return list.find(a => a.name.toLowerCase() === lc) || list[0] || null;
+};
+
+
 
 /**
  * Create a Playlist (The playlist will be empty until you add tracks)

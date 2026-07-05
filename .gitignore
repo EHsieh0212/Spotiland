@@ -1,5 +1,8 @@
 node_modules
 
+# build output — built on the host at deploy time, not committed
+client/build/
+
 .DS_Store
 
 .env
@@ -14,3 +17,4 @@ yarn-error.log*
 
 .vscode/
 
+Spotify Extended Streaming History/

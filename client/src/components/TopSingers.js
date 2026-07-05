@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 // css
-import styled from 'styled-components/macro';
+import styled, { keyframes } from 'styled-components/macro';
 import { Main } from '../styles';
 // fetch functions
 import { getTopArtistsLong, getTopArtistsShort } from '../spotify';
@@ -32,11 +32,13 @@ const Body = styled.div`
 `;
 
 const Title = styled.h1`
+    grid-column: 2;
     color: ${props => props.opacityChange? 'rgba(255, 255, 255, 0.5)' : 'rgba(0, 0, 0, 1)'};
     margin-top: 0;
     padding-top: 20px;
     font-size: 60px;
     font-weight: 900;
+    font-family: 'Courier New', Courier, monospace;
 `;
 
 // 2. artist related
@@ -46,13 +48,22 @@ const ArtistsContainer = styled.div`
     display: grid;
     /* width: 80%; */
     /* align-items: center; */
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-gap: 25px;
+    /* Always 5 singers per row */
+    grid-template-columns: repeat(5, 1fr);
+    /* wider spacing between rows; columns keep the original 25px */
+    grid-column-gap: 25px;
+    grid-row-gap: 60px;
     margin-top: 20px;
-    margin-left: 150px;
-    margin-right: 150px;
+    margin-left: 100px;
+    margin-right: 100px;
     margin-bottom: 0px;
     padding-bottom: 190px;
+`;
+
+// Gentle up-and-down bob for each singer card.
+const floatAnim = keyframes`
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
 `;
 
 //主要區域，存放：1.mask 2.image 3.name
@@ -60,16 +71,23 @@ const ArtistSection = styled.div`
   display: flex;
   /* background-color: black; */
   background-color: ${props => props.opacityChange? 'rgba(0, 0, 0, 0.8)' : 'rgba(196, 84, 12, 1)'};
-  opacity: ${props => props.opacityChange? 0.5 : null}; 
+  opacity: ${props => props.opacityChange? 0.5 : null};
   flex-direction: column;
   align-items: center;
   box-shadow: rgba(50, 50, 93, 0.9) 0px 2px 9px -1px, rgba(0, 0, 0, 0.9) 0px 1px 3px -1px;
   /* background-color: pink; */
+  /* Subtle floating; per-card delay (set inline) keeps them out of sync. */
+  animation: ${floatAnim} 3s ease-in-out infinite;
+  animation-delay: ${props => props.delay}s;
+  justify-self: center;
+  width: 170px;
   &:hover,
   &:focus {
     position:relative;
     bottom: 10px;
     left: auto;
+    /* Hold still while lifted on hover. */
+    animation-play-state: paused;
 }
     cursor: pointer;
 `;
@@ -92,10 +110,12 @@ const ArtistInfo = styled.div`
     /* background-color: green; */
     display: inline-block;
     position: relative;
-    width: 200px;
-    height: 200px; 
-    margin-top: 20px;
-    margin-bottom: 120px;
+    /* original 200px scaled uniformly by 0.7 */
+    width: 140px;
+    height: 140px;
+    margin-top: 14px;
+    /* tightened from 84px — the narrow 170px card looked bottom-heavy */
+    margin-bottom: 48px;
     &:hover,
     &:focus {
      ${Mask} {
@@ -104,17 +124,22 @@ const ArtistInfo = styled.div`
     }}
     img {
         border-radius: 100%;
-        width: 200px;
-        height: 200px;
+        width: 140px;
+        height: 140px;
         object-fit: cover;  /* 切出固定大小範圍圈圈，再予以填滿 */
     }
     .name{
         /* background-color: pink; */
-        font-size: 20px;
+        font-size: 14px;
         font-weight: 900;
         color: white;
-        margin-top: 30px;
+        margin-top: 21px;
         text-align: center;
+        /* keep every card the same height: long names truncate with … */
+        max-width: 140px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
         border-bottom: 1px solid transparent;
         &:hover,
         &:focus {
@@ -127,42 +152,44 @@ const ArtistInfo = styled.div`
 
 const Rank = styled.div`
     /* for: 左邊對齊*/
-    position: relative; 
-    width: 200px;
-    height: 80px; 
+    position: relative;
+    /* original 200x80 scaled uniformly by 0.7 */
+    width: 140px;
+    height: 56px;
     .rank{
         /* for: 限縮背景寬度*/
-        display: inline-block;   
-        margin: 20 auto;
-        padding: 20px 5px;
-        width: 60px;
-        height: 60px;
+        display: inline-block;
+        margin: 14px auto;
+        padding: 14px 4px;
+        width: 42px;
+        height: 42px;
         border-radius: 100%;
         border:1px solid white;
         color: white;
         text-align: center;
         text-shadow: 50px;
         font-weight: 90px;
-        font-size: 19px;
+        font-size: 13px;
         /* background-color: pink; */
     }
 `;
 
 
-// Centers the title across the full row; the range toggle sits beside it on the right.
+// 3 columns: equal 1fr on both sides keep the Title (middle) dead-center,
+// while the range toggle sits at the start of the right column, beside it.
 const HeaderRow = styled.div`
-  position: relative;
-  display: flex;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   margin-bottom: 40px;
 `;
 
 const Ranges = styled.div`
-  position: absolute;
-  right: 20px;
-  top: 0;
-  bottom: 0;
+  /* Just beside the centered title — not pinned to the right edge,
+     which overlapped the fixed top-right avatar. */
+  grid-column: 3;
+  justify-self: start;
+  margin-left: 20px;
   display: flex;
   align-items: center;
 `;
@@ -263,7 +290,7 @@ const TopSingers = ({refPlace}) => {
                 <ArtistsContainer>
                     {topSingers && (
                         topSingers.map((singer, i) => (
-                            <ArtistSection key={i} opacityChange={openPopup}>
+                            <ArtistSection key={i} opacityChange={openPopup} delay={(i % 5) * 0.2}>
                                 <Rank>
                                     <p className='rank'> {i + 1} </p>
                                 </Rank>
