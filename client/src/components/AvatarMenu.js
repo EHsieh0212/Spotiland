@@ -5,9 +5,6 @@ import { navigate } from '@reach/router';
 import styled from 'styled-components/macro';
 import { theme } from '../styles';
 const { colors, fontSizes } = theme;
-// utils
-import { getUser, logout } from '../spotify';
-import { catchErrors } from '../utils';
 
 
 /////////////////////////////////////////////
@@ -96,17 +93,6 @@ const Menu = styled.ul`
   overflow: hidden;
 `;
 
-const UserNameItem = styled.li`
-  padding: 10px 20px;
-  border-bottom: 1px solid ${colors.grey};
-  color: ${colors.lightestGrey};
-  font-size: ${fontSizes.sm};
-  font-weight: 700;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`;
-
 const MenuItem = styled.li`
   button {
     display: block;
@@ -125,18 +111,8 @@ const MenuItem = styled.li`
 /////////////////////////////////////////////
 // Floating top-right avatar with a dropdown menu (navigation + logout).
 const AvatarMenu = () => {
-  const [user, setUser] = useState(null);
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
-
-  // Fetch the current user's profile (used only for the avatar image / name).
-  useEffect(() => {
-    const fetchUser = async () => {
-      const { data } = await getUser();
-      setUser(data);
-    };
-    catchErrors(fetchUser());
-  }, []);
 
   // Close the dropdown on outside click or Escape.
   useEffect(() => {
@@ -159,27 +135,20 @@ const AvatarMenu = () => {
     setOpen(false);
   };
 
-  const avatarUrl =
-    user && user.images && user.images.length > 0 ? user.images[0].url : null;
-
   return (
     <Wrapper ref={ref}>
       <AvatarBox>
         <AvatarButton onClick={() => setOpen((prev) => !prev)} aria-label="Open menu">
-          {avatarUrl ? <img src={avatarUrl} alt="avatar" /> : <NoAvatar />}
+          <NoAvatar />
         </AvatarButton>
       </AvatarBox>
       {open && (
         <Menu>
-          {user && user.display_name && <UserNameItem>{user.display_name}</UserNameItem>}
           <MenuItem>
             <button onClick={() => go('/')}>Personal Analysis</button>
           </MenuItem>
           <MenuItem>
             <button onClick={() => go('/import')}>Import Spotify History</button>
-          </MenuItem>
-          <MenuItem>
-            <button onClick={logout}>Logout</button>
           </MenuItem>
         </Menu>
       )}
