@@ -3,9 +3,8 @@ import { Router } from '@reach/router';
 import styled from 'styled-components/macro';
 
 // components
-import AvatarMenu from './AvatarMenu';
+import LoginScreen from './LoginScreen';
 import Dashboard from './Dashboard';
-import ImportSpotifyHistory from './ImportSpotifyHistory';
 
 // data provider — makes imported (or demo) streaming history available app-wide
 import { HistoryProvider } from '../data/HistoryContext';
@@ -21,14 +20,15 @@ const Page = styled.div`
   background-color: #F67197;
 `;
 
+// Flow: "/" is the import landing (Spotiland + import card); a successful import
+// navigates to "/dashboard", which renders the charts from the imported history.
 const MainPage = () => (
   <HistoryProvider>
     <Page>
-      <AvatarMenu />
       <Router primary={false}>
         <ScrollToTopGlobal path='/'>
-          <Dashboard path='/' />
-          <ImportSpotifyHistory path='import' />
+          <LoginScreen path='/' />
+          <Dashboard path='dashboard' />
         </ScrollToTopGlobal>
       </Router>
     </Page>
