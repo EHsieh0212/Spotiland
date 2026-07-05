@@ -218,6 +218,17 @@ app.get('/api/enrich/artist', function (req, res) {
   spotifyGet(res, `https://api.spotify.com/v1/search?q=${encodeURIComponent(name)}&type=artist&limit=6`);
 });
 
+// Full artist object by id (→ followers, popularity, genres, images) for the
+// artist-detail popup.
+app.get('/api/enrich/artist-detail', function (req, res) {
+  const id = (req.query.id || '').trim();
+  if (!id) {
+    res.status(400).send({ error: 'missing_id' });
+    return;
+  }
+  spotifyGet(res, `https://api.spotify.com/v1/artists/${encodeURIComponent(id)}`);
+});
+
 // All remaining requests return the React app, so it can handle routing.
 app.get('*', function (request, response) {
   response.sendFile(path.resolve(__dirname, '../client/public', 'index.html'));

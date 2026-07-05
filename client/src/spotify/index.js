@@ -256,11 +256,12 @@ export const getTrackInfo = trackId =>
     );
 
 /**
- * Get an Artist
- * https://developer.spotify.com/documentation/web-api/reference/artists/get-artist/
+ * Get an Artist (followers, popularity, genres, images) for the detail popup.
+ * Proxied via /api/enrich/artist-detail so it uses the app-level Client
+ * Credentials token instead of a logged-in user's — no login required.
  */
 export const getArtist = artistId =>
-axios.get(`https://api.spotify.com/v1/artists/${artistId}`, { headers });
+  axios.get(`/api/enrich/artist-detail?id=${artistId}`);
 
 
 export const getTopTracks100 = () =>
