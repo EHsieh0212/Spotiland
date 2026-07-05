@@ -36,6 +36,8 @@ app
         { from: /\/login/, to: '/login' },
         { from: /\/callback/, to: '/callback' },
         { from: /\/refresh_token/, to: '/refresh_token' },
+        // keep API calls as-is; never rewrite them to index.html
+        { from: /^\/api\/.*$/, to: context => context.parsedUrl.pathname + (context.parsedUrl.search || '') },
       ],
     }),
   )
@@ -145,6 +147,75 @@ app.get('/refresh_token', async function (req, res) {
     console.error(error);
     res.status(500).send({ error: 'could_not_refresh_token' });
   }
+});
+
+// ---------------------------------------------------------------------------
+// App-level enrichment (Client Credentials).
+//
+// Album art and artist photos are *public* catalogue data, not tied to any one
+// user. Serving them from an app-level token means anyone who imports their own
+// streaming history gets full artwork without logging into Spotify (and without
+// counting against the app's 25-user development-mode allowlist).
+// ---------------------------------------------------------------------------
+
+// Cache the Client Credentials token until shortly before it expires, so we're
+// not minting a fresh one on every request.
+let appToken = null;
+let appTokenExpiry = 0;
+
+async function getAppToken() {
+  if (appToken && Date.now() < appTokenExpiry) return appToken;
+
+  const response = await fetch('https://accounts.spotify.com/api/token', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: basicAuthHeader(),
+    },
+    body: new URLSearchParams({ grant_type: 'client_credentials' }),
+  });
+
+  if (!response.ok) throw new Error(`client_credentials token failed: ${response.status}`);
+
+  const body = await response.json();
+  appToken = body.access_token;
+  // refresh a minute early so a token never expires mid-flight
+  appTokenExpiry = Date.now() + (body.expires_in - 60) * 1000;
+  return appToken;
+}
+
+// Proxy a Spotify Web API GET with the app token, forwarding its JSON verbatim
+// (so the frontend consumes the exact same shape as a direct Spotify call).
+async function spotifyGet(res, url) {
+  try {
+    const token = await getAppToken();
+    const response = await fetch(url, { headers: { Authorization: `Bearer ${token}` } });
+    const body = await response.json();
+    res.status(response.status).send(body);
+  } catch (error) {
+    console.error('enrichment failed:', error);
+    res.status(502).send({ error: 'enrichment_failed' });
+  }
+}
+
+// Album art for a batch of track ids (comma-separated, max 50).
+app.get('/api/enrich/tracks', function (req, res) {
+  const ids = (req.query.ids || '').trim();
+  if (!ids) {
+    res.status(400).send({ error: 'missing_ids' });
+    return;
+  }
+  spotifyGet(res, `https://api.spotify.com/v1/tracks?ids=${encodeURIComponent(ids)}`);
+});
+
+// Best-match artist search by name (→ photo, genres, id).
+app.get('/api/enrich/artist', function (req, res) {
+  const name = (req.query.name || '').trim();
+  if (!name) {
+    res.status(400).send({ error: 'missing_name' });
+    return;
+  }
+  spotifyGet(res, `https://api.spotify.com/v1/search?q=${encodeURIComponent(name)}&type=artist&limit=6`);
 });
 
 // All remaining requests return the React app, so it can handle routing.
