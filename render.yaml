@@ -1,0 +1,28 @@
+# Render blueprint — deploy Spotiland as a single Node web service that serves
+# both the Express API (OAuth + enrichment) and the built React client.
+# Import this repo on Render → it reads this file → you only fill in the secrets.
+services:
+  - type: web
+    name: spotiland
+    runtime: node
+    plan: free
+    # install root (server) deps + client deps, then build the React app into
+    # client/build, which the server serves as static files.
+    buildCommand: npm install && npm run build
+    startCommand: npm run start-server
+    envVars:
+      - key: NODE_ENV
+        value: production
+      # Secrets & URLs — set these in the Render dashboard (sync:false keeps them
+      # out of the repo). REDIRECT_URI / FRONTEND_URI use your live Render URL:
+      #   REDIRECT_URI = https://<your-app>.onrender.com/callback
+      #   FRONTEND_URI = https://<your-app>.onrender.com
+      # and REDIRECT_URI must also be added to the Spotify app's Redirect URIs.
+      - key: CLIENT_ID
+        sync: false
+      - key: CLIENT_SECRET
+        sync: false
+      - key: REDIRECT_URI
+        sync: false
+      - key: FRONTEND_URI
+        sync: false
